@@ -1,0 +1,59 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard-analytics"
+    },
+    {
+      "url" : "/employee",
+      "name" : "Employee",
+      "icon" : "menu-icon bx bx-user",
+      "slug": "employee"
+    },
+    {
+      "url" : "#",
+      "name" : "Weekly scheduler",
+      "icon" : "menu-icon fa-sharp fa-solid fa-calendar",
+      "slug": "#"
+    },
+    {
+      "url" : "#",
+      "name" : "Payroll Details",
+      "icon" : "menu-icon fa-solid fa-credit-card",
+      "slug": "#"
+    },
+    {
+      "url" : "#",
+      "name" : "Employee Timesheets",
+      "icon" : "menu-icon fa-solid fa-clock",
+      "slug": "#"
+    },
+    {
+      "url" : "#",
+      "name" : "Client Database",
+      "icon" : "menu-icon fa-solid fa-database",
+      "slug": "#"
+    },
+    {
+      "url" : "#",
+      "name" : "Payroll Audit & Reports",
+      "icon" : "menu-icon fa-solid fa-flag",
+      "slug": "#"
+    },
+    {
+          "name": "Admin",
+          "icon": "menu-icon tf-icons bx bx-lock-open-alt",
+          "slug": "auth",
+          "submenu": [
+            {
+              "url": "auth/job_category",
+              "name": "Job Category",
+              "slug": "job_category.index",
+              "target": "_self"
+            }
+          ]
+        }
+  ]
+}
