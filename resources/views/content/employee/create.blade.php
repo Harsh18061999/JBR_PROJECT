@@ -9,7 +9,7 @@
     <div class="row mt-0">
         <div class="text-center p-0">
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                <h3><strong><i class="fa-solid fa-user mx-2"></i> Employee Registration Form</strong></h3>
+                <h3><strong><i class="fa-solid fa-user mx-2"></i> Candidate Onboarding</strong></h3>
                 <hr class="mt-4 mx-4">
                 <form id="employee_from" action="{{route('employee.store')}}" method="POST" enctype="multipart/form-data" novalidate> 
                   @csrf

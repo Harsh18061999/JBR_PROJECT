@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Interfaces\EmployeeRepositoryInterface;
 use App\DataTables\EmployeeDataTable;
 use App\Models\Employee;
+use Illuminate\Support\Facades\Storage;
+use File;
 use App\Models\JobCategory;
 
 class EmployeeController extends Controller
@@ -20,7 +22,8 @@ class EmployeeController extends Controller
     public function index(EmployeeDataTable $dataTable)
     {
         $jobCategory = JobCategory::get();
-        return $dataTable->render('content.employee.index',compact('jobCategory'));
+        $employee = Employee::get();
+        return $dataTable->render('content.employee.index',compact('jobCategory','employee'));
     }
 
     public function create()
@@ -41,6 +44,20 @@ class EmployeeController extends Controller
             // 'licence' => 'required',
         ]);
 
+        $filename = '';
+        if($request->has('lincense')) {
+            $uploadedFile = $request->file('lincense');
+            $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
+            Storage::disk('local')->putFileAs(
+              'public/assets',
+              $uploadedFile,
+              $filename
+            );
+        }
+
+        $data['filename'] = $filename;
+        $request->merge($data);
+    
         $employees = $this->employeeRepository->createEmployee($request->all());
 
         return redirect()->route('employee.index')
@@ -58,6 +75,7 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
         $employeeId = $request->route('id');
+        $employee = Employee::findOrFail($employeeId);
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -68,13 +86,31 @@ class EmployeeController extends Controller
             // 'licence' => 'required',
         ]);
 
+        $filename = $employee->lincense;
+        if($request->has('lincense')) {
+            if(Storage::exists('public/assets/'.$employee->lincense)){
+                Storage::delete('public/assets/'.$employee->lincense);
+            }
+            $uploadedFile = $request->file('lincense');
+            $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
+            Storage::disk('local')->putFileAs(
+              'public/assets',
+              $uploadedFile,
+              $filename
+            );
+        }
+
+        $data['filename'] = $filename;
+        $request->merge($data);
+
         $orderDetails = $request->only([
             'first_name',
             'last_name',
             'email',
             'contact_number',
             'date_of_birth',
-            'job'
+            'job',
+            'filename'
         ]);
 
         $this->employeeRepository->updateEmployee($employeeId,$orderDetails);
@@ -84,8 +120,44 @@ class EmployeeController extends Controller
     }
 
     public function destory($id){
+        $employee = Employee::findOrFail($id);
+        if(Storage::exists('public/assets/'.$employee->lincense)){
+            Storage::delete('public/assets/'.$employee->lincense);
+        }
         $this->employeeRepository->deleteEmployee($id);
 
         return true;
+    }
+
+    public function block($id){
+        // dd($id);
+        $employee = Employee::where('id',$id)->first();
+        if($employee){
+            $employee->update([
+                'status' => '2'
+            ]);
+            $response['success'] = true;
+            $response['message'] = 'Employee Has Been Blocked.';  
+        }else{
+            $response['success'] = false;
+            $response['message'] = 'Selected Record Not Found.';  
+
+        }
+        return $response;
+    }
+
+    public function unBlock($id){
+        $employee = Employee::where('id',$id)->first();
+        if($employee){
+            $employee->update([
+                'status' => '0'
+            ]);
+            $response['success'] = true;
+            $response['message'] = 'Employee Has Been UnBlocked.';  
+        }else{
+            $response['success'] = false;
+            $response['message'] = 'Selected Record Not Found.';
+        }
+        return $response;
     }
 }

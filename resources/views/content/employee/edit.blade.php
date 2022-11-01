@@ -9,7 +9,7 @@
     <div class="row mt-0">
         <div class="text-center p-0">
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                <h3><strong><i class="fa-solid fa-user mx-2"></i> Employee Update Form</strong></h3>
+                <h3><strong><i class="fa-solid fa-user mx-2"></i> Candidate Onboarding</strong></h3>
                 <hr class="mt-4 mx-4">
                 <form id="employee_from" action="{{ route('employee.update', $employee->id) }}" method="POST" enctype="multipart/form-data" novalidate> 
                   @csrf
@@ -83,8 +83,16 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3 license_div" style="display: {{$employee->jobCategory->license_status == 1 ? 'block' : 'none'}};">
-                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload {{$employee->jobCategory->job_title}}</label>
-                          <input class="form-control" type="file" name="lincense" id="formFile">
+                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload {{$employee->jobCategory->job_title}} </label>
+                         
+                          <div class="input-group mb-3 mt-3">
+                            <input class="form-control" type="file" name="lincense" id="formFile">
+                            @if($employee->lincense && $employee->lincense != '')
+                            <div class="input-group-prepend">
+                              <a class="btn btn-outline-secondary" id="edit_license_view" data-href="{{asset('storage/assets/'.$employee->lincense)}}" data-pdfname="{{$employee->first_name.'_'.$employee->last_name}}"><i class="p-1 fa-solid fa-eye"></i></a>
+                            </div>
+                            @endif
+                          </div>
                         </div>
                         <p>By clicking this button, you submit your information to the JBR Staffing Solutions, who will use it to communicate with you regarding this event and their other services.</p>
                         <div class="my-4">
@@ -106,6 +114,25 @@
             </div>
         </div>
     </div>
+</div>
+<div class="col-lg-4 col-md-3">
+  <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalScrollableTitle">Employee License</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="height: 100vh;">
+          <iframe id="myFrame" style="width: 100%;height:100%;"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <a type="button" class="btn btn-primary" id="license_download" href="" target="_blank" download="pdfName">Download</a>
+        </div> 
+      </div>
+    </div>
+  </div>
 </div>
 <script src="{{asset("assets/js/custom/employee.js")}}"></script>
 

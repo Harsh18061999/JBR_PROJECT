@@ -21,7 +21,8 @@ return new class extends Migration
             $table->bigInteger('contact_number')->nuique()->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('job');
-            $table->string('licence')->nullable();
+            $table->string('lincense')->nullable();
+            $table->enum('status',[0,1,2,3])->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

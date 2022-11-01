@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Employee;
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -22,15 +23,20 @@ class EmployeeDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))
+        return (new EloquentDataTable($query))->rawColumns(['action','status'])
             ->addColumn('action', function($query){
-                return '<div>
-                    <a href="'.route('employee.edit',$query->id).'" class="pointer"><i class="fa-solid fa-pen-to-square mx-2"></i></a>
-                    <a data-href="'.route('employee.destory',$query->id).'" data-id="'.$query->id.'" class="delete pointer text-danger"><i class="fa-solid fa-trash"></i></a>
-                </div>';
+                return view('content.employee.action',compact('query'));
             })->addColumn('job', function($query){
                return $query->jobCategory->job_title;
-            })
+            })->addColumn('status', function($query){
+                if($query->status == 0){
+                    return '<span class="badge bg-label-success me-1">Available</span>';
+                }else if($query->status == 1){
+                    return '<span class="badge bg-label-danger me-1">Not Available</span>';
+                }else if($query->status == 2){
+                    return '<span class="badge bg-label-danger me-1">Block</span>';
+                }
+             })
             ->setRowId('id');
     }
 
@@ -40,8 +46,21 @@ class EmployeeDataTable extends DataTable
      * @param \App\Models\Post $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Employee $model): QueryBuilder
+    public function query(Employee $model,Request $request): QueryBuilder
     {
+        // dd($request->all());
+        if($request->employee_name && $request->employee_name != ''){
+            $model = $model->where('id',$request->employee_name);
+        }
+
+        if($request->job_title && $request->job_title != ''){
+            $model = $model->where('job',$request->job_title);
+        }
+        
+        if($request->status){
+            $model = $model->where('status',(string)($request->status - 1));
+        }
+
         return $model->newQuery();
     }
 
@@ -55,16 +74,40 @@ class EmployeeDataTable extends DataTable
         return $this->builder()
                     ->setTableId('employee-table')
                     ->columns($this->getColumns())
-                    ->minifiedAjax()
+                    ->postAjax([
+                        'url' => route('employee.index'),
+                        'data' => 'function(search) {
+                            search._token = "{{ csrf_token() }}";
+                            search.employee_name = $("#employee_name").val();
+                            search.job_title = $("#job_title").val();
+                            search.status = $("#status").val();
+                        }'
+                    ])
+                    ->parameters([
+                        'dom' => 'Bfrtilp',
+                        'stateSave' => true,//true,
+                        'bScrollInfinite' => true,
+                        'responsive' => true,
+                        'lengthMenu' => [10, 15, 30, 50, 100],
+                        'buttons' => ['colvis'],
+                        'processing' => false,
+                        'serverSide' => true,
+                        'scrollX' => true,
+                        'bAutoWidth' => false,
+                        'language' => [
+                            'paginate'=> [
+                                'previous'=> '<i class="fas fa-chevron-left"></i>',
+                                'next'=> '<i class="fas fa-chevron-right"></i>'
+                            ]
+                            ],
+                        'initComplete' => "function () {
+                            var self = this.api();
+                        }",
+                        
+                    ])
                     ->dom('Bfrtip')
                     ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ) ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
     /**
@@ -78,15 +121,15 @@ class EmployeeDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
+                  ->width(60)->addClass('text-center'),
             // Column::make('id'),
-            Column::make('first_name') ->addClass('text-center'),
-            Column::make('last_name') ->addClass('text-center'),
-            Column::make('contact_number') ->addClass('text-center'),
-            Column::make('email') ->addClass('text-center'),
-            Column::make('date_of_birth') ->addClass('text-center'),
-            Column::make('job') ->addClass('text-center'),
+            Column::make('first_name') ,
+            Column::make('last_name') ,
+            Column::make('contact_number') ,
+            Column::make('email') ,
+            Column::make('date_of_birth') ,
+            Column::make('job'),
+            Column::make('status'),
         ];
     }
 

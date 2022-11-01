@@ -24,11 +24,15 @@ class EmployeerRepository implements EmployeeRepositoryInterface
 
     public function createEmployee(array $employeeDetails) 
     {
+        $employeeDetails['lincense'] = $employeeDetails['filename'];
+        unset($employeeDetails['filename']);
         return Employee::create($employeeDetails);
     }
 
     public function updateEmployee($employeeId, array $newDetails) 
     {
+        $newDetails['lincense'] = $newDetails['filename'];
+        unset($newDetails['filename']);
         return Employee::whereId($employeeId)->update($newDetails);
     }
 

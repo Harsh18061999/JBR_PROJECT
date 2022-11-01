@@ -16,7 +16,8 @@ class Employee extends Model
         'email',
         'contact_number',
         'date_of_birth',
-        'licence',
+        'lincense',
+        'status',
         'job'
     ];
 

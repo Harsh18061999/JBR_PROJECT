@@ -31,10 +31,10 @@
       "slug": "#"
     },
     {
-      "url" : "#",
+      "url" : "/client",
       "name" : "Client Database",
       "icon" : "menu-icon fa-solid fa-database",
-      "slug": "#"
+      "slug": "#/client"
     },
     {
       "url" : "#",
