@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Interfaces\JobCategoryRepositoryInterface;
-use App\DataTables\JobCategoryDataTable;
+use App\DataTables\JobCategoryDatatable;
 use App\Models\JobCategory;
 use Validator;
 
@@ -17,7 +17,7 @@ class JobCategoryController extends Controller
         $this->jobCategoryRepository = $jobCategoryRepository;
     }
 
-    public function index(JobCategoryDataTable $dataTable)
+    public function index(JobCategoryDatatable $dataTable)
     {
         return $dataTable->render('content.jobcategory.index');
     }
