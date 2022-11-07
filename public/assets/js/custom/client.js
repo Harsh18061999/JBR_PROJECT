@@ -18,7 +18,6 @@ $(document).ready(function(){
             rules: {
                 client_name : {
                     required: true,
-                    lettersonly: true,
                     minlength: 3
                 },
                 supervisor: {
