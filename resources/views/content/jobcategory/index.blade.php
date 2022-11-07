@@ -2,8 +2,8 @@
 
 @section('title', ' Horizontal Layouts - Forms')
 <style>
-thead{
-    background: gray;
+    thead{
+    background: #152d47;
     color: white;
     margin-top: 10px;
 }

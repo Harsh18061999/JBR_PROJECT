@@ -22,12 +22,13 @@
   <!-- Include Scripts for customizer, helper, analytics, config -->
   @include('layouts/sections/scriptsIncludes')
 
-  <script src="https://kit.fontawesome.com/fd19c82c98.js" crossorigin="anonymous"></script>
+  <script src="{{ asset('assets/appJs/fd19c82c98.js') }}" crossorigin="anonymous"></script>
+  {{-- <link rel="stylesheet" href="{{ asset('assets/appCss/jquery.dataTables.min.css') }}"> --}}
   <link rel="stylesheet" href="http://cdn.datatables.net/1.10.18/css/jquery.dataTables.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src = "http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer ></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+  <script src="{{ asset('assets/appJs/jquery.min.js') }}"></script>
+  <script src = "{{ asset('assets/appJs/jquery.dataTables.min.js') }}" defer ></script>
+  <script src="{{ asset('assets/appJs/sweetalert.min.js') }}"></script>
+  
 </head>
 
 <body>
@@ -44,7 +45,7 @@
 
   <!-- Include Scripts -->
   @include('layouts/sections/scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+  <script src="{{ asset('assets/appJs/jquery.validate.min.js') }}"></script>
   <script>
       @if(Session::has('success'))
         swal("Success...", "{{ Session::get('success') }}", "success");
@@ -56,7 +57,6 @@
         swal("Oops...", "{{ Session::get('error') }}", "error");
       @endif
   </script>
-  {{-- <script src="{{asset('assets/js_file/jquery.validate.js')}}" type="text/javascript"></script> --}}
 </body>
 
 </html>

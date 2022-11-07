@@ -101,16 +101,16 @@ $(document).ready(function(){
         });
     }
 
-    $("body").on("change","#job_category",function(){
-        var option = $('option:selected', this).attr('data-license');
-        var text = 'UPLOAD '+$('option:selected', this).text();
-        if(option == 1){
-            $(".license_div").css('display','block');
-            $("#license_text").html(text);
-        }else{
-            $(".license_div").css('display','none');
-        }
-    });
+    // $("body").on("change","#job_category",function(){
+    //     var option = $('option:selected', this).attr('data-license');
+    //     var text = 'UPLOAD '+$('option:selected', this).text();
+    //     if(option == 1){
+    //         $(".license_div").css('display','block');
+    //         $("#license_text").html(text);
+    //     }else{
+    //         $(".license_div").css('display','none');
+    //     }
+    // });
 
     $("body").on("click",".license_view,#edit_license_view",function(){
         $('#modalScrollable').modal('toggle');

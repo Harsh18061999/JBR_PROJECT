@@ -3,18 +3,15 @@
 @section('title', ' Horizontal Layouts - Forms')
 <style>
 thead{
-    background: gray;
+    background: #152d47;
     color: white;
     margin-top: 10px;
 }
 .dataTables_filter{
     margin-bottom: 30px;
 }
-.dataTables_wrapper .dataTables_paginate {
-    float: right;
-    text-align: right;
-    padding-top: 0px;
-    border: 1px solid gray;
+.paginate_button  > .current{
+  background-color: #696cff !important;
 }
 </style>
 @section('content')

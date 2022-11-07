@@ -15,7 +15,7 @@
                   @csrf
                     <div class="row mx-4">
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating error_message">
@@ -26,7 +26,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class=" mb-4">
                                 <div class="">
                                   <div class="form-floating error_message">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -46,13 +46,12 @@
                                         @foreach($jobCategory as $key => $value)
                                           <option value="{{$value->id}}" data-license="{{$value->license_status}}">{{$value->job_title}}</option>
                                         @endforeach
-                                        {{-- <option value="General Labor">General Labor</option> --}}
                                     </select>
                                     <label for="job_category">Job Category</label>
                                 </div>
                               </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-12">
                             <div class="mb-4">
                                 <div class="">

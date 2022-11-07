@@ -39,7 +39,7 @@ class ClientController extends Controller
             'client_name' => 'required',
             'supervisor' => 'required',
             'client_address' => 'required',
-            'job' => 'required'
+            // 'job' => 'required'
         ]);
 
         $client = $this->clientRepository->createClient($request->all());
@@ -64,14 +64,14 @@ class ClientController extends Controller
             'client_name' => 'required',
             'supervisor' => 'required',
             'client_address' => 'required',
-            'job' => 'required'
+            // 'job' => 'required'
         ]);
 
         $orderDetails = $request->only([
             'client_name',
             'supervisor',
             'client_address',
-            'job'
+            // 'job'
         ]);
 
         $this->clientRepository->updateClient($clientId,$orderDetails);

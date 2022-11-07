@@ -83,7 +83,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3 license_div" style="display: {{$employee->jobCategory->license_status == 1 ? 'block' : 'none'}};">
-                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload {{$employee->jobCategory->job_title}} </label>
+                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload License/Certificate</label>
                          
                           <div class="input-group mb-3 mt-3">
                             <input class="form-control" type="file" name="lincense" id="formFile">

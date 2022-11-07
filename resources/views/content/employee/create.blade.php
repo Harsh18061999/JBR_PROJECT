@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3 license_div" style="display: none;">
-                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload Forklift License</label>
+                          <label for="formFile" class="form-label text-start w-100" id="license_text">Upload License/Certificate</label>
                           <input class="form-control" type="file" name="lincense" id="formFile">
                         </div>
                         {{-- <div class="col-md-6">

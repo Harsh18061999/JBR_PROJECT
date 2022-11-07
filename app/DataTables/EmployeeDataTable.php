@@ -35,6 +35,8 @@ class EmployeeDataTable extends DataTable
                     return '<span class="badge bg-label-danger me-1">Not Available</span>';
                 }else if($query->status == 2){
                     return '<span class="badge bg-label-danger me-1">Block</span>';
+                }else if($query->status == 3){
+                    return '<span class="badge bg-label-danger me-1">Regular</span>';
                 }
              })
             ->setRowId('id');
@@ -95,10 +97,6 @@ class EmployeeDataTable extends DataTable
                         'scrollX' => true,
                         'bAutoWidth' => false,
                         'language' => [
-                            'paginate'=> [
-                                'previous'=> '<i class="fas fa-chevron-left"></i>',
-                                'next'=> '<i class="fas fa-chevron-right"></i>'
-                            ]
                             ],
                         'initComplete' => "function () {
                             var self = this.api();
