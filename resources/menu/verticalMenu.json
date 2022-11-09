@@ -7,6 +7,12 @@
       "slug": "dashboard-analytics"
     },
     {
+      "url": "/job_request",
+      "name": "Job Request",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard-analytics"
+    },
+    {
       "url" : "/employee",
       "name" : "Employee",
       "icon" : "menu-icon bx bx-user",

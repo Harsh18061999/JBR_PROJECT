@@ -6,6 +6,7 @@ use App\Http\Controllers\User\EmployeeController as UserEmployeeController;
 use App\Http\Controllers\User\ClientController as UserClientController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\JobRequestController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,8 +32,6 @@ Route::get('/layouts/without-navbar', $controller_path . '\layouts\WithoutNavbar
 Route::get('/layouts/fluid', $controller_path . '\layouts\Fluid@index')->name('layouts-fluid');
 Route::get('/layouts/container', $controller_path . '\layouts\Container@index')->name('layouts-container');
 Route::get('/layouts/blank', $controller_path . '\layouts\Blank@index')->name('layouts-blank');
-
-//Employee
 
 // pages
 Route::get('/pages/account-settings-account', $controller_path . '\pages\AccountSettingsAccount@index')->name('pages-account-settings-account');
@@ -96,25 +95,33 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('content.dashboard.dashboards-analytics');
     })->name('dashboard');
-    // Route::get('/employee',[EmployeeController::class,'index'])->name('employee.index');
-    // Route::get('/employee/create',[EmployeeController::class,'create'])->name('employee.create');
-    // Route::post('/employee/store',[EmployeeController::class,'store'])->name('employee.store');
-    // Route::post('/employee/update',[EmployeeController::class,'update'])->name('employee.update');
+
+    //employee
     Route::post('/employee/{id}',[EmployeeController::class,'update'])->name('employee.update');
     Route::delete('/employee/{id}',[EmployeeController::class,'destory'])->name('employee.destory');
     Route::resource('employee', EmployeeController::class);
     Route::get('/employee-block/{id}',[EmployeeController::class,'block'])->name('employee.block');
     Route::get('/employee-unblock/{id}',[EmployeeController::class,'unBlock'])->name('employee.unblock');
+
+    //Job Category
     Route::prefix('auth')->group(function () {
         Route::resource('job_category', JobCategoryController::class);
         Route::post('/job_category/{id}',[JobCategoryController::class,'update'])->name('job_category.update');
         Route::delete('/job_category/{id}',[JobCategoryController::class,'destroy'])->name('job_category.destroy');
     });
+
+    //Client
     Route::delete('/client/{id}',[ClientController::class,'destory'])->name('client.destory');
     Route::get('/client-block/{id}',[ClientController::class,'block'])->name('client.block');
     Route::get('/client-unblock/{id}',[ClientController::class,'unBlock'])->name('client.unblock');
     Route::post('/client/{id}',[ClientController::class,'update'])->name('client.update');
     Route::resource('client', ClientController::class);
+
+    //JobRequest
+    Route::delete('/job_request/{id}',[JobRequestController::class,'destory'])->name('job_request.destory');
+    Route::post('/job_request/{id}',[JobRequestController::class,'update'])->name('job_request.update');
+    Route::resource('job_request', JobRequestController::class);
+    Route::get('/get_supervisor',[JobRequestController::class,'get_supervisor']);
 });
 
 Route::get('/employee_register',[UserEmployeeController::class,'create']);
