@@ -61,7 +61,7 @@ class JobRequestController extends Controller
 
         $job_request = $this->jobRequestRepository->createJobRequest($orderDetails);
 
-        $job_request = JobRequest::where('job_message_status',0)->first();
+        $job_request = JobRequest::where('job_message_status','0')->first();
         if($job_request){
             $employee = Employee::where('status','0')->limit(1)->get();
             foreach($employee as $k => $value){
