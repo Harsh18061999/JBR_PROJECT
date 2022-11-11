@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('job_date');
             $table->bigInteger('no_of_employee');
             $table->enum('status',[0,1,2,3])->defalt(0);
+            $table->enum('job_message_status',[0,1,2])->defalt(0);
             $table->timestamps();
         });
     }
