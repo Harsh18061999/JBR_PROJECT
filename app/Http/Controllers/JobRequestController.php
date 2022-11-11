@@ -63,7 +63,7 @@ class JobRequestController extends Controller
 
         $job_request = JobRequest::where('job_message_status','0')->first();
         if($job_request){
-            $employee = Employee::where('status','0')->limit(1)->get();
+            $employee = Employee::where('status','0')->limit(3)->get();
             foreach($employee as $k => $value){
                 $client = Client::where('id',$job_request->client_id)->first();
                 $job = JobCategory::where('id',$job_request->job_id)->first();
