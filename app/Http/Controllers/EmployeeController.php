@@ -129,12 +129,11 @@ class EmployeeController extends Controller
         return true;
     }
 
-    public function block($id){
-        // dd($id);
+    public function statusUpdate($id,Request $request){
         $employee = Employee::where('id',$id)->first();
         if($employee){
             $employee->update([
-                'status' => '2'
+                'status' => $request->status
             ]);
             $response['success'] = true;
             $response['message'] = 'Employee Has Been Blocked.';  

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\User\EmployeeController as UserEmployeeController;
 use App\Http\Controllers\User\ClientController as UserClientController;
+use App\Http\Controllers\User\JobRequestController as UserJobRequestController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JobRequestController;
@@ -100,8 +101,8 @@ Route::middleware([
     Route::post('/employee/{id}',[EmployeeController::class,'update'])->name('employee.update');
     Route::delete('/employee/{id}',[EmployeeController::class,'destory'])->name('employee.destory');
     Route::resource('employee', EmployeeController::class);
-    Route::get('/employee-block/{id}',[EmployeeController::class,'block'])->name('employee.block');
-    Route::get('/employee-unblock/{id}',[EmployeeController::class,'unBlock'])->name('employee.unblock');
+    Route::get('/employee-status_update/{id}',[EmployeeController::class,'statusUpdate'])->name('employee.status_update');
+    // Route::get('/employee-unblock/{id}',[EmployeeController::class,'unBlock'])->name('employee.unblock');
 
     //Job Category
     Route::prefix('auth')->group(function () {
@@ -129,5 +130,6 @@ Route::post('/employee_store',[UserEmployeeController::class,'store'])->name('em
 Route::get('/client_register',[UserClientController::class,'create']);
 Route::post('/client_store',[UserClientController::class,'store'])->name('client_store');
 Route::get('/employee_store_success',[UserEmployeeController::class,'success'])->name('employee_store_success');
+Route::get('/send_job_request',[UserJobRequestController::class,'job_request'])->name('front.job_request');
 
 

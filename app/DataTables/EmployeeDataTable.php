@@ -29,15 +29,16 @@ class EmployeeDataTable extends DataTable
             })->addColumn('job', function($query){
                return $query->jobCategory->job_title;
             })->addColumn('status', function($query){
-                if($query->status == 0){
-                    return '<span class="badge bg-label-success me-1">Available</span>';
-                }else if($query->status == 1){
-                    return '<span class="badge bg-label-danger me-1">Not Available</span>';
-                }else if($query->status == 2){
-                    return '<span class="badge bg-label-danger me-1">Block</span>';
-                }else if($query->status == 3){
-                    return '<span class="badge bg-label-danger me-1">Regular</span>';
-                }
+                return view('content.employee.status',compact('query'));
+                // if($query->status == 0){
+                //     return '<span class="badge bg-label-success me-1">Available</span>';
+                // }else if($query->status == 1){
+                //     return '<span class="badge bg-label-danger me-1">Not Available</span>';
+                // }else if($query->status == 2){
+                //     return '<span class="badge bg-label-danger me-1">Block</span>';
+                // }else if($query->status == 3){
+                //     return '<span class="badge bg-label-danger me-1">Regular</span>';
+                // }
              })
             ->setRowId('id');
     }

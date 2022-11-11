@@ -13,6 +13,10 @@ thead{
 .paginate_button  > .current{
   background-color: #696cff !important;
 }
+.harsh{
+  width: 100%;
+  height: 100%;
+}
 </style>
 @section('content')
 <div class="d-flex justify-content-between align-items-center">
@@ -94,6 +98,7 @@ thead{
           </div>
           <div class="modal-body" style="height: 100vh;">
             <iframe id="myFrame" style="width: 100%;height:100%;"></iframe>
+            <img src="" alt="" id="my_img" style="display: block;width:100%;height:100%;">
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>

@@ -114,12 +114,25 @@ $(document).ready(function(){
 
     $("body").on("click",".license_view,#edit_license_view",function(){
         $('#modalScrollable').modal('toggle');
-        $("#myFrame").attr("src",$(this).attr('data-href'));
+        var str =  $(this).attr('data-href');
+        var test = (/\.(gif|jpg|jpeg|tiff|png)$/i).test(str)
+        if(test){
+            $("#my_img").attr("src",$(this).attr('data-href'));
+            $("#my_img").css("display","block");
+            $("#myFrame").css("display","none");
+        }else{
+            $("#myFrame").attr("src",$(this).attr('data-href'));
+            $("#my_img").css("display","none");
+            $("#myFrame").css("display","block");
+        }
         $("#license_download").attr('href',$(this).attr('data-href'));
         $("#license_download").attr('download',$(this).attr('data-pdfname'));
     });
 
-    $("body").on("click",".block_employee",function(){
+    $("body").on("change",".employee_status",function(){
+        var select = $(this);
+        var status = $(this).attr("data-status");
+        var select_status = $(this).val();
         var url = $(this).attr('data-href');
         swal({
             title: "Are you sure?",
@@ -135,6 +148,9 @@ $(document).ready(function(){
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    data:{
+                        status:select_status
+                    },
                     success: function(response) {
                         if(response.success){
                             swal(response.message, {
@@ -147,6 +163,7 @@ $(document).ready(function(){
                     }
                 });
             } else {
+                select.val(status);
               swal("Your employee is safe!");
             }
         });
