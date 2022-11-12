@@ -8,8 +8,8 @@
 @endsection
 
 @section('content')
-<div class="container-xxl">
-  <div class="authentication-wrapper authentication-basic container-p-y">
+<div class="">
+  <div class="authentication-wrapper authentication-basic">
       <div class="card">
         <div class="card-body">
           <!-- Logo -->
