@@ -133,10 +133,11 @@ $(document).ready(function(){
         var select = $(this);
         var status = $(this).attr("data-status");
         var select_status = $(this).val();
+        var select_status_text = $(this).find(":selected").text();;
         var url = $(this).attr('data-href');
         swal({
             title: "Are you sure?",
-            text: "You want to block this employee.",
+            text: "You want to change employee status to "+select_status_text+".",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -153,7 +154,7 @@ $(document).ready(function(){
                     },
                     success: function(response) {
                         if(response.success){
-                            swal(response.message, {
+                            swal("Status has been updated successfully.", {
                                 icon: "success",
                             });
                             $('#employee-table').DataTable().ajax.reload(); 
@@ -169,37 +170,37 @@ $(document).ready(function(){
         });
     });
 
-    $("body").on("click",".unblock_employee",function(){
-        var url = $(this).attr('data-href');
-        swal({
-            title: "Are you sure?",
-            text: "You want to unblock this employee.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        }).then((willDelete) => {
-            if (willDelete) {
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if(response.success){
-                            swal(response.message, {
-                                icon: "success",
-                            });
-                            $('#employee-table').DataTable().ajax.reload(); 
-                        }else{
-                            swal("Oops...", response,message, "error");
-                        }
-                    }
-                });
-            } else {
-              swal("Your employee is safe!");
-            }
-        });
-    });
+    // $("body").on("click",".unblock_employee",function(){
+    //     var url = $(this).attr('data-href');
+    //     swal({
+    //         title: "Are you sure?",
+    //         text: "You want to unblock this employee.",
+    //         icon: "warning",
+    //         buttons: true,
+    //         dangerMode: true,
+    //     }).then((willDelete) => {
+    //         if (willDelete) {
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: url,
+    //                 headers: {
+    //                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //                 },
+    //                 success: function(response) {
+    //                     if(response.success){
+    //                         swal(response.message, {
+    //                             icon: "success",
+    //                         });
+    //                         $('#employee-table').DataTable().ajax.reload(); 
+    //                     }else{
+    //                         swal("Oops...", response,message, "error");
+    //                     }
+    //                 }
+    //             });
+    //         } else {
+    //           swal("Your employee is safe!");
+    //         }
+    //     });
+    // });
 
 });

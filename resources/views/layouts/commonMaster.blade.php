@@ -23,8 +23,9 @@
   <script src="{{ asset('assets/appJs/jquery.min.js') }}"></script>
   <script src = "{{ asset('assets/appJs/jquery.dataTables.min.js') }}" defer ></script>
   <script src="{{ asset('assets/appJs/sweetalert.min.js') }}"></script>
+  
+  <script src="{{ asset('assets/appJs/jquery.validate.min.js') }}"></script>
 </head>
-<script src="{{ asset('assets/appJs/jquery.validate.min.js') }}"></script>
 <body>
   @yield('layoutContent')
   @include('layouts/sections/scripts')
@@ -39,5 +40,6 @@
         swal("Oops...", "{{ Session::get('error') }}", "error");
       @endif
   </script>
+  <script src="{{ asset('assets/appJs/jquery.validate.min.js') }}"></script>
 </body>
 </html>

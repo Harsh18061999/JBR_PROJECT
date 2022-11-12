@@ -26,7 +26,12 @@ class EmployeerRepository implements EmployeeRepositoryInterface
     {
         $employeeDetails['lincense'] = $employeeDetails['filename'];
         unset($employeeDetails['filename']);
-        return Employee::create($employeeDetails);
+        $employee = Employee::withTrashed()->where('contact_number',$employeeDetails['contact_number'])->orWhere('email',$employeeDetails['email'])->first();
+        if(!$employee){
+            return Employee::create($employeeDetails);
+        }else{
+            return $employee->restore();
+        }
     }
 
     public function updateEmployee($employeeId, array $newDetails) 

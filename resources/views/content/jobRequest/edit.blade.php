@@ -67,7 +67,7 @@
                             <div class="">
                               <div class="form-floating">
                                 <input type="date" class="form-control" name="job_date" id="job_date" placeholder="xyz@gmail.com" value="{{$job_request->job_date}}" aria-describedby="floatingInputHelp" />
-                                  <label for="job_date">Hire Date</label>
+                                  <label for="job_date">JOB Date</label>
                               </div>
                             </div>
                           </div>
@@ -76,8 +76,8 @@
                           <div class=" mb-4">
                             <div class="">
                               <div class="form-floating">
-                                <input type="number" class="form-control" name="no_of_employee" id="no_of_employee" value="{{$job_request->no_of_employee}}" placeholder="Enter the no of employee to hire" aria-describedby="floatingInputHelp" />
-                                  <label for="no_of_employee">NO Of Employee</label>
+                                <input type="number" class="form-control" name="no_of_employee" id="no_of_employee" value="{{$job_request->no_of_employee}}" placeholder="Enter the number of employee to hire" aria-describedby="floatingInputHelp" />
+                                  <label for="no_of_employee">Number Of Employee</label>
                               </div>
                             </div>
                           </div>

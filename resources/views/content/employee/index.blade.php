@@ -68,6 +68,7 @@ thead{
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" name="status" id="status" aria-label="Default select example">
                       <option selected value="">Open this select menu</option>
+                      <option value="0">Regular</option>
                       <option value="1">Available</option>
                       <option value="2">Not Available</option>
                       <option value="3">Block</option>
