@@ -15,7 +15,7 @@
                   @csrf
                     <div class="row mx-4">
 
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating error_message">
@@ -26,7 +26,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -37,7 +37,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -47,7 +47,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -57,7 +57,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -67,7 +67,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -82,7 +82,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3 license_div" style="display: {{$employee->jobCategory->license_status == 1 ? 'block' : 'none'}};">
+                        <div class="col-lg-6 mb-3 license_div" style="display: {{$employee->jobCategory->license_status == 1 ? 'block' : 'none'}};">
                           <label for="formFile" class="form-label text-start w-100" id="license_text">Upload License/Certificate</label>
                          
                           <div class="input-group mb-3 mt-3">
@@ -102,7 +102,7 @@
                     </div>
                 </form>
                 <div class="row">
-                    <div class="col-md-12 mx-4">
+                    <div class="col-lg-12 mx-4">
                         <form action="">
                             <div class="row">
 
@@ -115,7 +115,7 @@
         </div>
     </div>
 </div>
-<div class="col-lg-4 col-md-3">
+<div class="col-lg-4 col-lg-3">
   <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
       <div class="modal-content">

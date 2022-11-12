@@ -15,7 +15,7 @@
                   @csrf
                     <div class="row mx-4">
 
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating error_message">
@@ -26,7 +26,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -37,7 +37,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -47,7 +47,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -57,7 +57,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -67,7 +67,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -83,20 +83,10 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3 license_div" style="display: none;">
+                        <div class="col-lg-6 mb-3 license_div" style="display: none;">
                           <label for="formFile" class="form-label text-start w-100" id="license_text">Upload License/Certificate</label>
                           <input class="form-control" type="file" name="lincense" id="formFile">
                         </div>
-                        {{-- <div class="col-md-6">
-                            <div class=" mb-4">
-                              <div class="">
-                                <div class="form-floating">
-                                    <input class="form-control" name="lincense" type="file" id="formFile">
-                                  <label for="floatingInput mb-2">Upload Forklift License</label>
-                                </div>
-                              </div>
-                            </div>
-                        </div> --}}
                         <p>By clicking this button, you submit your information to the JBR Staffing Solutions, who will use it to communicate with you regarding this event and their other services.</p>
                         <div class="my-4">
 
@@ -104,16 +94,6 @@
                         </div>
                     </div>
                 </form>
-                <div class="row">
-                    <div class="col-md-12 mx-4">
-                        <form action="">
-                            <div class="row">
-
-                                
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
