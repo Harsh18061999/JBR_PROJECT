@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="row g-2 d-flex">
-                                <div class="col-md">
+                                <div class="">
                                     <small class="fw-semibold d-block">License</small>
                                     <div class="form-check form-check-inline mt-3">
                                     <input class="form-check-input" type="radio" name="license_status" id="inlineRadio1" value="1" />

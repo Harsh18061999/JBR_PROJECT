@@ -39,7 +39,7 @@ thead{
           <div class="d-grid p-3">
             <div class="row">
 
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 mb-3">
                     <label for="client_name" class="form-label">Client</label>
                     <select class="form-select" name="client_name" id="client_name" aria-label="Default select example">
                       <option selected value="">Open this select menu</option>
@@ -48,7 +48,7 @@ thead{
                       @endforeach
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 mb-3">
                     <label for="supervisor" class="form-label">Supervisor</label>
                     <select class="form-select" name="supervisor" id="supervisor" aria-label="Default select example">
                       <option selected value="">Open this select menu</option>
@@ -57,7 +57,7 @@ thead{
                       @endforeach
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 mb-3">
                     <label for="job_title" class="form-label">JobCategory</label>
                     <select class="form-select" name="job_title" id="job_title" aria-label="Default select example">
                       <option selected value="">Open this select menu</option>
@@ -66,7 +66,7 @@ thead{
                       @endforeach
                     </select>
                 </div>
-                <div class="col-md-3 mb-3">
+                <div class="col-lg-3 mb-3">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" name="status" id="status" aria-label="Default select example">
                       <option selected value="">Open this select menu</option>
@@ -75,7 +75,7 @@ thead{
                       <option value="3">Block</option>
                     </select>
                 </div>
-                <div class="col-md-3 mt-2">
+                <div class="col-lg-3 mt-2">
                     <br>
                       <button type="button" id="client_search" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> </button>
                       <button type="button" id="client_search_reset" class="btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i> </button>

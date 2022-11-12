@@ -15,7 +15,7 @@
                   @csrf
                     <div class="row mx-4">
 
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating error_message">
@@ -31,7 +31,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <div class=" mb-4">
                                 <div class="">
                                   <div class="form-floating error_message">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
@@ -62,7 +62,7 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                           <div class=" mb-4">
                             <div class="">
                               <div class="form-floating">
@@ -72,7 +72,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4">
                           <div class=" mb-4">
                             <div class="">
                               <div class="form-floating">
