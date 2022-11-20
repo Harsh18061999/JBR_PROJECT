@@ -76,10 +76,14 @@ class EmployeeController extends Controller
 
     public function getEmployee(Request $request){
         $employee = Employee::where('contact_number',$request->contact_number)->first();
-        $dataEntry = EmployeeDataEntryPoint::where('employee_id',$employee->id)->first();
-        if($employee && !$dataEntry){
-            $response['success'] = true;
-            $response['employee'] = $employee;
+        if($employee){
+            $dataEntry = EmployeeDataEntryPoint::where('employee_id',$employee->id)->first();
+            if($employee && !$dataEntry){
+                $response['success'] = true;
+                $response['employee'] = $employee;
+            }else{
+                $response['success'] = false;
+            }
         }else{
             $response['success'] = false;
         }
