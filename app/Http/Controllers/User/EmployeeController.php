@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Interfaces\EmployeeRepositoryInterface;
 use App\DataTables\EmployeeDataTable;
 use App\Models\Employee;
+use App\Models\EmployeeDataEntryPoint;
+use App\Models\Country;
 use App\Models\JobCategory;
 
 class EmployeeController extends Controller
@@ -45,5 +47,42 @@ class EmployeeController extends Controller
 
     public function success(){
         return view('content.user.employee.success');
+    }
+
+    public function mailCheck(Request $request){
+        $employee = Employee::where('email',$request->email)->first();
+        if($employee){
+            $response['success'] = true;
+        }else{
+            $response['success'] = false;
+        }
+        return response()->json($response);
+    }
+
+    public function contactCheck(Request $request){
+        $employee = Employee::where('contact_number',$request->contact_number)->first();
+        if($employee){
+            $response['success'] = true;
+        }else{
+            $response['success'] = false;
+        }
+        return response()->json($response);
+    }
+
+    public function dataEntry(){
+        $country = Country::get();
+        return view('content.user.employee.data_entry_point',compact('country'));
+    }
+
+    public function getEmployee(Request $request){
+        $employee = Employee::where('contact_number',$request->contact_number)->first();
+        $dataEntry = EmployeeDataEntryPoint::where('employee_id',$employee->id)->first();
+        if($employee && !$dataEntry){
+            $response['success'] = true;
+            $response['employee'] = $employee;
+        }else{
+            $response['success'] = false;
+        }
+        return response()->json($response);
     }
 }

@@ -19,6 +19,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(EmployeeRepositoryInterface::class, EmployeerRepository::class);
         $this->app->bind(JobCategoryRepositoryInterface::class, JobCategoryRepsitory::class);
         $this->app->bind(ClientRepositoryInterface::class, ClientRepsitory::class);
+        $this->app->bind(JobRequestRepositoryInterface::class, JobRequesttRepsitory::class);
+        $this->app->bind(DataEntryRepositoryInterface::class, DataEntryPointRepository::class);
     }
 
     /**

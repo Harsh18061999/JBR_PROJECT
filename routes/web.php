@@ -8,6 +8,10 @@ use App\Http\Controllers\User\JobRequestController as UserJobRequestController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JobRequestController;
+use App\Http\Controllers\ProvienceController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\JobRequestDetailController;
+use App\Http\Controllers\DataEntryPointController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -123,13 +127,33 @@ Route::middleware([
     Route::post('/job_request/{id}',[JobRequestController::class,'update'])->name('job_request.update');
     Route::resource('job_request', JobRequestController::class);
     Route::get('/get_supervisor',[JobRequestController::class,'get_supervisor']);
-});
 
+    //Job Request Details
+    Route::get('/job_request_details',[JobRequestDetailController::class,'index']);
+    Route::get('/job_search_result',[JobRequestDetailController::class,'searchResult']);
+    Route::POST('/regularDataTable',[JobRequestDetailController::class,'regularDataTable']);
+    Route::POST('/availableDataTable',[JobRequestDetailController::class,'availableDataTable']);
+    Route::POST('/onCallDataTable',[JobRequestDetailController::class,'onCallDataTable']);
+    Route::POST('/send_message_job',[JobRequestDetailController::class,'sendMessageJob']);
+    Route::POST('/send_bulk_message_job',[JobRequestDetailController::class,'sendBulkMessageJob']);
+
+    //Data Entry Point
+    Route::delete('/data_entry_point/{id}',[DataEntryPointController::class,'destory'])->name('data_entry_point.destory');
+    Route::post('/data_entry_point/{id}',[DataEntryPointController::class,'update'])->name('data_entry_point.update');
+    Route::resource('/data_entry_point',DataEntryPointController::class);
+});
+Route::get('/employee_mail_check',[UserEmployeeController::class,'mailCheck']);
+Route::get('/get_employee',[UserEmployeeController::class,'getEmployee']);
+Route::get('/employee_contact_check',[UserEmployeeController::class,'contactCheck']);
+Route::get('/employee_contact_check_data',[DataEntryPointController::class,'contactCheck']);
 Route::get('/employee_register',[UserEmployeeController::class,'create']);
 Route::post('/employee_store',[UserEmployeeController::class,'store'])->name('employee_store');
 Route::get('/client_register',[UserClientController::class,'create']);
 Route::post('/client_store',[UserClientController::class,'store'])->name('client_store');
 Route::get('/employee_store_success',[UserEmployeeController::class,'success'])->name('employee_store_success');
-Route::get('/send_job_request',[UserJobRequestController::class,'job_request'])->name('front.job_request');
+Route::get('/data_entry_point_pay',[UserEmployeeController::class,'dataEntry'])->name('front.job_request');
+
+Route::get('/get_provience',[ProvienceController::class,'getProvience']);
+Route::get('/get_city',[CityController::class,'getCity']);
 
 

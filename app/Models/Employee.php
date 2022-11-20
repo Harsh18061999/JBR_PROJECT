@@ -24,4 +24,8 @@ class Employee extends Model
     public function jobCategory(){
         return $this->hasOne(JobCategory::class,'id','job');
     }
+
+    public function message(){
+        return $this->hasOne(SendMessage::class,'employee_id','id');
+    }
 }

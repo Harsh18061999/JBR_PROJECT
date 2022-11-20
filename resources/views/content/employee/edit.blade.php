@@ -41,8 +41,8 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="contact_number" id="floatingInput" value="{{$employee->contact_number}}" placeholder="999666..." aria-describedby="floatingInputHelp" />
-                                  <label for="floatingInput">Contact Number</label>
+                                  <input type="text" class="form-control" name="contact_number" id="contact_number" value="{{$employee->contact_number}}" placeholder="999666..." aria-describedby="contact_numberHelp" />
+                                  <label for="contact_number">Contact Number</label>
                                 </div>
                               </div>
                             </div>

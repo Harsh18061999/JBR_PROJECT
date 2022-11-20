@@ -13,20 +13,20 @@
                 <img src="{{asset('/assets/img/JBR_Staffing_Solutions.jpg')}}" class="m-auto" alt="" width="250px" height="250px">
                 <h3><strong>Payroll Data Entry Point</strong></h3>
                 <hr class="mt-4 mx-4">
-                <form id="employee_from" action="{{route('employee_store')}}" method="POST" novalidate> 
+                <form id="data_entry_from" action="{{route('data_entry_point.store')}}" method="POST" novalidate enctype="multipart/form-data"> 
                   @csrf
                     <div class="row mx-4">
                         <div class="col-md-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="contact_number" id="floatingInput" placeholder="999666..." aria-describedby="floatingInputHelp" />
-                                  <label for="floatingInput">Contact Number</label>
+                                  <input type="number" class="form-control" name="contact_number" id="data_contact_number" placeholder="999666..." aria-describedby="data_contact_numberHelp" />
+                                  <label for="data_contact_number">Contact Number</label>
                                 </div>
                               </div>
                             </div>
                         </div>
-
+                        <input type="hidden" name="employee_id" id="employee_id">
                         <div class="col-md-4">
                             <div class=" mb-4">
                               <div class="">
@@ -53,7 +53,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="SIN" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="number" class="form-control" name="sin" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="SIN">SIN</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -82,29 +82,28 @@
                               </div>
                             </div>
                         </div>
+                     
                         <div class="col-md-4">
-                            <div class=" mb-4">
-                              <div class="">
-                                <div class="form-floating">
-                                    <select id="city" name="job" class="form-select">
-                                        <option value="">Please select city</option>
-                                        <option value="US">US</option>
-                                        <option value="INDIA">INDIA</option>
-                                      </select>
-                                  <label for="city">CITY</label>
-                                </div>
+                          <div class=" mb-4">
+                            <div class="">
+                              <div class="form-floating">
+                                  <select id="country" name="country" class="form-select">
+                                      <option value="">Please select country</option>
+                                      @foreach($country as $k => $value)
+                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                      @endforeach
+                                    </select>
+                                <label for="country">Country</label>
                               </div>
                             </div>
-                        </div>
-                        
+                          </div>
+                      </div>
                         <div class="col-md-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                    <select id="Provience" name="job" class="form-select">
+                                    <select id="Provience" name="provience" class="form-select">
                                         <option value="">Please select Provience</option>
-                                        <option value="Quebec">Quebec</option>
-                                        <option value="Nova Scotia">Nova Scotia</option>
                                       </select>
                                   <label for="Provience">Provience</label>
                                 </div>
@@ -112,10 +111,22 @@
                             </div>
                         </div>
                         <div class="col-md-4">
+                          <div class=" mb-4">
+                            <div class="">
+                              <div class="form-floating">
+                                  <select id="city" name="city_id" class="form-select">
+                                      <option value="">Please select city</option>
+                                    </select>
+                                <label for="city">CITY</label>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                        <div class="col-md-4">
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="Postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="number" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Postal Code</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -128,7 +139,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="Postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="number" class="form-control" name="transit_number" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Transit Number</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -139,7 +150,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="Institution_number" id="Institution_number" placeholder="Enter Institution Number" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="institution_number" id="Institution_number" placeholder="Enter Institution Number" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Institution_number">Institution Number</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -150,7 +161,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="Account_number" id="Account_number" placeholder="Eneter Account No" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="account_number" id="Account_number" placeholder="Eneter Account No" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Account_number">Account Number</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -159,7 +170,7 @@
                         </div>
                         <div class="col-md-3" style="margin-top: -15px">
                             <label for="formFile" class="form-label text-start w-100" id="license_text">Personal Identification</label>
-                            <input class="form-control" type="file" name="lincense" id="formFile">
+                            <input class="form-control" type="file" name="personal_identification" id="formFile">
                           </div>
                         <div class="my-4">
                             <button type="submit" class="btn btn-primary" id="employee_button">Register</button>
@@ -180,7 +191,7 @@
         </div>
     </div>
 </div>
-<script src="{{asset("assets/js/custom/employee.js")}}"></script>
+<script src="{{asset("assets/js/custom/data_entry.js")}}"></script>
 <script>
   @php
     $eroor_message = '';

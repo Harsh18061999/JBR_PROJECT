@@ -17,7 +17,7 @@
                 {{-- </div> --}}
                 <h3><strong>Candidate Onboarding</strong></h3>
                 <hr class="mt-4 mx-4">
-                <form id="employee_from" action="{{route('employee_store')}}" method="POST" novalidate> 
+                <form id="employee_from" action="{{route('employee_store')}}" method="POST" novalidate enctype="multipart/form-data"> 
                   @csrf
                     <div class="row mx-4">
 
@@ -47,8 +47,8 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="contact_number" id="floatingInput" placeholder="999666..." aria-describedby="floatingInputHelp" />
-                                  <label for="floatingInput">Contact Number</label>
+                                  <input type="number" class="form-control" name="contact_number" id="contact_number" placeholder="999666..." aria-describedby="contact_numberHelp" />
+                                  <label for="contact_number">Contact Number</label>
                                 </div>
                               </div>
                             </div>

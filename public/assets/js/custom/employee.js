@@ -202,5 +202,102 @@ $(document).ready(function(){
     //         }
     //     });
     // });
+    $("body").on("change","#email",function(){
+        $.ajax({
+            type: 'get',
+            url: '/employee_mail_check',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                email:$(this).val()
+            },
+            success: function(response) {
+                if(response.success){
+                    swal("Oops...", "Email Address Has All Ready Been Taken.", "error");
+                    $("#email").val('');
+                }
+            }
+        });
+    });
+    $("body").on("change","#contact_number",function(){
+        $.ajax({
+            type: 'get',
+            url: '/employee_contact_check',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                contact_number:$(this).val()
+            },
+            success: function(response) {
+                if(response.success){
+                    swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                    $("#email").val('');
+                }
+            }
+        });
+    });
 
+    $("body").on("change","#country",function(){
+        $("#Provience").html('');
+        $("#Provience").append(`<option value="">Please select Provience</option>`);
+        $.ajax({
+            type: 'get',
+            url: '/get_provience',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                country_id:$(this).val()
+            },
+            success: function(response) {
+                $.each(response, function(key, value) {
+                    $("#Provience").append($('<option>', { value: value.id, text: value.provience_name }));
+                });
+            }
+        });
+    });
+
+    $("body").on("change","#Provience",function(){
+        $("#city").html('');
+        $("#city").append(`<option value="">Please select city</option>`);
+        $.ajax({
+            type: 'get',
+            url: '/get_city',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                provience_id:$(this).val()
+            },
+            success: function(response) {
+                $.each(response, function(key, value) {
+                    $("#city").append($('<option>', { value: value.id, text: value.city_title }));
+                });
+            }
+        });
+    });
+
+    $("body").on("change","#data_contact_number",function(){
+        $.ajax({
+            type: 'get',
+            url: '/get_employee',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                contact_number:$(this).val()
+            },
+            success: function(response) {
+                if(response.success){
+                    $("#employee_id").val(response.employee.id);
+                    $("#first_name").val(response.employee.first_name);
+                    $("#last_name").val(response.employee.last_name);
+                }else{
+                    swal("Oops...", "Contact Number Is Invalid.", "error");
+                }
+            }
+        });
+    });
 });

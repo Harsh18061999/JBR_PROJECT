@@ -13,10 +13,22 @@
       "slug": "dashboard-analytics"
     },
     {
+      "url": "/job_request_details",
+      "name": "Job Request Details",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard-analytics"
+    },
+    {
       "url" : "/employee",
       "name" : "Employee",
       "icon" : "menu-icon bx bx-user",
       "slug": "employee"
+    },
+    {
+      "url" : "/data_entry_point",
+      "name" : " Payroll Data Entry Point",
+      "icon" : "menu-icon bx bx-user",
+      "slug": "data_entry_point"
     },
     {
       "url" : "#",

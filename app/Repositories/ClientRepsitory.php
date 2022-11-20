@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ClientRepositoryInterface;
 use App\Models\Client;
+use App\Models\JobRequest;
 
 class ClientRepsitory implements ClientRepositoryInterface 
 {
@@ -19,6 +20,7 @@ class ClientRepsitory implements ClientRepositoryInterface
 
     public function deleteClient($clientId) 
     {
+        JobRequest::where('client_id',$clientId)->delete();
         Client::destroy($clientId);
     }
 
