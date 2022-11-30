@@ -23,6 +23,7 @@ $(document).ready(function(){
     });
 
     $("body").on("click","#Search_result",function(){
+        var bulkmessage = [];
         var date = $("#job_date").val();
         var client = $("#client_name").val();
         var supervisour = $("#supervisor").val();
@@ -52,11 +53,37 @@ $(document).ready(function(){
 
     });
 
+    $("#Search_result_reset").on("click",function(){
+        var bulkmessage = [];
+        $("#job_date").val('');
+        $("#client_name").val('');
+        $("#supervisor").val('');
+        $("#result_body").html('');
+    });
+
     $("body").on("click",'.show_result',function(){
         if($(this).attr('data-status') == 'true'){
             $(this).attr('data-status','false')
             var id = $(this).attr('data-tableid');
             var job_id = $(this).attr('data-jobid');
+            $.ajax({
+                type: 'GET',
+                url: '/total_employee_count',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    job_id:job_id
+                },
+                success: function (response) {
+                    if(response){
+                       $(".regular_count"+id).html(response.regular);
+                       $(".aveilable_count"+id).html(response.available);
+                       $(".oncall_count"+id).html(response.oncall);
+                    }
+                },
+                error: function (e) {
+        
+                }
+            });
             $("#regular"+id).DataTable({
                 searching: true,
                 processing: true,
@@ -113,6 +140,7 @@ $(document).ready(function(){
                     search.postcode = $(".postcode").val();  
                     search.date = $(".date").val();
                     search.job_id = job_id;
+                    search.table_id = id;
                   }
                 },
                 "drawCallback": function(settings) {
@@ -154,6 +182,7 @@ $(document).ready(function(){
                     search.postcode = $(".postcode").val();  
                     search.date = $(".date").val();
                     search.job_id = job_id;
+                    search.table_id = id;
                   }
                 },
                 "drawCallback": function(settings) {
@@ -190,6 +219,7 @@ $(document).ready(function(){
     $("body").on("click",'.send_message',function(){
         var employee_id = $(this).attr('data-id');
         var job_id = $(this).attr('data-jobid');
+        var table_id = $(this).attr('data-tableid');
         $.ajax({
             type: 'POST',
             url: '/send_message_job',
@@ -204,7 +234,28 @@ $(document).ready(function(){
                 if(!response.success){
                     swal("Oops...", "something went wrong", "error");
                 }else{
-                    swal("Your Request Under Process.");
+                    swal(response.message);
+                    $('#regular'+table_id).DataTable().ajax.reload();
+                    $('#available'+table_id).DataTable().ajax.reload();
+                    $('#oncall'+table_id).DataTable().ajax.reload();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/total_employee_count',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            job_id:job_id
+                        },
+                        success: function (response) {
+                            if(response){
+                               $(".regular_count"+table_id).html(response.regular);
+                               $(".aveilable_count"+table_id).html(response.available);
+                               $(".oncall_count"+table_id).html(response.oncall);
+                            }
+                        },
+                        error: function (e) {
+                
+                        }
+                    });
                 }
             },
             error: function (e) {
@@ -237,6 +288,7 @@ $(document).ready(function(){
     $("body").on("click",".bulkmessage",function(){
         var job_id = $(this).attr('data-id');
         var click_id = $(this).attr('id');
+        var table_id = click_id.replace("bulkmessage", "");
         $.ajax({
             type: 'POST',
             url: '/send_bulk_message_job',
@@ -251,7 +303,29 @@ $(document).ready(function(){
                 if(!response.success){
                     swal("Oops...", "something went wrong", "error");
                 }else{
-                    swal("Your Request Under Process.");
+                    bulkmessage[click_id.replace("bulkmessage", "")] = '';
+                    $('#regular'+table_id).DataTable().ajax.reload();
+                    $('#available'+table_id).DataTable().ajax.reload();
+                    $('#oncall'+table_id).DataTable().ajax.reload();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/total_employee_count',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            job_id:job_id
+                        },
+                        success: function (response) {
+                            if(response){
+                               $(".regular_count"+table_id).html(response.regular);
+                               $(".aveilable_count"+table_id).html(response.available);
+                               $(".oncall_count"+table_id).html(response.oncall);
+                            }
+                        },
+                        error: function (e) {
+                
+                        }
+                    });
+                    swal(response.message);
                 }
             },
             error: function (e) {

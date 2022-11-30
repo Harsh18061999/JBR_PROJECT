@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
+            $table->integer('countryCode')->nullable();
             $table->bigInteger('contact_number')->unique()->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('job');

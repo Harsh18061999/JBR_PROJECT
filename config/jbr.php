@@ -1,0 +1,6 @@
+<?php
+return [
+    'WHATSAPP_INSTANCE' => env('WHATSAPP_INSTANCE'),
+    'WHATSAPP_TOKEN' => env('WHATSAPP_TOKEN'),
+    'WHATSAPP_URL' => env('WHATSAPP_URL')
+];

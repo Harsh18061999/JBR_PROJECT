@@ -33,6 +33,7 @@ class EmployeeController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:employees,email',
+            'countryCode' => 'required',
             'contact_number' => 'required|unique:employees,contact_number',
             'date_of_birth' => 'required',
             'job' => 'required'
@@ -69,9 +70,9 @@ class EmployeeController extends Controller
         return response()->json($response);
     }
 
-    public function dataEntry(){
+    public function dataEntry($token = ''){
         $country = Country::get();
-        return view('content.user.employee.data_entry_point',compact('country'));
+        return view('content.user.employee.data_entry_point',compact('country','token'));
     }
 
     public function getEmployee(Request $request){

@@ -14,6 +14,8 @@ $(document).ready(function(){
         return value != '';
     }, "Please select field.");
 
+    $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
     $("#employee_from").validate({
             rules: {
                 first_name : {
@@ -37,7 +39,8 @@ $(document).ready(function(){
                 date_of_birth:{
                     required:true
                 },
-                job: { valueNotEquals: true, }
+                job: { valueNotEquals: true, },
+                countryCode: { valueNotEquals: true, },
             },
             messages : {
                 first_name: {
@@ -47,6 +50,7 @@ $(document).ready(function(){
                     minlength: "Last Name should be at least 3 characters."
                 },
             },
+            ignore: ":hidden:not(select)",
             errorElement: "div",
             highlight: function(element) {
                 $(element).removeClass('is-valid').addClass('is-invalid');
@@ -233,7 +237,8 @@ $(document).ready(function(){
             success: function(response) {
                 if(response.success){
                     swal("Oops...", "Contact Number Is All Redy Register.", "error");
-                    $("#email").val('');
+                    $("#contact_number").val('');
+                    
                 }
             }
         });

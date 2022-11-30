@@ -12,6 +12,7 @@ use App\Http\Controllers\ProvienceController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\JobRequestDetailController;
 use App\Http\Controllers\DataEntryPointController;
+use App\Http\Controllers\JobConfirmationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -136,6 +137,7 @@ Route::middleware([
     Route::POST('/onCallDataTable',[JobRequestDetailController::class,'onCallDataTable']);
     Route::POST('/send_message_job',[JobRequestDetailController::class,'sendMessageJob']);
     Route::POST('/send_bulk_message_job',[JobRequestDetailController::class,'sendBulkMessageJob']);
+    Route::GET('/total_employee_count',[JobRequestDetailController::class,'employeeaCount']);
 
     //Data Entry Point
     Route::delete('/data_entry_point/{id}',[DataEntryPointController::class,'destory'])->name('data_entry_point.destory');
@@ -151,9 +153,16 @@ Route::post('/employee_store',[UserEmployeeController::class,'store'])->name('em
 Route::get('/client_register',[UserClientController::class,'create']);
 Route::post('/client_store',[UserClientController::class,'store'])->name('client_store');
 Route::get('/employee_store_success',[UserEmployeeController::class,'success'])->name('employee_store_success');
-Route::get('/data_entry_point_pay',[UserEmployeeController::class,'dataEntry'])->name('front.job_request');
+
+Route::get('/data_entry_point_pay/{token?}',[UserEmployeeController::class,'dataEntry'])->name('front.job_request');
 
 Route::get('/get_provience',[ProvienceController::class,'getProvience']);
 Route::get('/get_city',[CityController::class,'getCity']);
+
+Route::get('/confirm_job/{token}',[JobConfirmationController::class,'confirmJob'])->name('confirm_job');
+Route::POST('/accept_job',[JobConfirmationController::class,'acceptJob'])->name('acceptJob');
+Route::view(uri:'/congratulations',view:'content.user.congratulations');
+Route::view(uri:'/cancell',view:'content.user.cancell');
+Route::POST('/cancell_job',[JobConfirmationController::class,'cancellJob'])->name('cancellJob');
 
 

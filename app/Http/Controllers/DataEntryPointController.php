@@ -69,9 +69,12 @@ class DataEntryPointController extends Controller
         $request->merge($data);
 
         $client = $this->DataEntryPointRepository->createDataEntry($request->all());
-
-        return redirect()->back()
-        ->with('success', 'Record created successfully.');
+        if($request->message_token != ''){
+            return redirect()->route('confirm_job',$request->message_token);
+        }else{
+            return redirect()->back()
+            ->with('success', 'Record created successfully.');
+        }
     }
 
     public function edit($id)

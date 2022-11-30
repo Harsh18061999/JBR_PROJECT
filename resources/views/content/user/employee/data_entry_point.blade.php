@@ -9,12 +9,13 @@
     <div class="row mt-0">
         <div class="text-center p-0">
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-
+                
                 <img src="{{asset('/assets/img/JBR_Staffing_Solutions.jpg')}}" class="m-auto" alt="" width="250px" height="250px">
                 <h3><strong>Payroll Data Entry Point</strong></h3>
                 <hr class="mt-4 mx-4">
                 <form id="data_entry_from" action="{{route('data_entry_point.store')}}" method="POST" novalidate enctype="multipart/form-data"> 
                   @csrf
+                  <input type="hidden" name="message_token" id="" value="{{$token}}">
                     <div class="row mx-4">
                         <div class="col-md-4">
                             <div class=" mb-4">

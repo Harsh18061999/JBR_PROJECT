@@ -24,4 +24,8 @@ class JobRequest extends Model
     public function client(){
         return $this->hasOne(Client::class,'id','client_id');
     }
+
+    public function jobConfirmation(){
+        return $this->hasMany(JobConfirmation::class,'job_id','id');
+    }
 }

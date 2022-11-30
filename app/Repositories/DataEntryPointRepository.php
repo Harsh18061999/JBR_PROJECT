@@ -26,6 +26,7 @@ class DataEntryPointRepository implements DataEntryRepositoryInterface
     {
         $dataEntryDetails['personal_identification'] = $dataEntryDetails['personal_identification_file'];
         unset($dataEntryDetails['personal_identification_file']);
+        unset($dataEntryDetails['message_token']);
         return EmployeeDataEntryPoint::create($dataEntryDetails);
     }
 

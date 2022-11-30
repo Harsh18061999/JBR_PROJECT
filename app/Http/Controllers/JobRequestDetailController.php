@@ -8,7 +8,7 @@ use App\Models\JobCategory;
 use App\Models\JobRequest;
 use App\Models\SendMessage;
 use App\Models\Employee;
-
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 class JobRequestDetailController extends Controller
 {
@@ -19,11 +19,15 @@ class JobRequestDetailController extends Controller
     }
 
     public function searchResult(Request $request){
-        $jobRequest = JobRequest::with('client','jobCategory');
+        $jobRequest = JobRequest::withCount('jobConfirmation')->with('client','jobCategory');
+
+        if($request->date){
+          $jobRequest = $jobRequest->whereBetween('job_date', [$request->date, $request->date]);
+        }
         if($request->client && $request->supervisour){
             $client = Client::where('id',$request->supervisour)->first();
             $jobRequest->where('client_id',$client->id);
-        }else{
+        }else if($request->client){
             $client = Client::where('client_name','LIKE', '%' . $request->client . '%')->pluck('id')->toArray();
             $jobRequest = $jobRequest->whereIn('client_id',$client);
         }
@@ -35,15 +39,20 @@ class JobRequestDetailController extends Controller
                 $client = $value['client']['client_name'];
                 $supervisor = $value['client']['supervisor'];
                 $job = $value['job_category']['job_title'];
+                $total = $value['no_of_employee'];
+                $start_date = $value['job_date'];
+                $end_date = $value['job_date'];
+                $c_total = $value['job_confirmation_count'];
                 if($value['status'] == 0){
                     $background = 'bg-primary';
                     $status = 'PENDING';
-
                     $result['data'][] = '          <div class="col-lg-12 mt-3"> 
                     <div class="col-12">
                       <div class="card mb-4">
                         <div class="card-body p-2">
                           <div class="row">
+                          <div class="col-md-12 d-flex justify-content-between align-items-center"><p class="mx-2 p-0">Start Date : '.$start_date.'</p><p class="mx-2 p-0">End Date : '.$end_date.'</p></div>
+                          <div class="mb-3"><hr class="p-0 m-0"></div>
                           <div class="col-lg-3 col-md-3 my-2">
                             <h5 class="m-0 text-center">'.ucwords($client).'</h5>
                             </div>
@@ -65,8 +74,9 @@ class JobRequestDetailController extends Controller
                           <div class="collapse" id="collapseExample'.$k.'">
                             <hr>
                             <div class="p-3 mt-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class=""><b>Request Number Of Employee : </b>10</h5>
+                            <div class="mb-4 d-flex justify-content-between align-items-center">
+                                <h5 class="m-0"><b>Request Number Of Employee : </b>'.$total.'</h5>
+                                <h5 class="m-0"><b>Accepted Number Of Employee : </b>'.$c_total.'</h5>
                                 <div class="bg-success text-white rounded p-1 bulkmessage" data-id="'.$value['id'].'" id="bulkmessage'.$k.'" style="display:none;">
                                 <i class="mx-2 font-weight-bold pointer fa-brands fa-2x fa-whatsapp"></i>
                                 </div>
@@ -74,13 +84,13 @@ class JobRequestDetailController extends Controller
                             </div>
                               <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link active text-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home'.$k.'" aria-controls="navs-pills-justified-home'.$k.'" aria-selected="true">Regular &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-success">30</span></button>
+                                  <button type="button" class="nav-link active text-center" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home'.$k.'" aria-controls="navs-pills-justified-home'.$k.'" aria-selected="true">Regular &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-success regular_count'.$k.'">30</span></button>
                                 </li>
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile'.$k.'" aria-controls="navs-pills-justified-profile'.$k.'" aria-selected="false">Avilable &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-warning">30</span></button>
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile'.$k.'" aria-controls="navs-pills-justified-profile'.$k.'" aria-selected="false">Avilable &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-warning aveilable_count'.$k.'">30</span></button>
                                 </li>
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-messages'.$k.'" aria-controls="navs-pills-justified-messages'.$k.'" aria-selected="false">On Call &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-gray">30</span></button>
+                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-messages'.$k.'" aria-controls="navs-pills-justified-messages'.$k.'" aria-selected="false">On Call &nbsp;<span class="px-4 badge rounded-pill badge-center h-px-20 w-px-20 bg-gray oncall_count'.$k.'">30</span></button>
                                 </li>
                               </ul>
                             </div>
@@ -275,7 +285,10 @@ class JobRequestDetailController extends Controller
     public function regularDataTable(Request $request)
     {
         $message = SendMessage::where('job_request_id',$request->job_id)->pluck('message_status','employee_id')->toArray();
-        $employee = Employee::where('status','0');
+        $jobRequest = JobRequest::where('id',$request->job_id)->first();
+        $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
+          ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
+        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','0')->where('job',$jobRequest->job_id);
 
         // $employee = $employee->with('message')->whereHas('message', function ($query) use ($request) {
         //     $query->where(function ($q) use ($request) {
@@ -309,7 +322,7 @@ class JobRequestDetailController extends Controller
      
         return Datatables::of($employee)
         ->addColumn('action', function($row) use($request) {
-            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'"></i></div>';
+            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'" data-tableid="'.$request->table_id.'"></i></div>';
         })
         ->addColumn('message_status', function($row) use($request,$message) {
           if(isset($message[$row->id])){
@@ -326,7 +339,10 @@ class JobRequestDetailController extends Controller
     public function availableDataTable(Request $request)
     {
       $message = SendMessage::where('job_request_id',$request->job_id)->pluck('message_status','employee_id')->toArray();
-        $employee = Employee::where('status','1');
+      $jobRequest = JobRequest::where('id',$request->job_id)->first();
+      $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
+      ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
+        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','1')->where('job',$jobRequest->job_id);
         // $employee = $employee->with('message')
         
         // ->whereHas('message', function ($query) use ($request) {
@@ -361,7 +377,7 @@ class JobRequestDetailController extends Controller
      
         return Datatables::of($employee)
         ->addColumn('action', function($row) use($request) {
-            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'"></i></div>';
+            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'" data-tableid="'.$request->table_id.'"></i></div>';
         })
         ->addColumn('message_status', function($row) use($request,$message) {
             if(isset($message[$row->id])){
@@ -378,7 +394,10 @@ class JobRequestDetailController extends Controller
     public function onCallDataTable(Request $request)
     {
       $message = SendMessage::where('job_request_id',$request->job_id)->pluck('message_status','employee_id')->toArray();
-        $employee = Employee::where('status','5');
+      $jobRequest = JobRequest::where('id',$request->job_id)->first();
+      $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
+      ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
+        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','5')->where('job',$jobRequest->job_id);
         // $employee = $employee->with('message')->whereHas('message', function ($query) use ($request) {
         //     $query->where(function ($q) use ($request) {
         //         $q->where('job_request_id', $request->job_id);
@@ -410,7 +429,7 @@ class JobRequestDetailController extends Controller
      
         return Datatables::of($employee)
         ->addColumn('action', function($row) use($request) {
-            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'"></i></div>';
+            return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'" data-tableid="'.$request->table_id.'"></i></div>';
         })
         ->addColumn('message_status', function($row) use($request,$message) {
           if(isset($message[$row->id])){
@@ -425,6 +444,7 @@ class JobRequestDetailController extends Controller
     }
 
     public function sendMessageJob(Request $request){
+      // dd($request->all());
         $job = JobRequest::where('id',$request->job_id)->first();
         $data['success'] = false;
         $data['message'] = 'something went wrong';
@@ -434,15 +454,44 @@ class JobRequestDetailController extends Controller
             ->whereDate('job_date',$job->job_date)->first();
             if($message){
                 $data['success'] = true;
-                $data['message'] = 'Your Request Under Process.';
+                $data['message'] = 'Message All Redy Been Send.';
             }else{
-                SendMessage::create([
+                $message_status = SendMessage::create([
+                    'confirmation_id' => Str::random(30),
                     'employee_id' => $request->employee_id,
                     'job_request_id' => $job->id,
                     'job_date' => $job->job_date
                 ]);
-                $data['success'] = true;
-                $data['message'] = 'Your Request Under Process.';
+                $message_data = SendMessage::with('employee')->where('id',$message_status->id)
+                  ->first()->toArray();
+
+                $first_name =  $message_data['employee']['first_name'];
+                $last_name =  $message_data['employee']['last_name'];
+                
+                $message = "Hello $first_name $last_name , \n";
+                $message .= "Here's an interesting job that we think might be relevant for you. \n";
+                $message .= "Please confirm your job below given link. \n";
+                $message .= route('confirm_job',$message_data['confirmation_id']);
+
+                $number = '+'.$message_data['employee']['countryCode'].$message_data['employee']['contact_number'];
+
+                $send_message = sendMessage($number,$message);
+
+                if($send_message){
+                  SendMessage::where('id',$message_data['id'])
+                    ->update([
+                      'message_status' => '1'
+                    ]);
+                    $data['success'] = true;
+                    $data['message'] = 'Message Has Been Sent SuccessFully.';
+                }else{
+                  SendMessage::where('id',$message_data['id'])
+                    ->update([
+                      'message_status' => '2'
+                    ]);
+                    $data['success'] = false;
+                    $data['message'] = 'Somthing Went To Wrong.';
+                }
             }
         }
         return $data;
@@ -458,16 +507,59 @@ class JobRequestDetailController extends Controller
                 ->where('job_request_id',$job->id)
                 ->whereDate('job_date',$job->job_date)->first();
                 if(!$message){
-                    SendMessage::create([
-                        'employee_id' => $value,
-                        'job_request_id' => $job->id,
-                        'job_date' => $job->job_date
-                    ]);
+                  $message_status = SendMessage::create([
+                    'confirmation_id' => Str::random(30),
+                    'employee_id' => $value,
+                    'job_request_id' => $job->id,
+                    'job_date' => $job->job_date
+                  ]);
+
+                  $message_data = SendMessage::with('employee')->where('id',$message_status->id)
+                  ->first()->toArray();
+
+                  $first_name =  $message_data['employee']['first_name'];
+                  $last_name =  $message_data['employee']['last_name'];
+                  
+                  $message = "Hello $first_name $last_name , \n";
+                  $message .= "Here's an interesting job that we think might be relevant for you. \n";
+                  $message .= "Please confirm your job below given link. \n";
+                  $message .= route('confirm_job',$message_data['confirmation_id']);
+
+                  $number = '+'.$message_data['employee']['countryCode'].$message_data['employee']['contact_number'];
+
+                  $send_message = sendMessage($number,$message);
+
+                  if($send_message){
+                    SendMessage::where('id',$message_data['id'])
+                      ->update([
+                        'message_status' => '1'
+                      ]);
+                  }else{
+                    SendMessage::where('id',$message_data['id'])
+                      ->update([
+                        'message_status' => '2'
+                      ]);
+                  }
+
                 }
             }
             $data['success'] = true;
-            $data['message'] = 'Your Request Under Process.';
+            $data['message'] = 'Message Has Been Sent SuccessFully.';
         }
         return $data;
+    }
+
+    public function employeeaCount(Request $request){
+      $job = JobRequest::where('id',$request->job_id)->first();
+      $allReadySent = SendMessage::where('job_request_id',$job->id)
+      ->where('job_date',$job->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
+      $regular = Employee::whereNotIn('id',$allReadySent)->where('status','0')->where('job',$job->job_id)->count();
+      $available = Employee::whereNotIn('id',$allReadySent)->where('status','1')->where('job',$job->job_id)->count();
+      $oncall = Employee::whereNotIn('id',$allReadySent)->where('status','5')->where('job',$job->job_id)->count();
+      return [
+        'regular' => $regular,
+        'available' => $available,
+        'oncall' => $oncall,
+      ];
     }
 }

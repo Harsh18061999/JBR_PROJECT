@@ -37,8 +37,9 @@ class EmployeeController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required',
-            'contact_number' => 'required',
+            'email' => 'required|unique:employees,email',
+            'countryCode' => 'required',
+            'contact_number' => 'required|unique:employees,contact_number',
             'date_of_birth' => 'required',
             'job' => 'required'
             // 'licence' => 'required',
@@ -79,6 +80,7 @@ class EmployeeController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
+            'countryCode' => 'required',
             'email' => 'required',
             'contact_number' => 'required',
             'date_of_birth' => 'required',
@@ -108,6 +110,7 @@ class EmployeeController extends Controller
             'last_name',
             'email',
             'contact_number',
+            'countryCode',
             'date_of_birth',
             'job',
             'filename'
