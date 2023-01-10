@@ -2,68 +2,181 @@
 
 @section('title', ' Horizontal Layouts - Forms')
 <style>
-  thead{
-      background: #152d47 !important;
-      color: white !important;
-      margin-top: 10px;
-  }
-  th{
-    color: white !important;
-  }
-  .dataTables_filter{
-      margin-bottom: 30px;
-  }
-  table{
-    width: 100% !important;
-  }
-  </style>
+    thead {
+        background: #152d47 !important;
+        color: white !important;
+        margin-top: 10px;
+    }
+
+    th {
+        color: white !important;
+    }
+
+    .dataTables_filter {
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100% !important;
+    }
+</style>
+<style type="text/css">
+    thead {
+        background: #152d47;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .dataTables_filter {
+        margin-bottom: 30px;
+    }
+
+    .ms-parent {
+        padding: 0px;
+        border: 0px solid #CED4DA;
+    }
+
+    .ms-choice>span.placeholder {
+        color: #c9c8c8;
+        padding: .4375rem .75rem;
+    }
+
+    .ms-choice {
+        border: 1px solid #CED4DA;
+    }
+
+    tfoot {
+        display: table-header-group;
+    }
+
+    .showDiv {
+        display: inline-block !important;
+    }
+
+    .ui-datepicker-calendar td {
+        padding: 0 !important;
+    }
+
+    .ui-datepicker-title select {
+        display: inline-block;
+    }
+
+    .ui-datepicker select.ui-datepicker-month,
+    .ui-datepicker select.ui-datepicker-year {
+        width: 50% !important;
+    }
+
+    .ui-datepicker .ui-datepicker-prev {
+        left: 2px !important;
+        top: 9px !important;
+    }
+
+    .ui-datepicker .ui-datepicker-prev,
+    .ui-datepicker .ui-datepicker-next {
+        position: absolute !important;
+        top: 8px !important;
+        width: 1.8em !important;
+        height: 1.8em !important;
+    }
+
+    .vrm {
+        position: relative;
+    }
+
+    .searchIcon {
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .searchIcon i {
+        color: #fff !important;
+        margin-right: 0 !important;
+    }
+
+    .dataTables_length label {
+        margin-left: 70px;
+    }
+
+    .chkLbl {
+        padding-top: 3px;
+        font-weight: normal;
+        margin-left: 10px;
+    }
+
+    .searchfrom {
+        float: left;
+    }
+
+    ::placeholder {
+        /* Recent browsers */
+        text-transform: none;
+    }
+</style>
+<link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
 @section('content')
     <div>
         <div class="col-lg-12 mb-3">
             <div class="card">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <h5 class="card-title m-0">JOB DETAILS</h5>
-                <button class="btn btn-primary me-1" type="button" data-bs-toggle="collapse" title="Filter" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <i class="fa-solid fa-filter"></i> 
-                </button>
-              </div>
-              <div class="collapse mx-4" id="collapseExample">
-                <div class="d-grid p-3">
-                  <div class="row">
-                    <div class="col-lg-3 col-md-3 mb-3">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <h5 class="card-title m-0">JOB DETAILS</h5>
+                    <button class="btn btn-primary me-1" type="button" data-bs-toggle="collapse" title="Filter"
+                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa-solid fa-filter"></i>
+                    </button>
+                </div>
+                <div class="collapse mx-4" id="collapseExample">
+                    <div class="d-grid p-3">
+                        <div class="row">
+                            {{-- <div class="col-lg-3 col-md-3 mb-3">
                         <label for="date" class="form-label">Date</label>
                         <input type="date" class="form-control" name="job_date" id="job_date" placeholder="xyz@gmail.com" aria-describedby="floatingInputHelp" />
+                    </div> --}}
+                            <div class="col-lg-3 col-md-3 mb-3">
+                                <label for="job_date">From Date</label>
+                                <input class="form-control" name="job_date" id="job_date" placeholder="yyyy-mm-dd"
+                                    aria-describedby="floatingInputHelp" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 mb-3">
+                                <label for="end_date">To Date</label>
+                                <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
+                                    aria-describedby="floatingInputHelp" />
+                            </div>
+                            <div class="col-lg-3 col-md-3 mb-3">
+                                <label for="date" class="form-label">Client</label>
+                                <select id="client_name" name="client_name" class="form-select">
+                                    <option value="">Please select Client Name</option>
+                                    @foreach ($client as $key => $value)
+                                        <option value="{{ $value->client_name }}">{{ $value->client_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 mb-3">
+                                <label for="date" class="form-label">Supervisor</label>
+                                <select id="supervisor" name="client_id" class="form-select">
+                                    <option value="">Please select Supervisor</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 mt-2">
+                                <br>
+                                <button type="button" id="Search_result" class="btn btn-primary"><i
+                                        class="fa-solid fa-magnifying-glass"></i> </button>
+                                <button type="button" id="Search_result_reset" class="btn btn-primary"><i
+                                        class="fa-solid fa-arrows-rotate"></i> </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-3 col-md-3 mb-3">
-                        <label for="date" class="form-label">Client</label>
-                        <select id="client_name" name="client_name" class="form-select">
-                            <option value="">Please select Client Name</option>
-                            @foreach($client as $key => $value)
-                                <option value="{{$value->client_name}}">{{$value->client_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-3 col-md-3 mb-3">
-                        <label for="date" class="form-label">Supervisor</label>
-                        <select id="supervisor" name="client_id" class="form-select">
-                            <option value="">Please select Supervisor</option>
-                          </select>
-                    </div>
-                    <div class="col-lg-3 col-md-3 mt-2">
-                        <br>
-                          <button type="button" id="Search_result" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> </button>
-                          <button type="button" id="Search_result_reset" class="btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i> </button>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="" id="result_body">
+        </div>
+        <div class="" id="result_body">
 
-          </div>
-     
-          {{-- <div class="col-lg-12 mt-3"> 
+        </div>
+
+        {{-- <div class="col-lg-12 mt-3"> 
             <div class="col-12">
               <div class="card mb-4">
                 <div class="card-body p-2">
@@ -176,8 +289,7 @@
               </div>
             </div>
           </div> --}}
-  
-    </div>
-    <script src="{{asset("assets/js/custom/job_request_details.js")}}"></script>
-@endsection
 
+    </div>
+    <script src="{{ asset('assets/js/custom/job_request_details.js') }}"></script>
+@endsection

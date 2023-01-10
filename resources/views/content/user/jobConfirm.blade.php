@@ -18,7 +18,14 @@
                         <h4>Here's an interesting job that we think might be relevant for you.</h4>
                         <h5>Client Name : <b>{{$message_data['job_request']['client']['client_name']}}</b></h5>
                         <h5>Address : <b>{{$message_data['job_request']['client']['client_address']}}</b></h5>
-                        <h5>Date : {{$message_data['job_date']}}</h5>
+                        <div class="d-flex justify-content-center">
+                            <h5>Start Date : {{$message_data['job_date']}}</h5>
+                            <h5 class="mx-4">End Date : {{$message_data['job_request']['end_date']}}</h5>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>Strat Time : {{$message_data['job_request']['start_time']}}</h5>
+                            <h5 class="mx-4">End Time : {{$message_data['job_request']['end_time']}}</h5>
+                        </div>
                         <h5>Job Position : {{$message_data['employee']['job_category']['job_title']}} labor</h5>
                         <div class="row mb-4">
                             <div class="mx-auto col-lg-8 text-center my-2">

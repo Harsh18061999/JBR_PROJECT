@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\JobRequest;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -52,6 +53,25 @@ class JobRequestDataTable extends DataTable
      */
     public function query(JobRequest $model,Request $request): QueryBuilder
     {
+        if($request->job_date && $request->job_date != '' && $request->end_date && $request->end_date){
+            $model = $model->where('job_date','>=',$request->job_date)
+                ->where('end_date','<=',$request->end_date);
+        }
+
+        if(($request->client_name && $request->client_name != '') && ($request->supervisor && $request->supervisor != '')){
+            $model = $model->where('client_id',$request->supervisor);
+        }else if($request->client_name && $request->client_name != ''){
+            $client_id = Client::where('client_name',$request->client_name)->pluck('id')->toArray();
+            $model = $model->whereIn('client_id',$client_id);
+        }
+
+        if($request->job_id && $request->job_id != ''){
+            $model = $model->where('job_id',$request->job_id);
+        }
+
+        if($request->status && $request->status != ''){
+            $model = $model->where('status',$request->status);
+        }
         return $model->newQuery();
     }
 
@@ -69,9 +89,11 @@ class JobRequestDataTable extends DataTable
                         'url' => route('job_request.index'),
                         'data' => 'function(search) {
                             search._token = "{{ csrf_token() }}";
+                            search.job_date = $("#job_date").val();
+                            search.end_date = $("#end_date").val();
                             search.client_name = $("#client_name").val();
                             search.supervisor = $("#supervisor").val();
-                            search.job_title = $("#job_title").val();
+                            search.job_id = $("#job_title").val();
                             search.status = $("#status").val();
                         }'
                     ])

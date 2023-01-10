@@ -14,4 +14,12 @@ class JobConfirmation extends Model
         'job_id',
         'status'
     ];
+
+    public function job(){
+        return $this->hasOne(JobRequest::class,'id','job_id');
+    }
+
+    public function employee(){
+        return $this->hasOne(Employee::class,'id','employee_id');
+    }
 }

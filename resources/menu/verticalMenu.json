@@ -31,10 +31,10 @@
       "slug": "data_entry_point"
     },
     {
-      "url" : "#",
+      "url" : "/weekly_scheduler",
       "name" : "Weekly scheduler",
       "icon" : "menu-icon fa-sharp fa-solid fa-calendar",
-      "slug": "#"
+      "slug": "weekly_scheduler"
     },
     {
       "url" : "#",

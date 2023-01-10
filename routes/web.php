@@ -13,6 +13,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\JobRequestDetailController;
 use App\Http\Controllers\DataEntryPointController;
 use App\Http\Controllers\JobConfirmationController;
+use App\Http\Controllers\WeeklySchedulerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -135,6 +136,7 @@ Route::middleware([
     Route::POST('/regularDataTable',[JobRequestDetailController::class,'regularDataTable']);
     Route::POST('/availableDataTable',[JobRequestDetailController::class,'availableDataTable']);
     Route::POST('/onCallDataTable',[JobRequestDetailController::class,'onCallDataTable']);
+    Route::POST('/onGoingDataTable',[JobRequestDetailController::class,'onGoingJob']);
     Route::POST('/send_message_job',[JobRequestDetailController::class,'sendMessageJob']);
     Route::POST('/send_bulk_message_job',[JobRequestDetailController::class,'sendBulkMessageJob']);
     Route::GET('/total_employee_count',[JobRequestDetailController::class,'employeeaCount']);
@@ -143,6 +145,10 @@ Route::middleware([
     Route::delete('/data_entry_point/{id}',[DataEntryPointController::class,'destory'])->name('data_entry_point.destory');
     Route::post('/data_entry_point/{id}',[DataEntryPointController::class,'update'])->name('data_entry_point.update');
     Route::resource('/data_entry_point',DataEntryPointController::class);
+
+    //Weekly Scheduler
+    Route::get('/weekly_scheduler',[WeeklySchedulerController::class,'index'])->name('weekly_scheduler.index');
+    Route::POST('/weekly_datatable',[WeeklySchedulerController::class,'weeklyJobDataTable'])->name('weekly_scheduler.datatable');
 });
 Route::get('/employee_mail_check',[UserEmployeeController::class,'mailCheck']);
 Route::get('/get_employee',[UserEmployeeController::class,'getEmployee']);

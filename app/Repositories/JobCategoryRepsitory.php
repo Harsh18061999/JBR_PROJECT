@@ -19,6 +19,9 @@ class JobCategoryRepsitory implements JobCategoryRepositoryInterface
 
     public function deleteJobCategory($jobCategoryId) 
     {
+        // Employee::where('job',$jobCategoryId)->update([
+        //     'job' => 
+        // ])
         JobCategory::destroy($jobCategoryId);
     }
 

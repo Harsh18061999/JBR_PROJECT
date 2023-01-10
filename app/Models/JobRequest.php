@@ -13,6 +13,10 @@ class JobRequest extends Model
         'client_id',
         'job_id',
         'job_date',
+        'end_date',
+        'hireperiod',
+        'start_time',
+        'end_time',
         'no_of_employee',
         'status'
     ];
@@ -27,5 +31,16 @@ class JobRequest extends Model
 
     public function jobConfirmation(){
         return $this->hasMany(JobConfirmation::class,'job_id','id');
+    }
+
+    public function employees(){
+        return $this->hasManyThrough(
+            Employee::class,
+            JobConfirmation::class,
+            'job_id', // Foreign key on the environments table...
+            'id', // Foreign key on the deployments table...
+            'id', // Local key on the projects table...
+            'employee_id' // Local key on the environments table...
+        );
     }
 }

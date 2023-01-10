@@ -49,6 +49,10 @@ class JobRequestController extends Controller
             'client_id' => 'required',
             'job_id' => 'required',
             'job_date' => 'required',
+            'end_date' => 'required',
+            'hireperiod' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'no_of_employee' => 'required'
         ]);
     
@@ -56,6 +60,10 @@ class JobRequestController extends Controller
             'client_id',
             'job_id',
             'job_date',
+            'end_date',
+            'start_time',
+            'end_time',
+            'hireperiod',
             'no_of_employee'
         ]);
 
@@ -120,6 +128,10 @@ class JobRequestController extends Controller
             'client_id' => 'required',
             'job_id' => 'required',
             'job_date' => 'required',
+            'end_date' => 'required',
+            'hireperiod' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             'no_of_employee' => 'required'
         ]);
     
@@ -127,8 +139,14 @@ class JobRequestController extends Controller
             'client_id',
             'job_id',
             'job_date',
+            'end_date',
+            'start_time',
+            'end_time',
+            'hireperiod',
             'no_of_employee'
         ]);
+
+
 
         $this->jobRequestRepository->updateJobRequest($job_request_id,$orderDetails);
 

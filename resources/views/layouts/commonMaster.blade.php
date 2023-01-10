@@ -41,5 +41,6 @@
       @endif
   </script>
   <script src="{{ asset('assets/appJs/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
 </body>
 </html>

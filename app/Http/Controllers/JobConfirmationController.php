@@ -40,7 +40,7 @@ class JobConfirmationController extends Controller
         ]);
 
         $employee = Employee::where('id',$request->employee_id)->first();
-        $job = JobRequest::with(['client','jobCategory'])->where('id',$request->job_id)->first()->toArray();
+        $job = JobRequest::with(['client','jobCategory'])->withCount('jobConfirmation')->where('id',$request->job_id)->first()->toArray();
 
         $first_name =  $employee->first_name;
         $last_name =  $employee->last_name;
@@ -48,12 +48,19 @@ class JobConfirmationController extends Controller
         $message = "👏 Congratulations $first_name $last_name on your job confirmation, \n";
         $message .= "Client Name : ".$job['client']['client_name']." \n";
         $message .= "Address : ".$job['client']['client_address']." \n";
-        $message .= "Date : ".$job['job_date']." \n";
+        $message .= "Start Date : ".$job['job_date']." \n";
+        $message .= "End Date : ".$job['end_date']." \n";
+        $message .= "Start Time : ".$job['start_time']." \n";
+        $message .= "End Time : ".$job['end_time']." \n";
 
         $number = '+'.$employee->countryCode.$employee->contact_number;
 
         $send_message = sendMessage($number,$message);
-
+        if($job['no_of_employee'] == ($job['job_confirmation_count']+1)){
+            JobRequest::where('id',$request->job_id)->update([
+                "status" => '1'
+            ]);
+        }
         return view('content.user.congratulations');
     }
 

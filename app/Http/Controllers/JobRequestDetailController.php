@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\JobCategory;
+use App\Models\JobConfirmation;
 use App\Models\JobRequest;
 use App\Models\SendMessage;
 use App\Models\Employee;
@@ -21,7 +22,10 @@ class JobRequestDetailController extends Controller
     public function searchResult(Request $request){
         $jobRequest = JobRequest::withCount('jobConfirmation')->with('client','jobCategory');
 
-        if($request->date){
+        if($request->date && $request->to_date){
+          $jobRequest = $jobRequest->where('job_date','>=',$request->date)
+          ->where('end_date','<=',$request->to_date);
+        }else if($request->date){
           $jobRequest = $jobRequest->whereBetween('job_date', [$request->date, $request->date]);
         }
         if($request->client && $request->supervisour){
@@ -41,7 +45,7 @@ class JobRequestDetailController extends Controller
                 $job = $value['job_category']['job_title'];
                 $total = $value['no_of_employee'];
                 $start_date = $value['job_date'];
-                $end_date = $value['job_date'];
+                $end_date = $value['end_date'];
                 $c_total = $value['job_confirmation_count'];
                 if($value['status'] == 0){
                     $background = 'bg-primary';
@@ -163,41 +167,119 @@ class JobRequestDetailController extends Controller
                     </div>
                   </div>';
                 }else if($value['status'] == 1){
-                    $background = 'bg-waring';
+                    $background = 'bg-warning';
                     $status = 'ON GOING';
 
-                    $result['data'][] = '<div class="col-lg-12 mt-3"> 
+                    $result['data'][] = '         <div class="col-lg-12 mt-3">
                     <div class="col-12">
-                      <div class="card mb-4">
-                        <div class="card-body p-2">
-                          <div class="row">
-                            <div class="col-lg-3 col-md-3 my-2">
-                              <h5 class="m-0">'.ucwords($client).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($supervisor).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($job).'</h5>
-                            </div>
-                            <div class="col-lg-2 col-md-2 my-2 text-center">
-                              <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
-                            </div>
-                            <div class="col-lg-1 col-md-1 text-center">
-                              <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa-solid fa-filter"></i> 
-                              </button>
-                            </div>
-                          </div>
-                          <div class="collapse" id="collapseExample'.$k.'">
-                            <div class="d-grid d-sm-flex p-3 mt-3">
+                        <div class="card mb-4">
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                        <p class="mx-2 p-0">Start Date : '.$start_date.'</p>
+                                        <p class="mx-2 p-0">End Date : '.$end_date.'</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <hr class="p-0 m-0">
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 my-2">
+                                        <h5 class="m-0 text-center">'.ucwords($client).'</h5>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 my-2 ">
+                                        <h5 class="m-0 text-center">'.ucwords($supervisor).'</h5>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 my-2 ">
+                                        <h5 class="m-0 text-center">'.ucwords($job).'</h5>
+                                    </div>
+                                    <div class="col-lg-2 col-md-2 my-2 text-center">
+                                        <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 text-center">
+                                        <button class="btn btn-primary me-1 show_on_going_result" data-jobid="'.$value['id'].'"
+                                            data-status="true" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#onGoing'.$k.'" aria-expanded="false"
+                                            aria-controls="onGoing" data-tableid="'.$k.'">
+                                            <i class="fa-solid fa-filter"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="onGoing'.$k.'">
+                                    <hr>
+                                    <div class="p-3 mt-3">
+                                        <div class="mb-4 d-flex justify-content-between align-items-center">
+                                            <h5 class="m-0"><b>Request Number Of Employee : </b>'.$total.'</h5>
+                                            <h5 class="m-0"><b>Accepted Number Of Employee : </b>'.$c_total.'</h5>
+                                        </div>
         
+                                        <div class="d-grid" style="overflow: auto">
+                                            <div class="row">
+                                                <div class="col-md-12 col-xl-12">
+                                                    <div class="nav-align-top mb-4">
+        
+                                                        <div class="tab-content border">
+                                                            <div class="tab-pane fade show active"
+                                                                id="navs-pills-justified-home'.$k.'" role="tabpanel">
+                                                                <div class="table-responsive text-white">
+                                                                    <table class="table" id="ongoing'.$k.'" cellspacing="0"
+                                                                        width="100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>First Name</th>
+                                                                                <th>Last Name</th>
+                                                                                <th>Contact Number</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="table-border-bottom-0">
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+        
+                                                        </div>
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>';
+                </div>';
+                  
+                  //   $result['data'][] = '<div class="col-lg-12 mt-3"> 
+                  //   <div class="col-12">
+                  //     <div class="card mb-4">
+                  //       <div class="card-body p-2">
+                  //         <div class="row">
+                  //           <div class="col-lg-3 col-md-3 my-2">
+                  //             <h5 class="m-0">'.ucwords($status).'</h5>
+                  //           </div>
+                  //           <div class="col-lg-3 col-md-3 my-2 ">
+                  //             <h5 class="m-0">'.ucwords($supervisor).'</h5>
+                  //           </div>
+                  //           <div class="col-lg-3 col-md-3 my-2 ">
+                  //             <h5 class="m-0">'.ucwords($job).'</h5>
+                  //           </div>
+                  //           <div class="col-lg-2 col-md-2 my-2 text-center">
+                  //             <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
+                  //           </div>
+                  //           <div class="col-lg-1 col-md-1 text-center">
+                  //             <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
+                  //               <i class="fa-solid fa-filter"></i> 
+                  //             </button>
+                  //           </div>
+                  //         </div>
+                  //         <div class="collapse" id="collapseExample'.$k.'">
+                  //           <div class="d-grid d-sm-flex p-3 mt-3">
+        
+                  //           </div>
+                  //         </div>
+                  //       </div>
+                  //     </div>
+                  //   </div>
+                  // </div>';
 
                 }else if($value['status'] == 2){
                     $background = 'bg-success';
@@ -277,6 +359,9 @@ class JobRequestDetailController extends Controller
              
             }
         }else{
+            $result['data'][] = ' <div class="text-center p-4 card">
+                                No Result Found !
+                              </div>';
             $result['success'] = false;
         }
         return $result;
@@ -443,6 +528,23 @@ class JobRequestDetailController extends Controller
       ->addIndexColumn()->rawColumns(['action','message_status'])->make(true);
     }
 
+    public function onGoingJob(Request $request){
+
+      $jobRequest = JobConfirmation::where('job_id',$request->job_id);
+       
+      return Datatables::of($jobRequest)
+      ->addColumn('first_name', function($row)  {
+       return $row->employee->first_name;       
+      })
+      ->addColumn('last_name', function($row)  {
+        return $row->employee->last_name;       
+       })
+       ->addColumn('contact_number', function($row)  {
+        return $row->employee->contact_number;       
+       })
+      ->addIndexColumn()->make(true);
+    }
+
     public function sendMessageJob(Request $request){
       // dd($request->all());
         $job = JobRequest::where('id',$request->job_id)->first();
@@ -518,7 +620,7 @@ class JobRequestDetailController extends Controller
                   ->first()->toArray();
 
                   $first_name =  $message_data['employee']['first_name'];
-                  $last_name =  $message_data['employee']['last_name'];
+                  // $last_name =  $message_data['employee']['last_name'];
                   
                   $message = "Hello $first_name $last_name , \n";
                   $message .= "Here's an interesting job that we think might be relevant for you. \n";

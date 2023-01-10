@@ -25,6 +25,7 @@ $(document).ready(function(){
     $("body").on("click","#Search_result",function(){
         var bulkmessage = [];
         var date = $("#job_date").val();
+        var to_date = $("#end_date").val();
         var client = $("#client_name").val();
         var supervisour = $("#supervisor").val();
         $("#result_body").html('');
@@ -34,6 +35,7 @@ $(document).ready(function(){
             data: {
                 "_token": "{{ csrf_token() }}",
                 date:date,
+                to_date:to_date,
                 client:client,
                 supervisour:supervisour
             },
@@ -43,7 +45,9 @@ $(document).ready(function(){
                         $("#result_body").append(value);
                     });
                 }else{
-
+                    $.each(response.data, function(key, value) {
+                        $("#result_body").append(value);
+                    });
                 }
             },
             error: function (e) {
@@ -56,6 +60,7 @@ $(document).ready(function(){
     $("#Search_result_reset").on("click",function(){
         var bulkmessage = [];
         $("#job_date").val('');
+        $("#end_date").val('');
         $("#client_name").val('');
         $("#supervisor").val('');
         $("#result_body").html('');
@@ -332,5 +337,111 @@ $(document).ready(function(){
                 swal("Oops...", "something went wrong", "error");
             }
         });
+    });
+
+    $("#job_date").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd',
+        autoclose: true,
+        onSelect: function() {
+            var startdate = $('#job_date').datepicker('getDate');
+            var end_date = $('#end_date').datepicker('getDate');
+            if (!end_date || end_date < startdate) {
+                var day = 60 * 60 * 24 * 1000;
+                var end_date = new Date(startdate.getTime());
+                $('#end_date').datepicker('setDate', end_date);
+                // console.log(startdate.getDate() + '/' + (startdate.getMonth() + 1) + '/' + startdate
+                //     .getFullYear());
+                $('#end_date').datepicker({
+                    minDate: new Date(),
+                });
+            }
+            $('#end_date').datepicker('option', 'minDate', new Date(startdate));
+            var countDays = parseInt(Math.round(($('#end_date').datepicker('getDate') - startdate) / (1000 *
+                60 * 60 * 24)));
+            console.log(countDays);
+            countDays = (countDays > 0) ? countDays + 1 : 1;
+            $('#hireperiod').val(countDays);
+            this.focus();
+            $('#end_date').focus();
+            $('#hireperiod').focus();
+            $('#hireperiod').focusout();
+        },
+        onClose: function() {
+            this.blur();
+        },
+    });
+
+    $("#end_date").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd',
+        autoclose: true,
+        onSelect: function() {
+            var end_date = $('#end_date').datepicker('getDate');
+            var startdate = $('#job_date').datepicker('getDate');
+            if (startdate) {} else {
+                var day = 60 * 60 * 24 * 1000;
+                var startdate = new Date(end_date.getTime());
+                $('#job_date').datepicker('setDate', startdate);
+                $('#end_date').datepicker('option', 'minDate', new Date(startdate));
+            }
+            var countDays = parseInt(Math.round((end_date - startdate) / (1000 * 60 * 60 * 24)));
+            countDays = (countDays > 0) ? countDays + 1 : 1;
+            $('#hireperiod').val(countDays);
+            this.focus();
+            $('#hireperiod').focus();
+            $('#job_date').focus();
+            $('#hireperiod').focusout();
+        },
+        onClose: function() {
+            this.blur();
+        },
+    });
+
+    $("body").on("click",".show_on_going_result",function(){
+        if($(this).attr('data-status') == 'true'){
+            $(this).attr('data-status','false');
+            var id = $(this).attr('data-tableid');
+            var job_id = $(this).attr('data-jobid');
+            $("#ongoing"+id).DataTable({
+                searching: true,
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: {
+                  url: "/onGoingDataTable",
+                  type: "POST",
+                  headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                  data: function (search) {
+                    search.postcode = $(".postcode").val();  
+                    search.date = $(".date").val();
+                    search.job_id = job_id;
+                    search.table_id = id;
+                  }
+                },
+                "drawCallback": function(settings) {
+                  if(typeof(settings.json.recordsTotal) != "undefined" && settings.json.recordsTotal !== null){
+                    if(settings.json.recordsTotal==0 || settings.json.recordsTotal=='0'){
+                      $('#alert_msg').modal('show');
+                    }
+                  }
+                },
+                "language": {
+                  "emptyTable": "No Results Found!!",
+                  "lengthMenu": "Show _MENU_",
+                },
+                columns: [
+                  { data: "first_name", name: 'first_name'},
+                  { data: "last_name", name: "last_name"},
+                  { data: "contact_number", name: "contact_number"},
+                ],
+                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+                order: [[1, 'ASC']]
+            });
+        }
     });
 });

@@ -7,7 +7,9 @@
         color: white;
         margin-top: 10px;
     }
-
+    th{
+        color: white !important;
+    }
     .dataTables_filter {
         margin-bottom: 30px;
     }
@@ -107,16 +109,8 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center p-2">
                 <h5 class="m-0"><span class="text-muted fw-light"><i class="fa-sharp fa-solid fa-users mx-2"></i>
-                        Job Request</h5>
+                        Weekly Scheduler</h5>
                 <div class="d-flex">
-                    <div class="mx-2">
-                        <a href="{{ route('job_request.create') }}">
-                            <button type="button" class="btn btn-primary" title="Add Job Request">
-                                <i class="fa-sharp fa-solid fa-user-plus mx-2"></i>
-                            </button>
-                        </a>
-                    </div>
-
                     <button class="btn btn-primary me-1" type="button" data-bs-toggle="collapse" title="Filter"
                         data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa-solid fa-filter"></i>
@@ -127,17 +121,6 @@
                 <div class="collapse" id="collapseExample">
                     <div class="d-grid p-3">
                         <div class="row">
-                            <div class="col-lg-3 mb-3">
-                                <label for="job_date">JOB START DATE</label>
-                                <input class="form-control" name="job_date" id="job_date" placeholder="yyyy-mm-dd"
-                                    aria-describedby="floatingInputHelp" />
-                            </div>
-                            <div class="col-lg-3 mb-3">
-                                <label for="end_date">JOB END DATE</label>
-                                <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
-                                    aria-describedby="floatingInputHelp" />
-                            </div>
-
                             <div class="col-lg-3 mb-3">
                                 <label for="client_name" class="form-label">Client</label>
                                 <select class="form-select" name="client_name" id="client_name"
@@ -153,9 +136,9 @@
                                 <select class="form-select" name="supervisor" id="supervisor"
                                     aria-label="Default select example">
                                     <option selected value="">Open this select menu</option>
-                                    @foreach ($client as $item)
+                                    {{-- @foreach ($client as $item)
                                         <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                             <div class="col-lg-3 mb-3">
@@ -168,18 +151,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-3 mb-3">
-                                <label for="status" class="form-label">Status</label>
-                                <select class="form-select" name="status" id="status"
-                                    aria-label="Default select example">
-                                    <option selected value="">Open this select menu</option>
-                                    <option value="0">ON GOING</option>
-                                    <option value="1">COMPLETED</option>
-                                </select>
-                            </div>
+
                             <div class="col-lg-3 mt-2">
                                 <br>
-                                <button type="button" id="job_search" class="btn btn-primary"><i
+                                <button type="button" id="job_search" data-week="0" class="btn btn-primary"><i
                                         class="fa-solid fa-magnifying-glass"></i> </button>
                                 <button type="button" id="job_search_reset" class="btn btn-primary"><i
                                         class="fa-solid fa-arrows-rotate"></i> </button>
@@ -187,13 +162,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive text-nowrap p-2">
-                    {!! $dataTable->table(['class' => 'w-100'], true) !!}
-                    {{ $dataTable->scripts() }}
-                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="current" data-bs-toggle="pill" data-bs-target="#pills-home"
+                        type="button" role="tab" aria-controls="pills-home" aria-selected="true">Current Week</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="previous" data-bs-toggle="pill" data-bs-target="#pills-home"
+                        type="button" role="tab" aria-controls="pills-home" aria-selected="false">Previous
+                        week</button>
+                </li>
+            </ul>
+            <div class="table-responsive p-2 text-white">
+                <table class="table" id="weekly" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th style="width:60px;">Client Name</th>
+                            <th  style="width:100px;">Supervisor Name</th>
+                            <th>Employee</th>
+                            <th style="width:30px;">Job Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/custom/job_request.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/weekly_scheduler.js') }}"></script>
 @endsection
