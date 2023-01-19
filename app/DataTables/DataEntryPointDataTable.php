@@ -22,7 +22,7 @@ class DataEntryPointDataTable extends DataTable
      * @return \Yajra\DataTables\EloquentDataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
-    {
+    { 
         return (new EloquentDataTable($query))->rawColumns(['action','status'])
             ->addColumn('action', function($query){
                 return view('content.dataEntry.action',compact('query'));
