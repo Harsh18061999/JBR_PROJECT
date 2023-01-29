@@ -30,6 +30,10 @@ class WeeklySchedulerController extends Controller
             $week_end = date("Y-m-d",$end_week);
         }
 
+        
+        $jobRequest = JobRequest::with(['employees','client','jobCategory'])
+        ->where('job_date','>=',$week_start)
+        ->where('end_date','<=',$week_end);
         if($request->client_name){
 
             $client = Client::where('client_name',$request->client_name);
@@ -39,16 +43,10 @@ class WeeklySchedulerController extends Controller
             }
 
             $client = $client->pluck('id')->toArray();
-
-            $jobRequest = JobRequest::with(['employees','client','jobCategory'])
-                ->where('job_date','>=',$week_start)
-                ->where('end_date','<=',$week_end)
-                ->whereIn('client_id',$client);
+            $jobRequest =  $jobRequest->whereIn('client_id',$client);;
             if($request->job_title){
                 $jobRequest = $jobRequest->where('job_id',$request->job_title);
             }
-        }else{
-            $jobRequest = array();
         }
       
         return Datatables::of($jobRequest)

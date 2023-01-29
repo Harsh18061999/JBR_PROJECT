@@ -56,7 +56,7 @@ class JobConfirmationController extends Controller
         $number = '+'.$employee->countryCode.$employee->contact_number;
 
         $send_message = sendMessage($number,$message);
-        if($job['no_of_employee'] == ($job['job_confirmation_count']+1)){
+        if($job['no_of_employee'] == ($job['job_confirmation_count'])){
             JobRequest::where('id',$request->job_id)->update([
                 "status" => '1'
             ]);

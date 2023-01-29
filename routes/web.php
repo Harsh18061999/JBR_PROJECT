@@ -10,6 +10,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JobRequestController;
 use App\Http\Controllers\ProvienceController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\EmployeeTimeSheetController;
 use App\Http\Controllers\JobRequestDetailController;
 use App\Http\Controllers\DataEntryPointController;
 use App\Http\Controllers\JobConfirmationController;
@@ -149,6 +150,13 @@ Route::middleware([
     //Weekly Scheduler
     Route::get('/weekly_scheduler',[WeeklySchedulerController::class,'index'])->name('weekly_scheduler.index');
     Route::POST('/weekly_datatable',[WeeklySchedulerController::class,'weeklyJobDataTable'])->name('weekly_scheduler.datatable');
+
+    //Employee Time Sheet
+    Route::get('/employee_time_sheet',[EmployeeTimeSheetController::class,'index'])->name('employee_timesheet.index');
+    Route::get('/employee_time_sheet/create/{id}',[EmployeeTimeSheetController::class,'create'])->name('employee_timesheet.create');
+    Route::post('/employee_time_sheet/store',[EmployeeTimeSheetController::class,'store'])->name('employee_timesheet.store');
+    Route::get('/get_job_timesheet',[EmployeeTimeSheetController::class,'getTimeSheet']);
+    Route::post('/time_sheet_message_job',[EmployeeTimeSheetController::class,'timeSheetMessage']);
 });
 Route::get('/employee_mail_check',[UserEmployeeController::class,'mailCheck']);
 Route::get('/get_employee',[UserEmployeeController::class,'getEmployee']);
@@ -166,6 +174,12 @@ Route::get('/get_provience',[ProvienceController::class,'getProvience']);
 Route::get('/get_city',[CityController::class,'getCity']);
 
 Route::get('/confirm_job/{token}',[JobConfirmationController::class,'confirmJob'])->name('confirm_job');
+
+Route::get('/uploade_time_sheet/{token}',[EmployeeTimeSheetController::class,'frontTimesheet'])->name('timeSheet');
+Route::get('/success',function(){
+    return view('content.success');
+})->name('success');
+Route::post('/employee_time_sheet/front_store',[EmployeeTimeSheetController::class,'frontStore'])->name('employee_timesheet.frontStore');
 Route::POST('/accept_job',[JobConfirmationController::class,'acceptJob'])->name('acceptJob');
 Route::view(uri:'/congratulations',view:'content.user.congratulations');
 Route::view(uri:'/cancell',view:'content.user.cancell');

@@ -9,6 +9,8 @@ use App\Models\Client;
 use Illuminate\Support\Facades\Storage;
 use File;
 use App\Models\JobCategory;
+use App\Models\JobConfirmation;
+use App\Models\EmployeeTimeSheet;
 use App\Models\JobRequest;
 use Http;
 use App\Models\Employee;
@@ -156,7 +158,9 @@ class JobRequestController extends Controller
 
     public function destory($id){
         $jobRequest = JobRequest::findOrFail($id);
-
+        $jobConfirmation = JobConfirmation::where('job_id',$id)->pluck('id')->toArray();
+        EmployeeTimeSheet::whereIn('job_confirmations_id',$jobConfirmation)->delete();
+        JobConfirmation::whereIn('id',$jobConfirmation)->delete();
         $this->jobRequestRepository->deleteJobRequest($id);
 
         return true;

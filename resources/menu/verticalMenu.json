@@ -43,10 +43,10 @@
       "slug": "#"
     },
     {
-      "url" : "#",
+      "url" : "/employee_time_sheet",
       "name" : "Employee Timesheets",
       "icon" : "menu-icon fa-solid fa-clock",
-      "slug": "#"
+      "slug": "employee_time_sheet"
     },
     {
       "url" : "/client",

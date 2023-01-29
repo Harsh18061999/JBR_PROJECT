@@ -405,6 +405,7 @@ $(document).ready(function(){
             $(this).attr('data-status','false');
             var id = $(this).attr('data-tableid');
             var job_id = $(this).attr('data-jobid');
+            var table_name = "#ongoing"+id;
             $("#ongoing"+id).DataTable({
                 searching: true,
                 processing: true,
@@ -438,9 +439,80 @@ $(document).ready(function(){
                   { data: "first_name", name: 'first_name'},
                   { data: "last_name", name: "last_name"},
                   { data: "contact_number", name: "contact_number"},
+                  { data: "Job_Status", name: "Job_Status"},
+                  {
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: '',
+                    },
                 ],
                 lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-                order: [[1, 'ASC']]
+                order: [[1, 'ASC']],
+                drawCallback : function () {
+                          
+                    function format(d) {
+                        // `d` is the original data object for the row
+                        console.log(d)
+                        var string = '<table class="table table-bordered"><thead><tr><th scope="col">#</th><th scope="col">Job Date</th><th scope="col">Start Time</th><th scope="col">Brek Time</th><th scope="col">End Time</th></tr></thead><tbody>';
+                        if(d.length > 0){
+                            d.forEach(function(fetch) {  
+                                string += '<tr>';
+                                string += '<td>'+fetch.id+'</td>';
+                                string += '<td>'+fetch.job_date+'</td>';
+                                string += '<td>'+fetch.start_time+'</td>';
+                                string += '<td>'+fetch.break_time+'</td>';
+                                string += '<td>'+fetch.end_time+'</td>';
+                                string += '</tr>';
+                            });  
+                        }else{
+                            string += '<tr>';
+                            string += '<td colspan='+5+' class='+'text-center'+'>'+'No result Found'+'</td>';
+                            string += '</tr>';
+                        }
+                        string += '</tbody>'+'</table>';
+                        return (
+                            string
+                        );
+                    }
+                    function getTimesheet(id){
+                        var data = '';
+                         $.ajax({
+                            type: 'get',
+                            url: '/get_job_timesheet',
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            async: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+                            },
+                            data:{
+                                id:id
+                            },
+                            success: function(response) {
+                                data = response; 
+                            }
+                        });
+                        return data;
+                    }
+                    let table = $(table_name).DataTable();
+                    $(table_name+' tbody').on('click', 'td.dt-control', function () {
+                        var tr = $(this).closest('tr');
+                        var row = table.row(tr);
+                 
+                        if (row.child.isShown()) {
+                            // This row is already open - close it
+                            row.child.hide();
+                            tr.removeClass('shown');
+                        } else {
+                            // Open this row
+                            var data = row.data();
+                            var response = getTimesheet(data.id);
+                            row.child(format(response)).show();
+                            tr.addClass('shown');
+                        }
+                    });
+                },
             });
         }
     });

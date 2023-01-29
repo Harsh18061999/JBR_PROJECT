@@ -39,7 +39,11 @@ class JobRequestDataTable extends DataTable
             })
             ->addColumn('status', function($query){
                 if($query->status == 0){
-                    return '<span class="badge bg-label-success me-1">On Going</span>';
+                    return '<span class="badge bg-label-primary me-1">Pending</span>';
+                }else if($query->status == 1){
+                    return '<span class="badge bg-label-warning me-1">On Going</span>';
+                }else if($query->status == 2){
+                    return '<span class="badge bg-label-success me-1">Complete</span>';
                 }
             })
             ->setRowId('id');

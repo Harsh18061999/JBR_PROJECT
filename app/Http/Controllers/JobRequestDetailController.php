@@ -99,7 +99,7 @@ class JobRequestDetailController extends Controller
                               </ul>
                             </div>
                               <div class="d-grid" style="overflow: auto">
-                              <div class="row">
+                              <div class="row p-0 m-0">
                                 <div class="col-md-12 col-xl-12">
                                   <div class="nav-align-top mb-4">
                                
@@ -212,7 +212,7 @@ class JobRequestDetailController extends Controller
                                         </div>
         
                                         <div class="d-grid" style="overflow: auto">
-                                            <div class="row">
+                                            <div class="row p-0 m-0">
                                                 <div class="col-md-12 col-xl-12">
                                                     <div class="nav-align-top mb-4">
         
@@ -227,6 +227,8 @@ class JobRequestDetailController extends Controller
                                                                                 <th>First Name</th>
                                                                                 <th>Last Name</th>
                                                                                 <th>Contact Number</th>
+                                                                                <th>Job Status</th>
+                                                                                <th>Time Sheet</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody class="table-border-bottom-0">
@@ -533,6 +535,7 @@ class JobRequestDetailController extends Controller
       $jobRequest = JobConfirmation::where('job_id',$request->job_id);
        
       return Datatables::of($jobRequest)
+      ->rawColumns(['Job_Status'])
       ->addColumn('first_name', function($row)  {
        return $row->employee->first_name;       
       })
@@ -541,6 +544,15 @@ class JobRequestDetailController extends Controller
        })
        ->addColumn('contact_number', function($row)  {
         return $row->employee->contact_number;       
+       })
+       ->addColumn('Job_Status', function($row)  {
+          if($row->job_status == 0){
+              return '<span class="badge bg-label-primary me-1">Pending</span>';
+          }else if($row->job_status == 1){
+              return '<span class="badge bg-label-warning me-1">On Going</span>';
+          }else if($row->job_status == 2){
+              return '<span class="badge bg-label-success me-1">Completed</span>';
+          }       
        })
       ->addIndexColumn()->make(true);
     }
@@ -620,7 +632,7 @@ class JobRequestDetailController extends Controller
                   ->first()->toArray();
 
                   $first_name =  $message_data['employee']['first_name'];
-                  // $last_name =  $message_data['employee']['last_name'];
+                  $last_name =  $message_data['employee']['last_name'];
                   
                   $message = "Hello $first_name $last_name , \n";
                   $message .= "Here's an interesting job that we think might be relevant for you. \n";
