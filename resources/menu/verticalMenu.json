@@ -70,6 +70,24 @@
               "name": "Job Category",
               "slug": "job_category.index",
               "target": "_self"
+            },
+            {
+              "url": "/user",
+              "name": "User",
+              "slug": "user.index",
+              "target": "_self"
+            },
+            {
+              "url": "/roles",
+              "name": "Roles",
+              "slug": "roles.index",
+              "target": "_self"
+            },
+            {
+              "url": "/permissions",
+              "name": "Permissions",
+              "slug": "permissions.index",
+              "target": "_self"
             }
           ]
         }

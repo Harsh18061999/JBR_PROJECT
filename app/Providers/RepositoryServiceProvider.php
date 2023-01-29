@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Interfaces\EmployeeRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Interfaces\JobCategoryRepositoryInterface;
 use App\Repositories\EmployeerRepository;
+use App\Repositories\UserRepository;
 use App\Repositories\JobCategoryRepsitory;
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ClientRepositoryInterface::class, ClientRepsitory::class);
         $this->app->bind(JobRequestRepositoryInterface::class, JobRequesttRepsitory::class);
         $this->app->bind(DataEntryRepositoryInterface::class, DataEntryPointRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 
     /**
