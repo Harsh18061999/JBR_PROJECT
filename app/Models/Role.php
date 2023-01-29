@@ -10,7 +10,7 @@ class Role extends Authenticatable
 {
     use HasRoles;
 
-    protected $fillable = [
+    protected $fillable = [ 
         'name'
     ];
 
