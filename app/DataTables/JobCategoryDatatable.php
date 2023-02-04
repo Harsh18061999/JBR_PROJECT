@@ -61,13 +61,7 @@ class JobCategoryDatatable extends DataTable
                     ->minifiedAjax()
                     ->dom('Bfrtip')
                     ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ) ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
     /**

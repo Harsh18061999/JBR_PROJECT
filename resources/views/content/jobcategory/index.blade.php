@@ -68,7 +68,7 @@
 </div>
 <div class="card shadow bg-white">
     <div class="card-body">
-        <div class="table-responsive text-nowrap">
+        <div class="text-nowrap">
             {!! $dataTable->table(['class' => 'w-100'], true) !!}
         </div>
     </div>

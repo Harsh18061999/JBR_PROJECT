@@ -11,10 +11,30 @@ $(document).ready(function(){
     }, "Please specify a valid phone number");
 
     $.validator.addMethod("valueNotEquals", function(value, element){
-        return value != '';
+        return value != '' && value != null;
     }, "Please select field.");
 
     $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
+
+    $("#verifyAccount").validate({
+        rules: {
+            otp : {
+                required : true,
+                maxlength : 6
+            },
+        },
+        errorElement: "div",
+        highlight: function(element) {
+            $(element).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+    $(document).on("input", ".numeric", function() {
+        this.value = this.value.replace(/\D/g,'');
+    });
 
     $("#employee_from").validate({
             rules: {
@@ -65,7 +85,7 @@ $(document).ready(function(){
         var url = $(this).attr('data-href');
         deleteRecord(url);
     });
-
+    
     $("body").on("click","#employee_search",function(){
         $('#employee-table').DataTable().ajax.reload();
     });
@@ -225,6 +245,12 @@ $(document).ready(function(){
         });
     });
     $("body").on("change","#contact_number",function(){
+        let countryCode = $("#countryCode").val();
+        if(countryCode == '' || countryCode == null){
+            swal("Oops...", "Please select countery code.", "error");
+            $("#contact_number").val('');
+            return false;
+        }
         $.ajax({
             type: 'get',
             url: '/employee_contact_check',
@@ -232,13 +258,17 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data:{
-                contact_number:$(this).val()
+                contact_number:$(this).val(),
+                countryCode: countryCode
             },
             success: function(response) {
+                if(response.numberCheck == false){
+                    swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                    $("#contact_number").val('');   
+                }
                 if(response.success){
                     swal("Oops...", "Contact Number Is All Redy Register.", "error");
-                    $("#contact_number").val('');
-                    
+                    $("#contact_number").val('');   
                 }
             }
         });
@@ -304,5 +334,66 @@ $(document).ready(function(){
                 }
             }
         });
+    });
+ $('#countryCode').val("22").trigger('chosen:refresh');
+ $(".chosen-results li").each("")
+ $(".chosen-results > li").each( function (i) {
+        var value =$(this).text();
+        $(this).addClass('result-selected');
+    });
+ $("#countryCode option:selected").text();
+    $("body").on("click","#resendOtp",function(){
+        var token = $(this).attr('data-token');
+        $.ajax({
+            type: 'POST',
+            url: '/resend_otp',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                token:token
+            },
+            success: function (response) {
+                if(!response.success){
+                    swal("Oops...", "something went wrong", "error");
+                }else{
+                    swal(response.message);
+                }
+            },
+            error: function (e) {
+                swal("Oops...", "something went wrong", "error");
+            }
+        });
+    });
+
+    $("#verifyAccount").submit(function(e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+    
+        var form = $(this);
+        var actionUrl = form.attr('action');
+        
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            data: form.serialize(), // serializes the form's elements.
+            success: function(response)
+            {
+                if(!response.success){
+                    swal("Oops...",response.message , "error");
+                }else{
+                    window.location.href = "/successVerify";
+                }
+            }
+        });
+        
+    });
+
+    $("#date_of_birth").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd',
+        yearRange: '-99:-18',
+        autoclose: true
     });
 });

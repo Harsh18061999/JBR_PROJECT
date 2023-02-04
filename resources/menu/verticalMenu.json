@@ -7,28 +7,54 @@
       "slug": "dashboard-analytics"
     },
     {
-      "url": "/job_request",
-      "name": "Job Request",
-      "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard-analytics"
+      "name": "Job",
+      "icon": "menu-icon fa-solid fa-file-circle-plus",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "auth/job_category",
+          "name": "Job Category",
+          "slug": "job_category",
+          "target": "_self"
+        },
+        {
+          "url": "/job_request",
+          "name": "Job Request",
+          "target": "_self",
+          "slug": "job_request"
+        },
+        {
+          "url": "/job_request_details",
+          "name": "Job Request Details",
+          "slug": "job_request_details",
+          "target": "_self"
+        }
+      ]
     },
     {
-      "url": "/job_request_details",
-      "name": "Job Request Details",
-      "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard-analytics"
-    },
-    {
-      "url" : "/employee",
-      "name" : "Employee",
-      "icon" : "menu-icon bx bx-user",
-      "slug": "employee"
-    },
-    {
-      "url" : "/data_entry_point",
-      "name" : " Payroll Data Entry Point",
-      "icon" : "menu-icon bx bx-user",
-      "slug": "data_entry_point"
+      "name": "Employee",
+      "icon": "menu-icon  bx bx-user",
+      "slug": "",
+      "submenu": [
+          {
+              "url" : "/employee",
+              "name" : "Employee",
+              "slug": "employee",
+              "target": "_self"
+          },
+        {
+          "url" : "/employee_time_sheet",
+          "name" : "Employee Timesheets",
+          "slug": "employee_timesheet",
+          "target": "_self"
+        },
+        {
+          "url" : "/data_entry_point",
+          "name" : " Payroll Data Entry Point",
+          "target": "_self",
+          "slug": "data_entry_point"
+        }
+      ]
     },
     {
       "url" : "/weekly_scheduler",
@@ -42,12 +68,7 @@
       "icon" : "menu-icon fa-solid fa-credit-card",
       "slug": "#"
     },
-    {
-      "url" : "/employee_time_sheet",
-      "name" : "Employee Timesheets",
-      "icon" : "menu-icon fa-solid fa-clock",
-      "slug": "employee_time_sheet"
-    },
+
     {
       "url" : "/client",
       "name" : "Client Database",
@@ -66,27 +87,21 @@
           "slug": "auth",
           "submenu": [
             {
-              "url": "auth/job_category",
-              "name": "Job Category",
-              "slug": "job_category.index",
-              "target": "_self"
-            },
-            {
               "url": "/user",
               "name": "User",
-              "slug": "user.index",
+              "slug": "user",
               "target": "_self"
             },
             {
               "url": "/roles",
               "name": "Roles",
-              "slug": "roles.index",
+              "slug": "roles",
               "target": "_self"
             },
             {
               "url": "/permissions",
               "name": "Permissions",
-              "slug": "permissions.index",
+              "slug": "permissions",
               "target": "_self"
             }
           ]

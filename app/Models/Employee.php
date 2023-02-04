@@ -19,7 +19,8 @@ class Employee extends Model
         'date_of_birth',
         'lincense',
         'status',
-        'job'
+        'job',
+        'active_status'
     ];
 
     public function jobCategory(){

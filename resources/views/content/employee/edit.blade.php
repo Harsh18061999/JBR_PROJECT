@@ -4,9 +4,16 @@
 @section('title', ' Horizontal Layouts - Forms')
 
 @section('content')
-<link rel="stylesheet" href="{{asset("assets/docsupport/style.css")}}">
-<link rel="stylesheet" href="{{asset("assets/docsupport/prism.css")}}">
-<link rel="stylesheet" href="{{asset("assets/docsupport/chosen.css")}}">
+
+<style type="text/css">
+  thead {
+      background: #152d47;
+      color: white;
+      margin-top: 10px;
+  }
+</style>
+{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+<link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
 <style>
   .chosen-container{
     width: 100% !important;
@@ -32,7 +39,7 @@
         <div class="text-center p-0">
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
                 <h3><strong><i class="fa-solid fa-user mx-2"></i> Candidate Onboarding</strong></h3>
-                <hr class="mt-4 mx-4">
+                <hr class="mt-4 mx-4 mb-4">
                 <form id="employee_from" action="{{ route('employee.update', $employee->id) }}" method="POST" enctype="multipart/form-data" novalidate> 
                   @csrf
                     <div class="row mx-4">
@@ -282,7 +289,7 @@
                                 <option data-countryCode="ZW" value="263">Zimbabwe (+263)</option>
                               </optgroup>
                             </select>
-                            {{-- <label for="contact_number">Country</label> --}}
+                            <label for="countryCode">Country</label>
                           </div>
                         </div>
                         <div class="col-lg-4">
@@ -305,16 +312,18 @@
                               </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class=" mb-4">
+                        <div class="col-md-6">
+                          <div class=" mb-4">
                               <div class="">
-                                <div class="form-floating">
-                                  <input type="date" value="{{$employee->date_of_birth}}" class="form-control" name="date_of_birth" id="date_of_birth" placeholder="xyz@gmail.com" aria-describedby="floatingInputHelp" />
-                                  <label for="date_of_birth">Date Of Birth</label>
-                                </div>
+                                  <div class="form-floating">
+                                      <input type="text" value="{{$employee->date_of_birth}}" required class="form-control" name="date_of_birth"
+                                          id="date_of_birth" placeholder="yyyy-mm-dd"
+                                          aria-describedby="floatingInputHelp" />
+                                      <label for="date_of_birth">Date Of Birth</label>
+                                  </div>
                               </div>
-                            </div>
-                        </div>
+                          </div>
+                      </div>
                         <div class="col-lg-6">
                             <div class=" mb-4">
                               <div class="">
@@ -372,11 +381,9 @@
     </div>
   </div>
 </div>
+<script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
 <script src="{{asset("assets/js/custom/employee.js")}}"></script>
-<script src="{{asset("assets/docsupport/jquery-3.2.1.min.js")}}" type="text/javascript"></script>
-<script src="{{asset("assets/docsupport/chosen.jquery.js")}}" type="text/javascript"></script>
-<script src="{{asset("assets/docsupport/prism.js")}}" type="text/javascript" charset="utf-8"></script>
-<script src="{{asset("assets/docsupport/init.js")}}" type="text/javascript" charset="utf-8"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 <script>
   $(document).ready(function(){
     var countryCode = "{{$employee->countryCode}}";
