@@ -43,7 +43,6 @@
             background: none !important;
         }
     </style>
-     @notifyCss
 </head>
 
 <body>

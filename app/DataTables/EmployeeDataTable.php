@@ -83,7 +83,7 @@ class EmployeeDataTable extends DataTable
                         'bScrollInfinite' => true,
                         'responsive' => true,
                         'lengthMenu' => [10, 15, 30, 50, 100],
-                        'buttons' => ['colvis'],
+                        'buttons' => ['colvis',  'copy', 'excel', 'pdf'],
                         'processing' => false,
                         'serverSide' => true,
                         'scrollX' => true,

@@ -16,6 +16,12 @@ $(document).ready(function(){
 
     $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
 
+    var licence_status = $("#edit_license_view").attr("data-href");
+    lincense_status = licence_status === undefined ? true : false;
+    $.validator.addMethod("license_value", function(value, element){
+        return lincense_status == true ? false : true;
+    }, "Please select field.");
+
     $("#verifyAccount").validate({
         rules: {
             otp : {
@@ -53,11 +59,14 @@ $(document).ready(function(){
                     email: true
                 },
                 contact_number:{
-                    required:true,
-                    phoneUS:true
+                    required: true,
+                    // phoneUS:true
                 },
                 date_of_birth:{
                     required:true
+                },
+                lincense:{
+                    license_value:true
                 },
                 job: { valueNotEquals: true, },
                 countryCode: { valueNotEquals: true, },
@@ -129,9 +138,11 @@ $(document).ready(function(){
         var option = $('option:selected', this).attr('data-license');
         var text = 'UPLOAD '+$('option:selected', this).text();
         if(option == 1){
+            lincense_status = true;
             $(".license_div").css('display','block');
             // $("#license_text").html(text);
         }else{
+            lincense_status = false;
             $(".license_div").css('display','none');
         }
     });
@@ -389,11 +400,23 @@ $(document).ready(function(){
         
     });
 
+    var maxBirthdayDate = new Date();
+
+    maxBirthdayDate.setFullYear( maxBirthdayDate.getFullYear() - 18,11,31);
+    var year = maxBirthdayDate.toLocaleString("default", { year: "numeric" });
+    var month = maxBirthdayDate.toLocaleString("default", { month: "2-digit" });
+    var day = maxBirthdayDate.toLocaleString("default", { day: "2-digit" });
+    console.log(year,month,day)
     $("#date_of_birth").datepicker({
         changeMonth: true,
         changeYear: true,
         dateFormat: 'yy-mm-dd',
         yearRange: '-99:-18',
+        maxDate: `${month}-${month}-${day}`,
         autoclose: true
     });
+
+    if($('#date_of_birth').val() == ''){
+        $('#date_of_birth').datepicker("setDate", `${month}-${month}-${day}` );
+    }
 });

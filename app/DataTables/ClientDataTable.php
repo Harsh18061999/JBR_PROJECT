@@ -88,7 +88,24 @@ class ClientDataTable extends DataTable
                             search.status = $("#status").val();
                         }'
                     ])
-                    
+                    ->parameters([
+                        'dom' => 'Bfrtilp',
+                        'stateSave' => true,//true,
+                        'bScrollInfinite' => true,
+                        'responsive' => true,
+                        'lengthMenu' => [10, 15, 30, 50, 100],
+                        'buttons' => ['colvis',  'copy', 'excel', 'pdf'],
+                        'processing' => false,
+                        'serverSide' => true,
+                        'scrollX' => true,
+                        'bAutoWidth' => false,
+                        'language' => [
+                            ],
+                        'initComplete' => "function () {
+                            var self = this.api();
+                        }",
+                        
+                    ])
                     ->dom('Bfrtip')
                     ->orderBy(1)
                     ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');

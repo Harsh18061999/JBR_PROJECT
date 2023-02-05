@@ -7,6 +7,12 @@
       "slug": "dashboard-analytics"
     },
     {
+      "url" : "/campaign",
+      "name" : "Campaign Link",
+      "icon" : "",
+      "slug": "Campaign.index"
+    },
+    {
       "name": "Job",
       "icon": "menu-icon fa-solid fa-file-circle-plus",
       "slug": "",

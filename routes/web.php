@@ -18,6 +18,7 @@ use App\Http\Controllers\WeeklySchedulerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
+use App\Http\Controllers\CampaignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,11 +100,15 @@ Route::get('/form/layouts-horizontal', $controller_path . '\form_layouts\Horizon
 // tables
 Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tables-basic');
 
-Route::group(['middleware' => ['auth', 'permission']], function () {
+// Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
         Route::get('/dashboard', function () {
             return view('content.dashboard.dashboards-analytics');
         })->name('dashboard');
+
+        //Campaign
+        Route::get('/campaign',[CampaignController::class,'index'])->name('Campaign.index');
+        Route::post('/generateLink',[CampaignController::class,'generateLink'])->name('Campaign.store');
 
         //employee
         Route::post('/employee/{id}', [EmployeeController::class, 'update'])->name('employee.update');
@@ -171,14 +176,14 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::resource('permissions', PermissionsController::class);
         Route::post('/permissions_destroy/{id}', [PermissionsController::class, 'destroy'])->name('permissions_destroy.destroy');
     });
-});
+// });
 
 //Front Employee Route
 Route::get('/employee_mail_check', [UserEmployeeController::class, 'mailCheck']);
 Route::get('/get_employee', [UserEmployeeController::class, 'getEmployee']);
 Route::get('/employee_contact_check', [UserEmployeeController::class, 'contactCheck']);
 Route::get('/employee_contact_check_data', [DataEntryPointController::class, 'contactCheck']);
-Route::get('/employee_register', [UserEmployeeController::class, 'create']);
+Route::get('/employee_register', [UserEmployeeController::class, 'create'])->name("employee_register");
 Route::post('/employee_store', [UserEmployeeController::class, 'store'])->name('employee_store');
 Route::get('/client_register', [UserClientController::class, 'create']);
 Route::post('/client_store', [UserClientController::class, 'store'])->name('client_store');

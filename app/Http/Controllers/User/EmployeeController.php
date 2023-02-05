@@ -14,6 +14,7 @@ use App\Models\VerifyAccount;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use DB;
+use App\Models\Campaign;
 
 class EmployeeController extends Controller
 {
@@ -26,8 +27,17 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        $jobCategory = JobCategory::get();
-        return view('content.user.employee.create', compact('jobCategory'));
+        $link = Campaign::first();
+        if ($link) {
+            $firstDate = Carbon::now();
+            $secondDate = Carbon::parse($link->end_date);
+            if ($firstDate->greaterThan($secondDate)) {
+                return view('content.user.error');
+            } else {
+                $jobCategory = JobCategory::get();
+                return view('content.user.employee.create', compact('jobCategory'));
+            }
+        }
     }
 
     public function store(Request $request)
@@ -103,7 +113,7 @@ class EmployeeController extends Controller
         try {
             $whatsappNumber = json_decode(checkNumber($request->countryCode . $request->contact_number));
             $response['numberCheck'] = $whatsappNumber->status == 'invalid' ? false : true;
-            $employee = Employee::where('contact_number', $request->contact_number)->first();
+            $employee = Employee::withTrashed()->where('contact_number', $request->contact_number)->first();
             if ($employee) {
                 $response['success'] = true;
             } else {
