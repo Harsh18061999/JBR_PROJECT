@@ -11,6 +11,7 @@ class CampaignController extends Controller
     public function index()
     {
         $link = Campaign::first();
+        $status = false;
         if ($link) {
             // using greaterThan()
             $firstDate = Carbon::now();
