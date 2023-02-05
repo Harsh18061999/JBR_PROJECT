@@ -140,7 +140,7 @@
                 <div class="border p-4">
                     <p>Currently Avilable Link  :  <a class="mx-4" id="link_url" href="{{route('employee_register')}}">{{route('employee_register')}}</a> <i class="fa-solid fa-copy" id="copyLink"></i></p>
                     <p> Start Date : {{isset($link->start_date) ? $link->start_date : 'N/A'}}</p>
-                    <p>End Date : {{isset($link->start_date) ? $link->start_date : 'N/A'}}</p>
+                    <p>End Date : {{isset($link->end_date) ? $link->end_date : 'N/A'}}</p>
                     @if($status == true)
                     <p>Status : <span class="badge bg-label-success">Active</span></p>
                     @else
