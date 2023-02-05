@@ -180,8 +180,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
     Yajra\DataTables\DataTablesServiceProvider::class,
-    App\Providers\RepositoryServiceProvider::class
-
+    App\Providers\RepositoryServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
   ],
 
   /*

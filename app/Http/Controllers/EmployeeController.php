@@ -45,25 +45,39 @@ class EmployeeController extends Controller
             // 'licence' => 'required',
         ]);
 
-        $filename = '';
-        if($request->has('lincense')) {
-            $uploadedFile = $request->file('lincense');
-            $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
-            Storage::disk('local')->putFileAs(
-              'public/assets',
-              $uploadedFile,
-              $filename
-            );
+        try {
+            $filename = '';
+            if($request->has('lincense')) {
+                $uploadedFile = $request->file('lincense');
+                $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
+                Storage::disk('local')->putFileAs(
+                'public/assets',
+                $uploadedFile,
+                $filename
+                );
+            }
+
+            $data['filename'] = $filename;
+            $request->merge($data);
+        
+            $employees = $this->employeeRepository->createEmployee($request->all());
+
+            $first_name = $employees->first_name;
+            $last_name = $employees->last_name;
+
+            $message = "👏 Hello $first_name $last_name , \n";
+            $message .= "Your Account Has Been SuccessFully Created. \n";
+
+            $number = '+' . $employees->countryCode . $employees->contact_number;
+            sendMessage($number, $message);
+
+            return redirect()->route('employee.index')
+            ->with('success', 'Record created successfully.');
+        } catch (Exception $e) {
+            return redirect()
+                ->back()
+                ->withError('Try again');
         }
-
-        $data['filename'] = $filename;
-        $request->merge($data);
-    
-        $employees = $this->employeeRepository->createEmployee($request->all());
-
-        return redirect()->route('employee.index')
-        ->with('success', 'Record created successfully.');
-
     }
 
     public function edit(Employee $employee)
@@ -88,38 +102,44 @@ class EmployeeController extends Controller
             // 'licence' => 'required',
         ]);
 
-        $filename = $employee->lincense;
-        if($request->has('lincense')) {
-            if(Storage::exists('public/assets/'.$employee->lincense)){
-                Storage::delete('public/assets/'.$employee->lincense);
+        try {
+            $filename = $employee->lincense;
+            if($request->has('lincense')) {
+                if(Storage::exists('public/assets/'.$employee->lincense)){
+                    Storage::delete('public/assets/'.$employee->lincense);
+                }
+                $uploadedFile = $request->file('lincense');
+                $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
+                Storage::disk('local')->putFileAs(
+                'public/assets',
+                $uploadedFile,
+                $filename
+                );
             }
-            $uploadedFile = $request->file('lincense');
-            $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
-            Storage::disk('local')->putFileAs(
-              'public/assets',
-              $uploadedFile,
-              $filename
-            );
+
+            $data['filename'] = $filename;
+            $request->merge($data);
+
+            $orderDetails = $request->only([
+                'first_name',
+                'last_name',
+                'email',
+                'contact_number',
+                'countryCode',
+                'date_of_birth',
+                'job',
+                'filename'
+            ]);
+
+            $this->employeeRepository->updateEmployee($employeeId,$orderDetails);
+
+            return redirect()->route('employee.index')
+                ->with('success', 'Employee updated successfully');
+        } catch (Exception $e) {
+            return redirect()
+                ->back()
+                ->withError('Try again');
         }
-
-        $data['filename'] = $filename;
-        $request->merge($data);
-
-        $orderDetails = $request->only([
-            'first_name',
-            'last_name',
-            'email',
-            'contact_number',
-            'countryCode',
-            'date_of_birth',
-            'job',
-            'filename'
-        ]);
-
-        $this->employeeRepository->updateEmployee($employeeId,$orderDetails);
-
-        return redirect()->route('employee.index')
-            ->with('success', 'Employee updated successfully');
     }
 
     public function destory($id){

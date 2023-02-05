@@ -9,7 +9,7 @@
     {
       "url" : "/campaign",
       "name" : "Campaign Link",
-      "icon" : "",
+      "icon" : "menu-icon fa-solid fa-link",
       "slug": "Campaign.index"
     },
     {
