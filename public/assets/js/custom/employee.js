@@ -255,6 +255,34 @@ $(document).ready(function(){
             }
         });
     });
+
+    $("body").on("change","#countryCode",function(){
+        let countryCode = $("#countryCode").val();
+        let contact_number = $("#contact_number").val();
+        if(contact_number != '' && contact_number != null){
+            $.ajax({
+                type: 'get',
+                url: '/employee_contact_check',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    contact_number:contact_number,
+                    countryCode: countryCode
+                },
+                success: function(response) {
+                    if(response.numberCheck == false){
+                        swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                        $("#contact_number").val('');   
+                    }
+                    if(response.success){
+                        swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                        $("#contact_number").val('');   
+                    }
+                }
+            });
+        }
+    });
     $("body").on("change","#contact_number",function(){
         let countryCode = $("#countryCode").val();
         if(countryCode == '' || countryCode == null){
