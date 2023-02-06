@@ -19,7 +19,7 @@ class EmployeerRepository implements EmployeeRepositoryInterface
 
     public function deleteEmployee($employeeId) 
     {
-        Employee::destroy($employeeId);
+        Employee::where('id',$employeeId)->forceDelete();
     }
 
     public function createEmployee(array $employeeDetails) 
