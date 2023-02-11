@@ -134,6 +134,10 @@ $(document).ready(function(){
         });
     }
 
+    $("body").on("change",".license_div",function(){
+        lincense_status = false;
+    });
+
     $("body").on("change","#job_category",function(){
         var option = $('option:selected', this).attr('data-license');
         var text = 'UPLOAD '+$('option:selected', this).text();

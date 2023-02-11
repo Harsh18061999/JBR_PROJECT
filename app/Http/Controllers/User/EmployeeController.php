@@ -114,7 +114,7 @@ class EmployeeController extends Controller
             $whatsappNumber = json_decode(checkNumber($request->countryCode . $request->contact_number));
             $response['numberCheck'] = $whatsappNumber->status == 'invalid' ? false : true;
             $employee = Employee::withTrashed()->where('contact_number', $request->contact_number)->first();
-            if ($employee) {
+            if ($employee && $employee->active_status == 1) {
                 $response['success'] = true;
             } else {
                 $response['success'] = false;
