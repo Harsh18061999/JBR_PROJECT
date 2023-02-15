@@ -105,7 +105,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                         'dom' => 'Bfrtilp',
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
-                        'responsive' => true,
+                        'responsive' => false,
                         'lengthMenu' => [10, 15, 30, 50, 100],
                         'buttons' => ['colvis'],
                         'processing' => true,
@@ -122,21 +122,21 @@ class EmployeeTimeSheetDataTable extends DataTable
                                 var string = '<table class='+'table table-bordered'+'>'+
                                 ' <thead>'+
                                 '<tr>'+
-                                '<th scope='+'col'+'>'+'#</th>'+
                                 '<th scope='+'col'+'>'+'Job Date</th>'+
                                 '<th scope='+'col'+'>'+'Start Time</th>'+
                                 '<th scope='+'col'+'>'+'Brek Time</th>'+
                                 '<th scope='+'col'+'>'+'End Time</th>'+
+                                '<th scope='+'col'+'>'+'Total Time</th>'+
                                 '</tr>'+
                                 '</thead>'+'<tbody>';
                                 if(d.length > 0){
                                     d.forEach(function(fetch) {  
                                         string += '<tr>';
-                                        string += '<td>'+fetch.id+'</td>';
                                         string += '<td>'+fetch.job_date+'</td>';
                                         string += '<td>'+fetch.start_time+'</td>';
                                         string += '<td>'+fetch.break_time+'</td>';
                                         string += '<td>'+fetch.end_time+'</td>';
+                                        string += '<td>'+fetch.total+'</td>';
                                         string += '</tr>';
                                     });  
                                 }else{
@@ -171,6 +171,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                             }
                             let table = $('#employee-timesheet-table').DataTable();
                             $('#employee-timesheet-table tbody').on('click', 'td.dt-control', function () {
+    
                                 var tr = $(this).closest('tr');
                                 var row = table.row(tr);
                          
@@ -194,7 +195,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                     ])
                     ->dom('Bfrtip')
                     ->orderBy(1)
-                    ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
     /**
@@ -207,13 +208,13 @@ class EmployeeTimeSheetDataTable extends DataTable
         return [
            
             Column::make('')
-                ->title('')
-                ->searchable(false)
-                ->orderable(false)
-                ->className('dt-control')
-                ->defaultContent('')
-                ->exportable(false)
-                ->printable(false),
+            ->title('')
+            ->searchable(false)
+            ->orderable(false)
+            ->className('dt-control')
+            ->defaultContent('')
+            ->exportable(false)
+            ->printable(false),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
@@ -227,6 +228,7 @@ class EmployeeTimeSheetDataTable extends DataTable
             Column::make('job_time') ,
             Column::make('job_status'),
             Column::make('time_sheet_status'),
+           
         ];
     }
 

@@ -211,31 +211,107 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class=" mb-4">
-                                    <div class="">
-                                        <div class="form-floating">
-                                            <input type="time" value="{{ $job_request->start_time }}" required class="form-control" name="start_time"
-                                                id="start_time" placeholder="yyyy-mm-dd"
-                                                aria-describedby="floatingInputHelp" />
-                                            <label for="start_time">JOB Start Time</label>
+                        <div class="col-lg-6">
+                                <div class="p-2">
+
+                                    <div class="row border">
+                                        <label for="">Strat Time</label>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_hours" name="start_hours" value={{$start_time[0]}} class="form-select">
+                                                    <option value=""></option>
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                    <option value="6"> 6 </option>
+                                                    <option value="7"> 7 </option>
+                                                    <option value="8"> 8 </option>
+                                                    <option value="9"> 9 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="11"> 11 </option>
+                                                    <option value="12"> 12 </option>
+                                                </select>
+                                                <label for="start_hours">Hours</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_minutes"  value={{$start_time[1]}} name="start_minutes" class="form-select">
+                                                    <option value="00"> 00 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="20"> 20 </option>
+                                                    <option value="30"> 30 </option>
+                                                    <option value="40"> 40 </option>
+                                                    <option value="50"> 50 </option>
+                                                </select>
+                                                <label for="start_minutes">Minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_day"  value={{$start_time[2]}} name="start_day" class="form-select">
+                                                    <option selected="" value="AM"> AM </option>
+                                                    <option value="PM"> PM </option>
+                                                </select>
+                                                <label for="start_day">Meridiem</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class=" mb-4">
-                                    <div class="">
-                                        <div class="form-floating">
-                                            <input type="time" value="{{ $job_request->end_time }}" class="form-control" name="end_time" required
-                                                id="end_time" placeholder="yyyy-mm-dd"
-                                                aria-describedby="floatingInputHelp" />
-                                            <label for="end_time">JOB End Time</label>
+                            <div class="col-lg-6">
+                                <div class="p-2">
+
+                                    <div class="row border">
+                                        <label for="" class="">End Time</label>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_hours"  value={{$end_time[0]}} name="end_hours" class="form-select">
+                                                    <option value=""></option>
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                    <option value="6"> 6 </option>
+                                                    <option value="7"> 7 </option>
+                                                    <option value="8"> 8 </option>
+                                                    <option value="9"> 9 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="11"> 11 </option>
+                                                    <option value="12"> 12 </option>
+                                                </select>
+                                                <label for="end_hours">Hours</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_minutes"  value={{$end_time[1]}} name="end_minutes" class="form-select">
+                                                    <option value="00"> 00 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="20"> 20 </option>
+                                                    <option value="30"> 30 </option>
+                                                    <option value="40"> 40 </option>
+                                                    <option value="50"> 50 </option>
+                                                </select>
+                                                <label for="end_minutes">Minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_day"  value={{$end_time[2]}} name="end_day" class="form-select">
+                                                    <option selected="" value="PM"> PM </option>
+                                                    <option value="AM"> AM </option>
+                                                </select>
+                                                <label for="end_day">Meridiem</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 mt-4">
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating">
@@ -258,6 +334,14 @@
         </div>
     </div>
     <script src="{{ asset('assets/js/custom/job_request.js') }}"></script>
-    <script></script>
+    <script>
+        $("#start_hours").val("{{$start_time[0]}}")
+        $("#start_minutes").val("{{$start_time[1]}}")
+        $("#start_day").val("{{$start_time[2]}}")
+
+        $("#end_hours").val("{{$end_time[0]}}")
+        $("#end_minutes").val("{{$end_time[1]}}")
+        $("#end_day").val("{{$end_time[2]}}")
+    </script>
 
 @endsection

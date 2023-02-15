@@ -191,31 +191,108 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class=" mb-4">
-                                    <div class="">
-                                        <div class="form-floating">
-                                            <input type="time" required class="form-control" name="start_time"
-                                                id="start_time" placeholder="yyyy-mm-dd"
-                                                aria-describedby="floatingInputHelp" />
-                                            <label for="start_time">JOB Start Time</label>
+                            <div class="col-lg-6">
+                                <div class="p-2">
+
+                                    <div class="row border">
+                                        <label for="">Strat Time</label>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_hours" name="start_hours" class="form-select">
+                                                    <option value=""></option>
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                    <option value="6"> 6 </option>
+                                                    <option value="7"> 7 </option>
+                                                    <option value="8"> 8 </option>
+                                                    <option value="9"> 9 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="11"> 11 </option>
+                                                    <option value="12"> 12 </option>
+                                                </select>
+                                                <label for="start_hours">Hours</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_minutes" name="start_minutes" class="form-select">
+                                                    <option value="00"> 00 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="20"> 20 </option>
+                                                    <option value="30"> 30 </option>
+                                                    <option value="40"> 40 </option>
+                                                    <option value="50"> 50 </option>
+                                                </select>
+                                                <label for="start_minutes">Minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="start_day" name="start_day" class="form-select">
+                                                    <option selected="" value="AM"> AM </option>
+                                                    <option value="PM"> PM </option>
+                                                </select>
+                                                <label for="start_day">Meridiem</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class=" mb-4">
-                                    <div class="">
-                                        <div class="form-floating">
-                                            <input type="time" class="form-control" name="end_time" required
-                                                id="end_time" placeholder="yyyy-mm-dd"
-                                                aria-describedby="floatingInputHelp" />
-                                            <label for="end_time">JOB End Time</label>
+                            <div class="col-lg-6">
+                                <div class="p-2">
+
+                                    <div class="row border">
+                                        <label for="" class="">End Time</label>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_hours" name="end_hours" class="form-select">
+                                                    <option value=""></option>
+                                                    <option value="1"> 1 </option>
+                                                    <option value="2"> 2 </option>
+                                                    <option value="3"> 3 </option>
+                                                    <option value="4"> 4 </option>
+                                                    <option value="5"> 5 </option>
+                                                    <option value="6"> 6 </option>
+                                                    <option value="7"> 7 </option>
+                                                    <option value="8"> 8 </option>
+                                                    <option value="9"> 9 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="11"> 11 </option>
+                                                    <option value="12"> 12 </option>
+                                                </select>
+                                                <label for="end_hours">Hours</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_minutes" name="end_minutes" class="form-select">
+                                                    <option value="00"> 00 </option>
+                                                    <option value="10"> 10 </option>
+                                                    <option value="20"> 20 </option>
+                                                    <option value="30"> 30 </option>
+                                                    <option value="40"> 40 </option>
+                                                    <option value="50"> 50 </option>
+                                                </select>
+                                                <label for="end_minutes">Minutes</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 my-2">
+                                            <div class="form-floating error_message">
+                                                <select id="end_day" name="end_day" class="form-select">
+                                                    <option selected="" value="PM"> PM </option>
+                                                    <option value="AM"> AM </option>
+                                                </select>
+                                                <label for="end_day">Meridiem</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                           
+                            <div class="col-lg-4 mt-4">
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating">

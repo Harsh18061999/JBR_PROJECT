@@ -454,7 +454,7 @@ $(document).ready(function(){
                     function format(d) {
                         // `d` is the original data object for the row
                         console.log(d)
-                        var string = '<table class="table table-bordered"><thead><tr><th scope="col">#</th><th scope="col">Job Date</th><th scope="col">Start Time</th><th scope="col">Brek Time</th><th scope="col">End Time</th></tr></thead><tbody>';
+                        var string = '<table class="table table-bordered"><thead><tr><th scope="col">#</th><th scope="col">Job Date</th><th scope="col">Start Time</th><th scope="col">Brek Time</th><th scope="col">End Time</th><th>Total</th></tr></thead><tbody>';
                         if(d.length > 0){
                             d.forEach(function(fetch) {  
                                 string += '<tr>';
@@ -463,6 +463,7 @@ $(document).ready(function(){
                                 string += '<td>'+fetch.start_time+'</td>';
                                 string += '<td>'+fetch.break_time+'</td>';
                                 string += '<td>'+fetch.end_time+'</td>';
+                                string += '<td>'+fetch.total+'</td>';
                                 string += '</tr>';
                             });  
                         }else{

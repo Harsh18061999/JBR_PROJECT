@@ -14,6 +14,8 @@ use App\Models\VerifyAccount;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use DB;
+use File;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Campaign;
 
 class EmployeeController extends Controller

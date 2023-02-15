@@ -58,20 +58,46 @@ class EmployeeTimeSheetController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {    
+        $orderDetails = $request->only([
+            'job_confirmations_id',
+            'job_date',
+            'break_time'
+        ]);
+        $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
+        $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
+
         $job_status = $request->time_sheet == 0 ? '1' : '2';
         JobConfirmation::where('id',$request->job_confirmations_id)->update([
             "time_sheet" => $request->time_sheet,
             'job_status' => $job_status
         ]);
-        EmployeeTimeSheet::create($request->all());
+        EmployeeTimeSheet::create($orderDetails);
         return redirect()
         ->route('employee_timesheet.index')
         ->with('success', 'Something went wrong.');
     }
 
     public function getTimeSheet(Request $request){
-        $tieme_sheet = EmployeeTimeSheet::where('job_confirmations_id',$request->id)->get()->toArray();
+        $tieme_sheet = EmployeeTimeSheet::where('job_confirmations_id',$request->id)->get();
+        $tieme_sheet->map(function ($value) {
+            
+            $start_time = explode(":",$value->start_time);
+            $end_time = explode(":",$value->end_time);
+
+            $total_minutes = (int)($end_time[1] - $start_time[1]);
+
+            $break_time = $value->break_time;
+            if($end_time[2] == "PM"){
+                $end_hours = $end_time[0] + 12;
+            }else{
+                $end_hours = $end_time[0];
+            }
+
+            $total_hours = (int)($end_hours - $start_time[0])*60;
+            $value->total = ($total_hours - $break_time)/60;
+            return $value;
+        });
         return $tieme_sheet;
     }
 
@@ -146,12 +172,19 @@ class EmployeeTimeSheetController extends Controller
 
     public function frontStore(Request $request)
     {
+        $orderDetails = $request->only([
+            'job_confirmations_id',
+            'job_date',
+            'break_time'
+        ]);
+        $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
+        $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
         $job_status = $request->time_sheet == 0 ? '1' : '2';
         JobConfirmation::where('id',$request->job_confirmations_id)->update([
             "time_sheet" => $request->time_sheet,
             'job_status' => $job_status
         ]);
-        EmployeeTimeSheet::create($request->all());
+        EmployeeTimeSheet::create($orderDetails);
         return redirect()->route('success');
     }
 }

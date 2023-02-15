@@ -39,11 +39,21 @@ $(document).ready(function(){
         return value != '';
     }, "Please select field.");
 
+    $.validator.addMethod("timeSelect", function(value, element){
+        return value != '' && value != null;
+    }, "Please select field.");
+
     $("#job_request_form").validate({
             rules: {
                 client_name : {valueNotEquals: true},
                 client_id: {valueNotEquals: true},
                 job_id: { valueNotEquals: true, },
+                start_hours: { timeSelect: true, },
+                end_hours: { timeSelect: true, },
+                start_minutes: { timeSelect: true, },
+                end_minutes: { timeSelect: true, },
+                start_day: { timeSelect: true, },
+                end_day: { timeSelect: true, },
                 job_date:{ required:true },
                 no_of_employee:{ required:true }
             },
@@ -63,7 +73,7 @@ $(document).ready(function(){
         deleteRecord(url);
     });
 
-    
+
     function deleteRecord(url) {
         swal({
             title: "Are you sure?",
@@ -168,6 +178,23 @@ $(document).ready(function(){
         $("#job_title").val('');
         $("#status").val('');
         $('#job-request-table').DataTable().ajax.reload();
+    });
+
+    $("body").on("change","#end_hours,#start_hours,#start_minutes,#end_minutes,#end_day,#start_day",function(){
+        var start_hours = $("#start_hours").val();
+        var end_hours = $("#end_hours").val();
+        var start_minutes = $("#start_minutes").val();
+        var end_minutes = $("#end_minutes").val();
+        var start_day = $("#start_day").val();
+        var end_day = $("#end_day").val();
+        if(start_day == end_day){
+            if(parseInt(start_hours) > parseInt(end_hours)  && end_hours != ''){
+                swal("Oops...", "Please select valid hours", "error");
+            }
+            if(parseInt(start_minutes) > parseInt(end_minutes)){
+                swal("Oops...", "Please select valid minutes", "error");
+            }
+        }
     });
 
 });
