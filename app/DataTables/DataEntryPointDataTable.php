@@ -60,6 +60,49 @@ class DataEntryPointDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
+        $print = [
+            [
+                'extend'=> 'print',
+                'text'=> 'Print',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [2,3,4,5,6,7,8,9,10,11,12],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'csv',
+                'text'=> 'csv',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [2,3,4,5,6,7,8,9,10,11,12],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'excel',
+                'text'=> 'excel',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [2,3,4,5,6,7,8,9,10,11,12],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'pdf',
+                'text'=> 'pdf',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [2,3,4,5,6,7,8,9,10,11,12],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            'colvis'
+        ];
         return $this->builder()
                     ->setTableId('data-entry-table')
                     ->columns($this->getColumns())
@@ -73,7 +116,24 @@ class DataEntryPointDataTable extends DataTable
                             search.status = $("#status").val();
                         }'
                     ])
-                    ->dom('Bfrtip')
+                    ->parameters([
+                        'stateSave' => true,//true,
+                        'bScrollInfinite' => true,
+                        'responsive' => true,
+                        'lengthMenu' => [10, 15, 30, 50, 100],
+                        'dom'          => 'Bfrtip',
+                        'buttons'      => [ $print],
+                        'processing' => false,
+                        'serverSide' => true,
+                        'scrollX' => false,
+                        'bAutoWidth' => false,
+                        'language' => [
+                            ],
+                        'initComplete' => "function () {
+                            var self = this.api();
+                        }",
+                        
+                    ])
                     ->orderBy(1)
                     ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
@@ -86,6 +146,14 @@ class DataEntryPointDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
+            Column::make('')
+            ->title('')
+            ->searchable(false)
+            ->orderable(false)
+            ->className('dt-control')
+            ->defaultContent('')
+            ->exportable(false)
+            ->printable(false),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

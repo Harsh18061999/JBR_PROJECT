@@ -13,7 +13,7 @@ use DB;
 class JobConfirmationController extends Controller
 {
     public function confirmJob($token){
-        $message_data = SendMessage::with('employee.jobCategory','jobRequest.client')->where('confirmation_id',$token)->first()->toArray();
+        $message_data = SendMessage::with('employee.jobCategory','jobRequest.supervisor.client')->where('confirmation_id',$token)->first()->toArray();
         $employee_data = EmployeeDataEntryPoint::where('employee_id',$message_data['employee_id'])->first();
         if(!$employee_data){
             return redirect()->route('front.job_request',$token);
@@ -40,14 +40,16 @@ class JobConfirmationController extends Controller
         ]);
 
         $employee = Employee::where('id',$request->employee_id)->first();
-        $job = JobRequest::with(['client','jobCategory'])->withCount('jobConfirmation')->where('id',$request->job_id)->first()->toArray();
+        $job = JobRequest::with(['supervisor.client','jobCategory'])->withCount('jobConfirmation')->where('id',$request->job_id)->first()->toArray();
 
         $first_name =  $employee->first_name;
         $last_name =  $employee->last_name;
         
         $message = "👏 Congratulations $first_name $last_name on your job confirmation, \n";
-        $message .= "Client Name : ".$job['client']['client_name']." \n";
-        $message .= "Address : ".$job['client']['client_address']." \n";
+        $message .= "Client Name : ".$job['supervisor']['client']['client_name']." \n";
+        $message .= "Address : ".$job['supervisor']['client']['client_address']." \n";
+        $message .= "Supervisor Name : ".$job['supervisor']['supervisor']." \n";
+        $message .= "Supervisor Address : ".$job['supervisor']['address']." \n";
         $message .= "Start Date : ".$job['job_date']." \n";
         $message .= "End Date : ".$job['end_date']." \n";
         $message .= "Start Time : ".$job['start_time']." \n";
@@ -61,7 +63,7 @@ class JobConfirmationController extends Controller
                 "status" => '1'
             ]);
         }
-        return view('content.user.congratulations');
+        return redirect()->back();
     }
 
     public function cancellJob(Request $request){

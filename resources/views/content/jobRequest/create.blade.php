@@ -118,7 +118,7 @@
                                             <select id="client_name" name="client_name" class="form-select">
                                                 <option value="">Please select Client Name</option>
                                                 @foreach ($client as $key => $value)
-                                                    <option value="{{ $value->client_name }}">{{ $value->client_name }}
+                                                    <option value="{{ $value->id }}">{{ $value->client_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -132,7 +132,7 @@
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating error_message">
-                                            <select id="supervisor" name="client_id" class="form-select">
+                                            <select id="supervisor" name="supervisor_id" class="form-select">
                                                 <option value="">Please select Supervisor</option>
                                             </select>
                                             <label for="supervisor">Supervisor</label>

@@ -10,12 +10,15 @@
   "require": {
     "php": "^8.0.2",
     "fruitcake/laravel-cors": "^2.0.5",
-    "guzzlehttp/guzzle": "^7.2",
+    "guzzlehttp/guzzle": "^7.5",
     "laravel/framework": "^9.0",
     "laravel/jetstream": "^2.12",
     "laravel/sanctum": "^2.14",
     "laravel/tinker": "^2.7",
     "livewire/livewire": "^2.5",
+    "mckenziearts/laravel-notify": "^2.3",
+    "orangehill/iseed": "^3.0",
+    "spatie/laravel-permission": "^5.9",
     "yajra/laravel-datatables": "9.0",
     "yajra/laravel-datatables-oracle": "10.0"
   },
@@ -32,7 +35,10 @@
       "App\\": "app/",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
-    }
+    },
+    "files": [
+        "app/Helper/Helper.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

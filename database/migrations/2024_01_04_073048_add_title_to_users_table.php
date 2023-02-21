@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('job_requests', function (Blueprint $table) {
-            $table->date('end_date')->nullable();
-            $table->integer('hireperiod')->default(1);
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
         });
     }
 
@@ -26,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('job_requests', function (Blueprint $table) {
-            $table->dropColumn('end_date');
-            $table->dropColumn('hireperiod');
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->dropColumn('title');
+            $table->dropColumn('description');
         });
     }
 };

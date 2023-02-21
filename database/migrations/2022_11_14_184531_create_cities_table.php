@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('provience_id');
             $table->string("city_title");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

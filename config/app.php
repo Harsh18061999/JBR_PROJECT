@@ -182,8 +182,9 @@ return [
     Yajra\DataTables\DataTablesServiceProvider::class,
     App\Providers\RepositoryServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
+    Orangehill\Iseed\IseedServiceProvider::class,
   ],
-
+  
   /*
     |--------------------------------------------------------------------------
     | Class Aliases

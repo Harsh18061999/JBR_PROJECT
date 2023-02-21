@@ -13,9 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('job_allocations', function (Blueprint $table) {
+        Schema::create('supervisors', function (Blueprint $table) {
             $table->id();
+            $table->integer("client_id");
+            $table->string("supervisor");
+            $table->string("address");
+            $table->integer("job")->nullable();
+            $table->enum('status',[0,1,2,3])->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('job_allocations');
+        Schema::dropIfExists('supervisors');
     }
 };

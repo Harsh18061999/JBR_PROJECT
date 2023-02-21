@@ -18,7 +18,10 @@ return new class extends Migration
             $table->integer('employee_id');
             $table->integer('job_id');
             $table->enum('status',['0','1'])->default('0');
+            $table->enum('job_status',['0','1','2','3'])->default(0);
+            $table->enum('time_sheet',['0','1'])->default('0');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

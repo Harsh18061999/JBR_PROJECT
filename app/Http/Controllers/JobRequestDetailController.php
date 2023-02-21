@@ -8,6 +8,7 @@ use App\Models\JobCategory;
 use App\Models\JobConfirmation;
 use App\Models\JobRequest;
 use App\Models\SendMessage;
+use App\Models\Supervisor;
 use App\Models\Employee;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,13 +16,21 @@ class JobRequestDetailController extends Controller
 {
     public function index(){
         $jobCategory = JobCategory::get();
-        $client = Client::selectRaw("DISTINCT UPPER(client_name) as client_name")->get();
-        return view('content.jobRequestDetail.index',compact('client'));
+        $client = Client::get();
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        $supervisor = array();
+        if($role_name != 'admin'){
+            $supervisor = Supervisor::where('client_id',auth()->user()->client_id)->get();
+        }
+        return view('content.jobRequestDetail.index',compact('client','supervisor','role_name'));
     }
 
     public function searchResult(Request $request){
-        $jobRequest = JobRequest::withCount('jobConfirmation')->with('client','jobCategory');
-
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+       
+        $jobRequest = JobRequest::withCount('jobConfirmation')->with('supervisor.client','jobCategory');
         if($request->date && $request->to_date){
           $jobRequest = $jobRequest->where('job_date','>=',$request->date)
           ->where('end_date','<=',$request->to_date);
@@ -29,19 +38,27 @@ class JobRequestDetailController extends Controller
           $jobRequest = $jobRequest->whereBetween('job_date', [$request->date, $request->date]);
         }
         if($request->client && $request->supervisour){
-            $client = Client::where('id',$request->supervisour)->first();
-            $jobRequest->where('client_id',$client->id);
+            $jobRequest->where('supervisor_id',$request->supervisour);
         }else if($request->client){
-            $client = Client::where('client_name','LIKE', '%' . $request->client . '%')->pluck('id')->toArray();
-            $jobRequest = $jobRequest->whereIn('client_id',$client);
+            $client = Supervisor::where('client_id',$request->client)->pluck('id')->toArray();
+            $jobRequest = $jobRequest->whereIn('supervisor_id',$client);
+        }
+        if($role_name != 'admin'){
+          if($request->supervisour){
+            $jobRequest->where('supervisor_id',$request->supervisour);
+          }else{
+            $supervisor = Supervisor::where('client_id',auth()->user()->client_id)->pluck('id')->toArray();
+            $jobRequest = $jobRequest->whereIn('supervisor_id',$supervisor);
+          }
         }
         $jobRequest = $jobRequest->get()->toArray();
         $result['data'] = array();
         $result['success'] = true;
         if(count($jobRequest) > 0){
             foreach($jobRequest as $k => $value){
-                $client = $value['client']['client_name'];
-                $supervisor = $value['client']['supervisor'];
+              // dd($value);
+                $client = $value['supervisor']['client']['client_name'];
+                $supervisor = $value['supervisor']['supervisor'];
                 $job = $value['job_category']['job_title'];
                 $total = $value['no_of_employee'];
                 $start_date = $value['job_date'];

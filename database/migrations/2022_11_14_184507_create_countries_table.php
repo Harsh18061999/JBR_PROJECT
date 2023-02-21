@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('country_code')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

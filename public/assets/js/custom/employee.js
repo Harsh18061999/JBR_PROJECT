@@ -14,6 +14,11 @@ $(document).ready(function(){
         return value != '' && value != null;
     }, "Please select field.");
 
+    $.validator.addMethod("isValidEmailAddress", function(value, element){
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+        return pattern.test(value);
+    }, "Please enter valid email.");
+
     $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
 
     var licence_status = $("#edit_license_view").attr("data-href");
@@ -56,7 +61,7 @@ $(document).ready(function(){
                 },
                 email: {
                     required: true,
-                    email: true
+                    isValidEmailAddress: true
                 },
                 contact_number:{
                     required: true,
@@ -253,7 +258,7 @@ $(document).ready(function(){
             },
             success: function(response) {
                 if(response.success){
-                    swal("Oops...", "Email Address Has All Ready Been Taken.", "error");
+                    swal("Oops...", "Email Address Has Already Been Taken.", "error");
                     $("#email").val('');
                 }
             }
@@ -280,7 +285,7 @@ $(document).ready(function(){
                         $("#contact_number").val('');   
                     }
                     if(response.success){
-                        swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                        swal("Oops...", "Contact Number Is Already Register.", "error");
                         $("#contact_number").val('');   
                     }
                 }
@@ -288,9 +293,10 @@ $(document).ready(function(){
         }
     });
     $("body").on("change","#contact_number",function(){
+        $("#employee_button").addClass("disabled");
         let countryCode = $("#countryCode").val();
         if(countryCode == '' || countryCode == null){
-            swal("Oops...", "Please select countery code.", "error");
+            swal("Oops...", "Please select country code.", "error");
             $("#contact_number").val('');
             return false;
         }
@@ -305,12 +311,15 @@ $(document).ready(function(){
                 countryCode: countryCode
             },
             success: function(response) {
+                setTimeout(function(){
+                    $("#employee_button").removeClass("disabled");
+                },500);
                 if(response.numberCheck == false){
                     swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
                     $("#contact_number").val('');   
                 }
                 if(response.success){
-                    swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                    swal("Oops...", "Contact Number Is Already Register.", "error");
                     $("#contact_number").val('');   
                 }
             }
@@ -409,27 +418,62 @@ $(document).ready(function(){
         });
     });
 
-    $("#verifyAccount").submit(function(e) {
-
-        e.preventDefault(); // avoid to execute the actual submit of the form.
-    
-        var form = $(this);
-        var actionUrl = form.attr('action');
-        
+    $("body").on("change","#otp",function(){
+        var token = $("#token_value").val();
+        var otp = $(this).val();
         $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(), // serializes the form's elements.
-            success: function(response)
-            {
+            type: 'get',
+            url: '/verify_otp',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                token:token,
+                otp:otp
+            },
+            success: function (response) {
                 if(!response.success){
+                    $("#otp").val('');
                     swal("Oops...",response.message , "error");
-                }else{
-                    window.location.href = "/successVerify";
                 }
+            },
+            error: function (e) {
+                swal("Oops...", "something went wrong", "error");
             }
         });
-        
+    });
+
+    $("#sendOtp").validate({
+        rules: {
+            countryCode : {
+                valueNotEquals: true,
+            },
+            contact_number:{
+                required : true
+            }
+        },
+        errorElement: "div",
+        highlight: function(element) {
+            $(element).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+    
+    $("#verifyAccount").validate({
+        rules: {
+            otp : {
+                required: true,
+            },
+        },
+        errorElement: "div",
+        highlight: function(element) {
+            $(element).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
     });
 
     var maxBirthdayDate = new Date();
@@ -451,4 +495,6 @@ $(document).ready(function(){
     if($('#date_of_birth').val() == ''){
         $('#date_of_birth').datepicker("setDate", `${month}-${month}-${day}` );
     }
+    $("#countryCode").val($("#selected_contry_code").val());
+    $("#contact_number").val($("#selected_phone_number").val());
 });

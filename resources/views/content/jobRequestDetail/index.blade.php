@@ -145,19 +145,24 @@
                                 <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
                                     aria-describedby="floatingInputHelp" />
                             </div>
+                            @if($role_name == "admin")
                             <div class="col-lg-3 col-md-3 mb-3">
                                 <label for="date" class="form-label">Client</label>
                                 <select id="client_name" name="client_name" class="form-select">
                                     <option value="">Please select Client Name</option>
                                     @foreach ($client as $key => $value)
-                                        <option value="{{ $value->client_name }}">{{ $value->client_name }}</option>
+                                        <option value="{{ $value->id }}">{{ $value->client_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
                             <div class="col-lg-3 col-md-3 mb-3">
                                 <label for="date" class="form-label">Supervisor</label>
                                 <select id="supervisor" name="client_id" class="form-select">
                                     <option value="">Please select Supervisor</option>
+                                    @foreach ($supervisor as $item)
+                                      <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
+                                  @endforeach
                                 </select>
                             </div>
                             <div class="col-lg-3 col-md-3 mt-2">

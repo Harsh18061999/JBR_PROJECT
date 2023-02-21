@@ -10,12 +10,10 @@ class VerifyAccount extends Model
     use HasFactory;
 
     protected $fillable = [
-        'employee_id',
+        'contact_number',
+        'country_code',
         'token',
-        'otp'
+        'otp',
+        'status'
     ];
-
-    public function employee(){
-        return $this->belongsTo(Employee::class);
-    }
 }

@@ -4,30 +4,33 @@
       "url": "/",
       "name": "Dashboard",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard-analytics"
+      "slug": "dashboard",
+      "menu_slug":["dashboard"]
     },
     {
       "url" : "/campaign",
       "name" : "Campaign Link",
       "icon" : "menu-icon fa-solid fa-link",
-      "slug": "Campaign.index"
+      "slug": "Campaign.index",
+      "menu_slug":["Campaign"]
     },
     {
       "name": "Job",
       "icon": "menu-icon fa-solid fa-file-circle-plus",
       "slug": "",
+      "menu_slug":["job_category","job_request","job_request_details"],
       "submenu": [
         {
           "url": "auth/job_category",
           "name": "Job Category",
-          "slug": "job_category",
+          "slug": "job_category.index",
           "target": "_self"
         },
         {
           "url": "/job_request",
           "name": "Job Request",
           "target": "_self",
-          "slug": "job_request"
+          "slug": "job_request.index"
         },
         {
           "url": "/job_request_details",
@@ -41,24 +44,25 @@
       "name": "Employee",
       "icon": "menu-icon  bx bx-user",
       "slug": "",
+      "menu_slug":["employee","employee_timesheet","data_entry_point"],
       "submenu": [
           {
               "url" : "/employee",
               "name" : "Employee",
-              "slug": "employee",
+              "slug": "employee.index",
               "target": "_self"
           },
         {
           "url" : "/employee_time_sheet",
           "name" : "Employee Timesheets",
-          "slug": "employee_timesheet",
+          "slug": "employee_timesheet.index",
           "target": "_self"
         },
         {
           "url" : "/data_entry_point",
           "name" : " Payroll Data Entry Point",
           "target": "_self",
-          "slug": "data_entry_point"
+          "slug": "data_entry_point.index"
         }
       ]
     },
@@ -66,48 +70,53 @@
       "url" : "/weekly_scheduler",
       "name" : "Weekly scheduler",
       "icon" : "menu-icon fa-sharp fa-solid fa-calendar",
-      "slug": "weekly_scheduler"
+      "slug": "weekly_scheduler.index",
+      "menu_slug":["weekly_scheduler"]
     },
     {
       "url" : "#",
       "name" : "Payroll Details",
       "icon" : "menu-icon fa-solid fa-credit-card",
-      "slug": "#"
+      "slug": "#",
+      "menu_slug":[]
     },
 
     {
       "url" : "/client",
       "name" : "Client Database",
       "icon" : "menu-icon fa-solid fa-database",
-      "slug": "#/client"
+      "slug": "client.index",
+      "menu_slug":["client"]
     },
     {
       "url" : "#",
       "name" : "Payroll Audit & Reports",
       "icon" : "menu-icon fa-solid fa-flag",
-      "slug": "#"
+      "slug": "#",
+      "menu_slug":[]
     },
     {
           "name": "Admin",
           "icon": "menu-icon tf-icons bx bx-lock-open-alt",
-          "slug": "auth",
+          "slug": "",
+          "menu_slug":["user","roles","permissions"],
           "submenu": [
             {
               "url": "/user",
               "name": "User",
-              "slug": "user",
+              "slug": "user.index",
               "target": "_self"
             },
             {
               "url": "/roles",
               "name": "Roles",
-              "slug": "roles",
+              "slug": "roles.index",
               "target": "_self"
             },
             {
               "url": "/permissions",
               "name": "Permissions",
-              "slug": "permissions",
+              "slug": "permissions.index",
               "target": "_self"
             }
           ]

@@ -1,8 +1,13 @@
-<div class="d-flex">
-    @if($query->lincense != '')
-    <a class="pointery license_view" title="View License" data-href="{{asset('storage/assets/'.$query->lincense)}}" data-pdfname="{{$query->name}}"><i class="mx-2 fa-solid fa-eye"></i></a>
-    <a type="button" title="Download License" class="mx-2" href="{{asset('storage/assets/'.$query->lincense)}}" target="_blank" download="{{$query->name}}"> <i class="fa-solid fa-download"></i></a>
-    @endif
-    <a href="{{route('permissions.edit',$query->id)}}" title="Edit Permission" class="pointer"><i class="fa-solid fa-pen-to-square mx-2"></i></a>
-    <a data-href="{{route('permissions_destroy.destroy',$query->id)}}" title="Delete Permission" data-id="{{$query->id}}" class="delete pointer text-danger"><i class="mx-2 fa-solid fa-trash"></i></a>
+
+<div class="dropdown">
+    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i
+            class="bx bx-dots-vertical-rounded"></i></button>
+    <div class="dropdown-menu" style="">
+
+        <a href="{{ route('permissions.edit', $query->id) }}" title="Edit Permission" class="dropdown-item pointer"><i
+                class="fa-solid fa-pen-to-square "></i></a>
+        <a data-href="{{ route('permissions_destroy.destroy', $query->id) }}" title="Delete Permission"
+            data-id="{{ $query->id }}" class="dropdown-item delete pointer text-danger"><i
+                class=" fa-solid fa-trash"></i></a>
+    </div>
 </div>

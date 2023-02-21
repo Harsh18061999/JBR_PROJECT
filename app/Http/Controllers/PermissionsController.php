@@ -3,59 +3,174 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\DataTables\PermissionDataTable;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use Illuminate\Support\Facades\Route;
+use App\DataTables\PermissionsDataTable;
+use App\Http\Requests\Permission\StoreRequest;
+use App\Http\Requests\Permission\UpdateRequest;
+use DB;
 class PermissionsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
 
-    public function index(PermissionDataTable $dataTable, Request $request)
+    public function index(PermissionsDataTable $dataTable)
     {
-        $permissions = Permission::orderBy('id','DESC')->paginate(5);
-        return $dataTable->render('permissions.index',compact('permissions'));
+        return $dataTable->render('permissions.index');
     }
 
-    public function create() 
-    {   
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
         return view('permissions.create');
     }
 
-    public function store(Request $request)
-    {   
-        $request->validate([
-            'name' => 'required|unique:users,name'
-        ]);
-
-        Permission::create($request->only('name'));
-
-        return redirect()->route('permissions.index')
-            ->withSuccess(__('Permission created successfully.'));
-    }
-
-    public function edit(Permission $permission)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreRequest $request)
     {
-        return view('permissions.edit', [
-            'permission' => $permission
-        ]);
+        $validated = $request->validated();
+
+        DB::beginTransaction();
+        try {
+            $insert_data = array();
+            $insert_data['title'] = $validated['title'];
+            $insert_data['guard_name'] = "web";
+            foreach($validated['name'] as $k => $value){
+                $insert_data['name'] = $value;
+                $insert_data['description'] = $validated['description'][$k];
+                
+                Permission::create($insert_data);
+            }
+            DB::commit();
+
+            // drakify('success') ;
+            return redirect()->route('permissions.index')->with("success","Permission created successfully.");
+
+        }catch (Exception $e) {
+            // drakify('error');
+            DB::rollback();
+            return redirect()->back()
+                    ->withError('Try again');
+        }
     }
 
-    public function update(Request $request, Permission $permission)
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        $request->validate([
-            'name' => 'required|unique:permissions,name,'.$permission->id
-        ]);
-
-        $permission->update($request->only('name'));
-
-        return redirect()->route('permissions.index')
-            ->withSuccess(__('Permission updated successfully.'));
+        //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        try {
+            $title = $id;
+            $permissions = Permission::where('title',$id)->get()->toArray();
+            $last_id = max(array_column($permissions,'id'));
+            if($permissions){
+                return view("permissions.edit",compact('permissions','title','last_id'));
+            }
+            
+        }catch (Exception $e) {
+            // drakify('error');
+            return redirect()->back()
+            ->withError('Try again');
+
+        }
+        
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(StoreRequest $request, $id)
+    {
+        $validated = $request->validated();
+        
+        DB::beginTransaction();
+        try {
+
+            $insert_data = array();
+            $insert_data['title'] = $validated['title'];
+            $insert_data['guard_name'] = "web";
+            $update_id = array_keys($validated['name']);
+            Permission::whereNotIn('id',$update_id)->where('title',$validated['title'])->delete();
+            foreach($validated['name'] as $k => $value){
+                $insert_data['name'] = $value;
+                $insert_data['description'] = $validated['description'][$k];
+                
+                $permissions = Permission::where('id',$k)->where('title',$validated['title'])->first();
+                if($permissions){
+                    $permissions->update($insert_data);
+                }else{
+                    Permission::create($insert_data);
+                }
+            }
+
+            DB::commit();
+        
+            // drakify('success') ;
+               
+            return redirect()->route('permissions.index')->with("success","Record updated successfully.");
+
+        }catch (Exception $e) {
+            DB::rollback();
+            drakify('error');
+            return redirect()->back()
+                    ->withError('Try again');
+            
+        } 
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        Permission::where('id',$id)->delete();
+        $permission = Permission::where('title',$id);
+        $data['status'] = false;
+        if($permission){
 
-        return redirect()->route('permissions.index')
-            ->withSuccess(__('Permission deleted successfully.'));
+            $permission->delete();
+            // drakify('success') ;
+            $data['status'] = true;
+            return $data;
+
+        }else{
+
+            // drakify('error');
+            return $data;
+                    
+        }
     }
 }

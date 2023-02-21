@@ -8,7 +8,7 @@ $(document).ready(function(){
             url: '/get_supervisor',
             data: {
                 "_token": "{{ csrf_token() }}",
-                client_name:$(this).val()
+                client_id:$(this).val()
             },
             success: function (response) {
                 if(response.success){

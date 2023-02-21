@@ -12,6 +12,7 @@ use App\Models\JobCategory;
 use App\Models\JobConfirmation;
 use App\Models\EmployeeTimeSheet;
 use App\Models\JobRequest;
+use App\Models\Supervisor;
 use Http;
 use App\Models\Employee;
 
@@ -25,20 +26,26 @@ class JobRequestController extends Controller
     }
 
     public function index(JobRequestDataTable $dataTable){
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
         $jobCategory = JobCategory::get();
         $client = Client::get();
-        return $dataTable->render('content.jobRequest.index',compact('jobCategory','client'));
+        $supervisor = array();
+        if($role_name != 'admin'){
+            $supervisor = Supervisor::where('client_id',auth()->user()->client_id)->get();
+        }
+        return $dataTable->render('content.jobRequest.index',compact('jobCategory','client','supervisor','role_name'));
     }
 
     public function create()
     {
         $jobCategory = JobCategory::get();
-        $client = Client::selectRaw("DISTINCT UPPER(client_name) as client_name")->get();
+        $client = Client::get();
         return view('content.jobRequest.create',compact('jobCategory','client'));
     }
 
     public function get_supervisor(Request $request){
-        $supervisor = Client::where('client_name',$request->client_name)->get()->toArray();
+        $supervisor = Supervisor::where('client_id',$request->client_id)->get()->toArray();
         return response()->json([
             "success" => true,
             "supervisor" => $supervisor
@@ -48,7 +55,7 @@ class JobRequestController extends Controller
     public function store(Request $request) 
     {
         $request->validate([
-            'client_id' => 'required',
+            'supervisor_id' => 'required',
             'job_id' => 'required',
             'job_date' => 'required',
             'end_date' => 'required',
@@ -63,7 +70,7 @@ class JobRequestController extends Controller
         ]);
     
         $orderDetails = $request->only([
-            'client_id',
+            'supervisor_id',
             'job_id',
             'job_date',
             'end_date',
@@ -76,44 +83,6 @@ class JobRequestController extends Controller
 
         $job_request = $this->jobRequestRepository->createJobRequest($orderDetails);
 
-        $job_request = JobRequest::where('job_message_status','0')->first();
-        // if($job_request){
-        //     $employee = Employee::where('status','0')->limit(3)->get();
-        //     foreach($employee as $k => $value){
-        //         $client = Client::where('id',$job_request->client_id)->first();
-        //         $job = JobCategory::where('id',$job_request->job_id)->first();
-        //         $curl = curl_init();
-        //         $curl1 = curl_init();
-
-        //         $message = $client->client_name.' has been required to work for '.$job->job_title.' '.$client->supervisor;
-        //         $number =  $value->contact_number;
-
-        //         $message .= "\n Please select below link to fill the form \n".route('front.job_request');
-        //         $link = route('front.job_request');
-                
-        //         curl_setopt_array($curl, array(
-        //             CURLOPT_URL => "https://api.ultramsg.com/instance22910/messages/chat",
-        //             CURLOPT_RETURNTRANSFER => true,
-        //             CURLOPT_ENCODING => "",
-        //             CURLOPT_MAXREDIRS => 10,
-        //             CURLOPT_TIMEOUT => 30,
-        //             CURLOPT_SSL_VERIFYHOST => 0,
-        //             CURLOPT_SSL_VERIFYPEER => 0,
-        //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //             CURLOPT_CUSTOMREQUEST => "POST",
-        //             CURLOPT_POSTFIELDS => "token=7iqilksxb8xyctsv&to=$number&body=$message&priority=10&referenceId=",
-        //             CURLOPT_HTTPHEADER => array(
-        //                 "content-type: application/x-www-form-urlencoded"
-        //             ),
-        //         ));
-
-        //         $response = curl_exec($curl);
-        //         $err = curl_error($curl);
-
-        //         curl_close($curl);
-        //     }
-        // }
-
         return redirect()->route('job_request.index')
         ->with('success', 'Job Request Added Successfully.');
     }
@@ -123,18 +92,18 @@ class JobRequestController extends Controller
         $start_time = explode(":",$job_request->start_time);
         $end_time = explode(":",$job_request->end_time);
         $jobCategory = JobCategory::get();
-        $client = Client::selectRaw("DISTINCT UPPER(client_name) as client_name")->get();
-        $client_selected = Client::where('id',$job_request->client_id)->first();
-        $supervisor = Client::where('client_name',$client_selected->client_name)->get();
+        $client = Client::get();
+        $selected_supervisor = Supervisor::where('id',$job_request->supervisor_id)->first();
+        $supervisor = Supervisor::where('client_id',$selected_supervisor->client_id)->get();
         
-        return view('content.jobRequest.edit', compact('job_request','jobCategory','client_selected','client','supervisor','start_time','end_time'));
+        return view('content.jobRequest.edit', compact('job_request','jobCategory','client','supervisor','selected_supervisor','start_time','end_time'));
     }
 
     public function update(Request $request)
     {
         $job_request_id = $request->route('id');
         $request->validate([
-            'client_id' => 'required',
+            'supervisor_id' => 'required',
             'job_id' => 'required',
             'job_date' => 'required',
             'end_date' => 'required',
@@ -149,7 +118,7 @@ class JobRequestController extends Controller
         ]);
     
         $orderDetails = $request->only([
-            'client_id',
+            'supervisor_id',
             'job_id',
             'job_date',
             'end_date',

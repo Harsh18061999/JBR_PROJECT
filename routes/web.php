@@ -100,7 +100,7 @@ Route::get('/form/layouts-horizontal', $controller_path . '\form_layouts\Horizon
 // tables
 Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tables-basic');
 
-// Route::group(['middleware' => ['auth', 'permission']], function () {
+Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
         Route::get('/dashboard', function () {
             return view('content.dashboard.dashboards-analytics');
@@ -139,14 +139,14 @@ Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tab
 
         //Job Request Details
         Route::get('/job_request_details', [JobRequestDetailController::class, 'index'])->name('job_request_details');
-        Route::get('/job_search_result', [JobRequestDetailController::class, 'searchResult']);
-        Route::POST('/regularDataTable', [JobRequestDetailController::class, 'regularDataTable']);
-        Route::POST('/availableDataTable', [JobRequestDetailController::class, 'availableDataTable']);
-        Route::POST('/onCallDataTable', [JobRequestDetailController::class, 'onCallDataTable']);
-        Route::POST('/onGoingDataTable', [JobRequestDetailController::class, 'onGoingJob']);
-        Route::POST('/send_message_job', [JobRequestDetailController::class, 'sendMessageJob']);
-        Route::POST('/send_bulk_message_job', [JobRequestDetailController::class, 'sendBulkMessageJob']);
-        Route::GET('/total_employee_count', [JobRequestDetailController::class, 'employeeaCount']);
+        Route::get('/job_search_result', [JobRequestDetailController::class, 'searchResult'])->name('searchResult');
+        Route::POST('/regularDataTable', [JobRequestDetailController::class, 'regularDataTable'])->name("regularDataTable");
+        Route::POST('/availableDataTable', [JobRequestDetailController::class, 'availableDataTable'])->name('availableDataTable');
+        Route::POST('/onCallDataTable', [JobRequestDetailController::class, 'onCallDataTable'])->name('onCallDataTable');
+        Route::POST('/onGoingDataTable', [JobRequestDetailController::class, 'onGoingJob'])->name('onGoingJob');
+        Route::POST('/send_message_job', [JobRequestDetailController::class, 'sendMessageJob'])->name('sendMessageJob');
+        Route::POST('/send_bulk_message_job', [JobRequestDetailController::class, 'sendBulkMessageJob'])->name('sendBulkMessageJob');
+        Route::GET('/total_employee_count', [JobRequestDetailController::class, 'employeeaCount'])->name('employeeaCount');
 
         //Data Entry Point
         Route::delete('/data_entry_point/{id}', [DataEntryPointController::class, 'destory'])->name('data_entry_point.destory');
@@ -169,29 +169,39 @@ Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tab
         Route::delete('/user/{id}', [UserController::class, 'destory'])->name('user.destory');
         Route::resource('/user', UserController::class);
         Route::get('/user-status_update/{id}', [UserController::class, 'statusUpdate'])->name('user.status_update');
+        Route::get('/user_contact_check',[UserController::class,'checknumber'])->name("checkUserNumber");
     
         // Role & Permission Routes
         Route::resource('roles', RolesController::class);
         Route::post('/roles_destroy/{id}', [RolesController::class, 'destroy'])->name('roles_destroy.destroy');
-        Route::resource('permissions', PermissionsController::class);
-        Route::post('/permissions_destroy/{id}', [PermissionsController::class, 'destroy'])->name('permissions_destroy.destroy');
+
+        Route::post('/permissions/{id}', [PermissionsController::class, 'destroy'])->name('permissions.destroy');
+        Route::resources([
+            'permissions' => PermissionsController::class
+        ]);
     });
-// });
+});
+
+Route::get('/user_generate_password/{token}',[UserController::class,'passwordCreate'])->name('passwordCreate');
+Route::post('/passwordCreate',[UserController::class,"passwordConfirm"])->name("passwordConfirm");
 
 //Front Employee Route
 Route::get('/employee_mail_check', [UserEmployeeController::class, 'mailCheck']);
 Route::get('/get_employee', [UserEmployeeController::class, 'getEmployee']);
 Route::get('/employee_contact_check', [UserEmployeeController::class, 'contactCheck']);
 Route::get('/employee_contact_check_data', [DataEntryPointController::class, 'contactCheck']);
-Route::get('/employee_register', [UserEmployeeController::class, 'create'])->name("employee_register");
+Route::get('/employee_register/{token?}', [UserEmployeeController::class, 'create'])->name("employee_register");
 Route::post('/employee_store', [UserEmployeeController::class, 'store'])->name('employee_store');
 Route::get('/client_register', [UserClientController::class, 'create']);
 Route::post('/client_store', [UserClientController::class, 'store'])->name('client_store');
 Route::get('/employee_store_success', [UserEmployeeController::class, 'success'])->name('employee_store_success');
 
 //Verify Account
+Route::get('/verify_number',[UserEmployeeController::class,'sendOtp'])->name('sendOtp');
+Route::Post('/send_otp',[UserEmployeeController::class,'sendOtpEmployee'])->name('sendOtpEmployee');
 Route::get('/verify_number/{token}',[UserEmployeeController::class,'verifyNumber'])->name('verifyNumber');
 Route::post('/resend_otp',[UserEmployeeController::class,'resendOtp'])->name('resendOtp');
+Route::get('/verify_otp',[UserEmployeeController::class,'verifyEmployeeOtp'])->name('verifyEmployeeOtp');
 Route::post('/verify_otp',[UserEmployeeController::class,'verifyOtp'])->name('verifyOtp');
 Route::get('/successVerify',[UserEmployeeController::class,'successVerify'])->name('successVerify');
 Route::get('/userError',[UserEmployeeController::class,'userError'])->name('userError');

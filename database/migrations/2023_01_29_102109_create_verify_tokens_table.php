@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('token');
             $table->string('job_confirmation_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

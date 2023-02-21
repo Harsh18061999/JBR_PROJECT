@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\JobRequest;
 use App\Models\Client;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -29,10 +30,10 @@ class JobRequestDataTable extends DataTable
                 return view('content.jobRequest.action',compact('query'));
             })
             ->addColumn('client', function($query){
-                return $query->client->client_name;
+                return isset($query->supervisor->client) ? $query->supervisor->client->client_name : null;
             })
             ->addColumn('supervisor', function($query){
-                return $query->client->supervisor;
+                return isset($query->supervisor) ? $query->supervisor->supervisor : null;
             })
             ->addColumn('job', function($query){
                 return $query->jobCategory->job_title;
@@ -57,16 +58,26 @@ class JobRequestDataTable extends DataTable
      */
     public function query(JobRequest $model,Request $request): QueryBuilder
     {
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        if($role_name != "admin"){
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else{
+                $supervisor_id = Supervisor::where('client_id',auth()->user()->client_id)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$supervisor_id);
+            }
+        }
         if($request->job_date && $request->job_date != '' && $request->end_date && $request->end_date){
             $model = $model->where('job_date','>=',$request->job_date)
                 ->where('end_date','<=',$request->end_date);
         }
 
-        if(($request->client_name && $request->client_name != '') && ($request->supervisor && $request->supervisor != '')){
-            $model = $model->where('client_id',$request->supervisor);
+        if($request->supervisor && $request->supervisor != ''){
+            $model = $model->where('supervisor_id',$request->supervisor);
         }else if($request->client_name && $request->client_name != ''){
-            $client_id = Client::where('client_name',$request->client_name)->pluck('id')->toArray();
-            $model = $model->whereIn('client_id',$client_id);
+            $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
+            $model = $model->whereIn('supervisor_id',$client_id);
         }
 
         if($request->job_id && $request->job_id != ''){
@@ -86,6 +97,49 @@ class JobRequestDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
+        $print = [
+            [
+                'extend'=> 'print',
+                'text'=> 'Print',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'csv',
+                'text'=> 'csv',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'excel',
+                'text'=> 'excel',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'pdf',
+                'text'=> 'pdf',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            'colvis'
+        ];
         return $this->builder()
                     ->setTableId('job-request-table')
                     ->columns($this->getColumns())
@@ -102,7 +156,10 @@ class JobRequestDataTable extends DataTable
                         }'
                     ])
                     
-                    ->dom('Bfrtip')
+                    ->parameters([
+                        'dom'          => 'Bfrtip',
+                        'buttons'      => [ $print],
+                    ])
                     ->orderBy(1)
                     ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }

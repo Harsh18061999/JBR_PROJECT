@@ -29,11 +29,9 @@ class WeeklySchedulerController extends Controller
             $week_start = date("Y-m-d",$start_week);
             $week_end = date("Y-m-d",$end_week);
         }
-
-        
-        $jobRequest = JobRequest::with(['employees','client','jobCategory'])
-        ->where('job_date','>=',$week_start)
-        ->where('end_date','<=',$week_end);
+        $jobRequest = JobRequest::with(['employees','supervisor','jobCategory'])
+        ->whereDate('job_date','>=',$week_start)
+        ->whereDate('end_date','<=',$week_end);
         if($request->client_name){
 
             $client = Client::where('client_name',$request->client_name);
@@ -55,10 +53,10 @@ class WeeklySchedulerController extends Controller
                 </p><p>$row->start_time <i class='fa-solid fa-clock mx-2'></i> $row->end_time</p></div> </span>";       
         })
         ->addColumn('client_name', function($row)  {
-          return isset($row->client) ? $row->client->client_name : 'N/A';       
+          return isset($row->supervisor->client) ? $row->supervisor->client->client_name : 'N/A';       
          })
          ->addColumn('supervisor', function($row)  {
-          return  isset($row->client) ? $row->client->supervisor : 'N/A';    
+          return  isset($row->supervisor) ? $row->supervisor->supervisor : 'N/A';    
          })
          ->addColumn('employee', function($row)  {
                 $div = "<div class='row'>";

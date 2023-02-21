@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('job_date');
             $table->enum('message_status',['0','1','2','3'])->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

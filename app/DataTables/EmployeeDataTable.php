@@ -65,6 +65,49 @@ class EmployeeDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
+        $print = [
+            [
+                'extend'=> 'print',
+                'text'=> 'Print',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5,6],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'csv',
+                'text'=> 'csv',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5,6],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'excel',
+                'text'=> 'excel',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5,6],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'pdf',
+                'text'=> 'pdf',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3,4,5,6],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            'colvis'
+        ];
         return $this->builder()
                     ->setTableId('employee-table')
                     ->columns($this->getColumns())
@@ -78,15 +121,15 @@ class EmployeeDataTable extends DataTable
                         }'
                     ])
                     ->parameters([
-                        'dom' => 'Bfrtilp',
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
                         'responsive' => true,
                         'lengthMenu' => [10, 15, 30, 50, 100],
-                        'buttons' => ['colvis',  'copy', 'excel', 'pdf'],
+                        'dom'          => 'Bfrtip',
+                        'buttons'      => [ $print],
                         'processing' => false,
                         'serverSide' => true,
-                        'scrollX' => true,
+                        'scrollX' => false,
                         'bAutoWidth' => false,
                         'language' => [
                             ],

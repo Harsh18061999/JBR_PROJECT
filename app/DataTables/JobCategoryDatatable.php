@@ -22,12 +22,13 @@ class JobCategoryDatatable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))->rawColumns(['action','license'])
+        return (new EloquentDataTable($query))->rawColumns(['license'])
             ->addColumn('action', function($query){
-                return '<div>
-                            <a data-href="'.route('job_category.edit',$query->id).'" data-editurl="'.route('job_category.update',$query->id).'" class="pointer edit"><i class="fa-solid fa-pen-to-square mx-2"></i></a>
-                            <a data-href="'.route('job_category.destroy',$query->id).'" data-id="'.$query->id.'" class="delete pointer text-danger"><i class="fa-solid fa-trash"></i></a>
-                        </div>';
+                return view("content.jobcategory.action",compact('query'));
+                // return '<div>
+                //             <a data-href="'.route('job_category.edit',$query->id).'" data-editurl="'.route('job_category.update',$query->id).'" class="pointer edit"><i class="fa-solid fa-pen-to-square mx-2"></i></a>
+                //             <a data-href="'.route('job_category.destroy',$query->id).'" data-id="'.$query->id.'" class="delete pointer text-danger"><i class="fa-solid fa-trash"></i></a>
+                //         </div>';
             })->addColumn('license', function($query){
                 if($query->license_status == 1){
                     return '<span class="badge bg-label-success me-1">Required</span>';
@@ -55,11 +56,48 @@ class JobCategoryDatatable extends DataTable
      */
     public function html(): HtmlBuilder
     {
+        $print = [
+            [
+                'extend'=> 'print',
+                'text'=> 'Print',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'csv',
+                'text'=> 'csv',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'excel',
+                'text'=> 'excel',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            'colvis'
+        ];
         return $this->builder()
                     ->setTableId('job-category-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Bfrtip')
+                    ->parameters([
+                        'dom'          => 'Bfrtip',
+                        'buttons'      => [ $print],
+                    ])
+
                     ->orderBy(1)
                     ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }

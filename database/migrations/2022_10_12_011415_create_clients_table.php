@@ -17,9 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string("client_name");
             $table->string("client_address");
-            $table->string("supervisor");
-            $table->integer("job");
-            $table->enum('status',[0,1,2,3])->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

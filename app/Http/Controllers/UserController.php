@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Interfaces\UserRepositoryInterface;
 use App\DataTables\UserDataTable;
 use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
@@ -21,7 +23,8 @@ class UserController extends Controller
     public function index(UserDataTable $dataTable)
     {
         $user = User::get();
-        return $dataTable->render('content.user.user.index',compact('user'));
+        $client = Client::get();
+        return $dataTable->render('content.user.user.index',compact('user','client'));
     }
 
     public function create()
@@ -29,19 +32,26 @@ class UserController extends Controller
         $user = User::first();
         $userRole = $user->roles->pluck('name')->toArray();
         $roles = Role::latest()->get();
-        return view('content.user.user.create',compact('user','userRole','roles'));
+        $client = Client::get();
+        return view('content.user.user.create',compact('user','userRole','roles','client'));
     }
 
     public function store(Request $request) 
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users,email',
-            'password' => 'required',
+            'email' => 'required|unique:users,email'
         ]);
 
         $users = $this->userRepository->createUser($request->all());
         $users->syncRoles($request->get('role'));
+        
+        $message = "Thank you for choosing Our Brand. Use the following link complete your procedures. OTP is valid for 5 minutes, \n";
+        $message .= route('passwordCreate', $users->remember_token);
+
+        $number = '+' . $users->countryCode . $users->contact_number;
+        sendMessage($number, $message);
+
         return redirect()->route('user.index')
         ->with('success', 'User created successfully.');
 
@@ -51,7 +61,8 @@ class UserController extends Controller
     {
         $userRole = $user->roles->pluck('name')->toArray();
         $roles = Role::latest()->get();
-        return view('content.user.user.edit', compact('user','userRole','roles'));
+        $client = Client::get();
+        return view('content.user.user.edit', compact('user','userRole','roles','client'));
     }
 
     public function update(Request $request)
@@ -99,4 +110,34 @@ class UserController extends Controller
         return $response;
     }
 
+    public function checknumber(Request $request){
+        try {
+            $whatsappNumber = json_decode(checkNumber($request->countryCode . $request->contact_number));
+            $response['numberCheck'] = $whatsappNumber->status == 'invalid' ? false : true;
+            $user = User::where('contact_number', $request->contact_number)
+                ->first();
+            if ($user) {
+                $response['success'] = true;
+            } else {
+                $response['success'] = false;
+            }
+            return response()->json($response);
+        } catch (Exception $e) {
+            return redirect()
+                ->back()
+                ->withError('Try again');
+        }
+    }
+
+    public function passwordCreate($token){
+        return view("auth.reset-password",compact("token"));
+    }
+
+    public function passwordConfirm(Request $request){
+        User::where('remember_token',$request->user_token)
+            ->update([
+                'password' => Hash::make($request->password),
+            ]);
+        return redirect()->route('login');
+    }
 }

@@ -21,4 +21,8 @@ class Client extends Model
     public function jobCategory(){
         return $this->hasOne(JobCategory::class,'id','job');
     }
+
+    public function supervisour(){
+        return $this->hasMany(Supervisor::class,'client_id','id');
+    }
 }

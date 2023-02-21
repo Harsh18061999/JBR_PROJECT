@@ -16,8 +16,14 @@
                     <div class="col-lg-8 m-auto text-center">
                         <h4 class="">Hello <b>{{$message_data['employee']['first_name'].' '.$message_data['employee']['last_name']}}</b>,</h4>
                         <h4>Here's an interesting job that we think might be relevant for you.</h4>
-                        <h5>Client Name : <b>{{$message_data['job_request']['client']['client_name']}}</b></h5>
-                        <h5>Address : <b>{{$message_data['job_request']['client']['client_address']}}</b></h5>
+                        <div class="d-flex justify-content-center">
+                            <h5>Client Name : <b>{{$message_data['job_request']['supervisor']['client']['client_name']}}</b></h5>
+                            <h5 class="mx-4">Address : <b>{{$message_data['job_request']['supervisor']['client']['client_address']}}</b></h5>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h5>Supervisor Name : <b>{{$message_data['job_request']['supervisor']['supervisor']}}</b></h5>
+                            <h5 class="mx-4">Supervisor Address : <b>{{$message_data['job_request']['supervisor']['address']}}</b></h5>
+                        </div>
                         <div class="d-flex justify-content-center">
                             <h5>Start Date : {{$message_data['job_date']}}</h5>
                             <h5 class="mx-4">End Date : {{$message_data['job_request']['end_date']}}</h5>
@@ -31,12 +37,14 @@
                             <div class="mx-auto col-lg-8 text-center my-2">
                                 <div class="d-flex justify-content-center">
                                     <form method="POST" action="{{route('acceptJob')}}" id="acceptJobForm" class="mx-2">
+                                        <input type="hidden" name="confirmation_id" value="{{$message_data['confirmation_id']}}">
                                         @csrf
                                         <input type="hidden" name="job_id" value="{{$message_data['job_request']['id']}}">
                                         <input type="hidden" name="employee_id" value="{{$message_data['employee']['id']}}">
                                     </form>
                                     <button type="submit" id="acceptJob" class="btn btn-primary">ACCEPT</button>
                                     <form method="POST" action="{{route('cancellJob')}}" id="cancelJobForm" class="mx-2">
+                                        <input type="hidden" name="confirmation_id" value="{{$message_data['confirmation_id']}}">
                                         @csrf
                                         <input type="hidden" name="job_id" value="{{$message_data['job_request']['id']}}">
                                         <input type="hidden" name="employee_id" value="{{$message_data['employee']['id']}}">
@@ -51,7 +59,19 @@
         </div>
     </div>
 </div>
+<script>
+function preventbackbutton() { window.history.forward(); }
+    setTimeout("preventbackbutton()", 0);
+    window.onunload = function () { null };
+
+</script>
 <script src="{{asset("assets/js/custom/job_confirm.js")}}"></script>
 
 @endsection
+<script>
+function preventbackbutton() { window.history.forward(); }
+    setTimeout("preventbackbutton()", 0);
+    window.onunload = function () { null };
+
+</script>
 

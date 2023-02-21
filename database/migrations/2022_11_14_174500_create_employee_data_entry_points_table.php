@@ -16,18 +16,19 @@ return new class extends Migration
         Schema::create('employee_data_entry_points', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id');
-            $table->string('sin');
-            $table->string('line_1');
-            $table->string('line_2');
-            $table->integer('country');
-            $table->integer('provience');
-            $table->integer('city_id');
-            $table->string('postal_code');
-            $table->string('transit_number');
-            $table->string('institution_number');
-            $table->string('account_number');
+            $table->string('sin')->unique();
+            $table->string('line_1')->nullable();
+            $table->string('line_2')->nullable();
+            $table->integer('country')->nullable();
+            $table->integer('provience')->nullable();
+            $table->integer('city_id')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('transit_number')->nullable();
+            $table->string('institution_number')->nullable();
+            $table->string('account_number')->nullable();
             $table->string('personal_identification')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

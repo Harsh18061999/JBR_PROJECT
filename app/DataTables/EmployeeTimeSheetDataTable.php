@@ -43,10 +43,10 @@ class EmployeeTimeSheetDataTable extends DataTable
             return isset($query->job) ? $query->job->jobCategory->job_title : '';
         })
         ->addColumn('client', function($query){
-            return isset($query->job) ? $query->job->client->client_name : '';
+            return isset($query->job) ? $query->job->supervisor->client->client_name : '';
         })
         ->addColumn('supervisor', function($query){
-            return isset($query->job) ? $query->job->client->supervisor : '';
+            return isset($query->job) ? $query->job->supervisor->supervisor : '';
         })
         ->addColumn('job_time', function($query){
             return isset($query->job) ? $query->job->start_time : '0:00';

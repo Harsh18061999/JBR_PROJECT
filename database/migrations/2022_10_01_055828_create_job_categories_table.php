@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('job_title')->unique();
             $table->enum('license_status',['0','1'])->default('0');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

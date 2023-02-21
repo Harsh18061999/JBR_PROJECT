@@ -43,7 +43,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="row mx-4 justify-content-center">
-                                <input type="hidden" name="token_value" value="{{ $token }}">
+                                <input type="hidden" name="token_value" id="token_value" value="{{ $token }}">
                                 <div class="col-md-6">
                                     <div class=" mb-4">
                                         <div class="">
@@ -57,8 +57,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2" id="resendOtp" data-token="{{ $token }}">
-                                    <span class="btn btn-secondary mt-2 pt-2"><i
+                                <div class="col-md-2" >
+                                    <span class="btn btn-secondary mt-2 pt-2" id="resendOtp" data-token="{{ $token }}"><i
                                             class="fa-sharp fa-solid fa-rotate-right"></i></span>
                                 </div>
                                 <div class="my-4">

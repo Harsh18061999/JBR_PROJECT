@@ -137,23 +137,25 @@
                                 <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
                                     aria-describedby="floatingInputHelp" />
                             </div>
-
+                            @if($role_name == 'admin')
                             <div class="col-lg-3 mb-3">
                                 <label for="client_name" class="form-label">Client</label>
                                 <select class="form-select" name="client_name" id="client_name"
                                     aria-label="Default select example">
                                     <option selected value="">Open this select menu</option>
                                     @foreach ($client as $item)
-                                        <option value="{{ $item->client_name }}">{{ $item->client_name }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->client_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
+                            
                             <div class="col-lg-3 mb-3">
                                 <label for="supervisor" class="form-label">Supervisor</label>
                                 <select class="form-select" name="supervisor" id="supervisor"
                                     aria-label="Default select example">
                                     <option selected value="">Open this select menu</option>
-                                    @foreach ($client as $item)
+                                    @foreach ($supervisor as $item)
                                         <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
                                     @endforeach
                                 </select>
@@ -173,8 +175,9 @@
                                 <select class="form-select" name="status" id="status"
                                     aria-label="Default select example">
                                     <option selected value="">Open this select menu</option>
-                                    <option value="0">ON GOING</option>
-                                    <option value="1">COMPLETED</option>
+                                    <option value="0">PENDING</option>
+                                    <option value="1">ON GOING</option>
+                                    <option value="2">COMPLETED</option>
                                 </select>
                             </div>
                             <div class="col-lg-3 mt-2">

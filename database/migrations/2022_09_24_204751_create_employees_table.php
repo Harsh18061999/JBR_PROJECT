@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('job');
             $table->string('lincense')->nullable();
             $table->enum('status',[0,1,2,3])->default(0);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

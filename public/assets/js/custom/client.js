@@ -48,6 +48,43 @@ $(document).ready(function(){
             
     });
 
+    $("#client_from").submit(function() {
+        let submit = true;
+        $.each($('#client_from input'), function() {
+            if (!this.value) {
+                if (this.name != 'client_name') {
+                    if (!$(this).hasClass('is-invalid')) {
+                        $(this).addClass('is-invalid');
+                        const error = document.createElement("span");
+                        error.className = 'invalid-feedback';
+                        error.innerText = 'this field is required';
+                        $(this).parent().closest('.form-floating').append(error);
+                        submit = false;
+                    }
+                }
+            }
+        });
+        $.each($('#client_from textarea'), function() {
+            if (!this.value) {
+                if (this.name != 'client_address') {
+                    if (!$(this).hasClass('is-invalid')) {
+                        $(this).addClass('is-invalid');
+                        const error = document.createElement("span");
+                        error.className = 'invalid-feedback';
+                        error.innerText = 'this field is required';
+                        $(this).parent().closest('.form-floating').append(error);
+                        submit = false;
+                    }
+                }
+            }
+        });
+
+        if(submit == false){
+
+            return false;
+        }
+    });
+
     $("body").on("click", '.delete', function() {
         var url = $(this).attr('data-href');
         deleteRecord(url);

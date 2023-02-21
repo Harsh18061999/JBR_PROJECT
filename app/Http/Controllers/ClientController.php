@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ClientRepsitory;
 use App\DataTables\ClientDataTable;
 use App\Models\Client;
+use App\Models\Supervisor;
 use Illuminate\Support\Facades\Storage;
 use File;
 use App\Models\JobCategory;
@@ -50,9 +51,10 @@ class ClientController extends Controller
 
     public function edit(Client $client)
     {
-        $jobCategory = JobCategory::get();
-        
-        return view('content.client.edit', compact('client','jobCategory'));
+        $supervisors = Supervisor::where('client_id',$client->id)->get()->toArray();
+        $last_id = max(array_column($supervisors,'id'));
+        // dd($supervisors);
+        return view('content.client.edit', compact('client','supervisors','last_id'));
     }
 
     public function update(Request $request)
@@ -63,15 +65,14 @@ class ClientController extends Controller
         $request->validate([
             'client_name' => 'required',
             'supervisor' => 'required',
-            'client_address' => 'required',
-            // 'job' => 'required'
+            'client_address' => 'required'
         ]);
 
         $orderDetails = $request->only([
             'client_name',
             'supervisor',
             'client_address',
-            // 'job'
+            'supervisor_address'
         ]);
 
         $this->clientRepository->updateClient($clientId,$orderDetails);

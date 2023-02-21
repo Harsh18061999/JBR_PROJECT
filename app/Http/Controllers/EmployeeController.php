@@ -58,7 +58,6 @@ class EmployeeController extends Controller
             }
 
             $data['filename'] = $filename;
-            $data['active_status'] = '1';
             $request->merge($data);
         
             $employees = $this->employeeRepository->createEmployee($request->all());

@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('verify_accounts', function (Blueprint $table) {
             $table->id();
-            $table->integer("employee_id");
+            $table->bigInteger("contact_number");
+            $table->integer("country_code");
             $table->string("token");
-            $table->string("otp");
+            $table->string("otp")->nullable();
+            $table->enum('status',['0','1'])->default('0');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

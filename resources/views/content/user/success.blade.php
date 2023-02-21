@@ -11,4 +11,12 @@
             <h1 class="mb-4">Your Account Has Been Verify SuccessFulley!</h1>
         </div>
     </div>
+   
 @endsection
+<script>
+    alert(123);
+    history.pushState(null, document.title, location.href);
+    window.addEventListener('popstate', function(event) {
+        history.pushState(null, document.title, location.href);
+    });
+</script>

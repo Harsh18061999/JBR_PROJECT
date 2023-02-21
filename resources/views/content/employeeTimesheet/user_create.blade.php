@@ -60,7 +60,7 @@
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <input type="text" name="client_name" class="form-control" id="client_name"
-                                                value="{{ $job_details->job->client->client_name . ' ' . $job_details->employee->last_name }}"
+                                                value="{{ $job_details->job->supervisor->client->client_name . ' ' . $job_details->employee->last_name }}"
                                                 readonly aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="client_name">Client Name</label>
                                         </div>
@@ -73,7 +73,7 @@
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <input type="text" name="supervisor" class="form-control" id="supervisor"
-                                                value="{{ $job_details->job->client->client_name . ' ' . $job_details->employee->supervisor }}"
+                                                value="{{ $job_details->job->supervisor->client->client_name . ' ' . $job_details->employee->supervisor }}"
                                                 readonly aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="supervisor">Supervisor</label>
                                         </div>
@@ -86,7 +86,7 @@
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <input type="text" name="job_title" class="form-control" id="job_title"
-                                                value="{{ $job_details->job->jobCategory->job_title . ' ' . $job_details->employee->last_name }}"
+                                                value="{{ $job_details->job->jobCategory->job_title }}"
                                                 readonly aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="job_title">Job Title</label>
                                         </div>

@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class JobRequest extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
 
     protected $fillable = [
-        'client_id',
+        'supervisor_id',
         'job_id',
         'job_date',
         'end_date',
@@ -25,8 +25,8 @@ class JobRequest extends Model
         return $this->hasOne(JobCategory::class,'id','job_id');
     }
 
-    public function client(){
-        return $this->hasOne(Client::class,'id','client_id');
+    public function supervisor(){
+        return $this->hasOne(Supervisor::class,'id','supervisor_id');
     }
 
     public function jobConfirmation(){

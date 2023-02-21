@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Str;
 class UserRepository implements UserRepositoryInterface 
 {
     public function getAllUser() 
@@ -27,10 +27,14 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = User::withTrashed()->where('email',$userDetails['email'])->orWhere('name',$userDetails['name'])->first();
         if(!$user){
+            $token = Str::random(40);
             return User::create([
                 'name' => $userDetails['name'],
                 'email' => $userDetails['email'],
-                'password' => Hash::make($userDetails['password']),
+                'countryCode' => $userDetails['countryCode'],
+                'contact_number' => $userDetails['contact_number'],
+                'client_id' => $userDetails['client_id'],
+                'remember_token' => $token
             ]);
         }else{
             return $user->restore();

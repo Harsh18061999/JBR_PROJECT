@@ -12,6 +12,7 @@ use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Str;
 
 class ClientDataTable extends DataTable
 {
@@ -23,22 +24,16 @@ class ClientDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
-        return (new EloquentDataTable($query))->rawColumns(['action','status'])
+        return (new EloquentDataTable($query))->rawColumns(['action','status','supervisor'])
             ->addColumn('action', function($query){
                 return view('content.client.action',compact('query'));
             })
-            // ->addColumn('job', function($query){
-            //     return $query->jobCategory->job_title;
-            // })
-            // ->addColumn('status', function($query){
-            //     if($query->status == 0){
-            //         return '<span class="badge bg-label-success me-1">Available</span>';
-            //     }else if($query->status == 1){
-            //         return '<span class="badge bg-label-danger me-1">Not Available</span>';
-            //     }else if($query->status == 2){
-            //         return '<span class="badge bg-label-danger me-1">Block</span>';
-            //     }
-            //  })
+            ->addColumn('supervisor', function($query){
+                return implode(" , ",$query->supervisour->map(function ($lines) {
+                    $lines->supervisor = Str::upper($lines->supervisor);
+                    return $lines;
+                })->pluck('supervisor')->toArray());
+            })
             ->setRowId('id');
     }
 
@@ -75,6 +70,49 @@ class ClientDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
+        $print = [
+            [
+                'extend'=> 'print',
+                'text'=> 'Print',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'csv',
+                'text'=> 'csv',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'excel',
+                'text'=> 'excel',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            [
+                'extend'=> 'pdf',
+                'text'=> 'pdf',
+                'title'=> 'All JobCategory',
+                'exportOptions' =>  [
+                'columns' => [1,2,3],
+                ],
+                'footer'=> true,
+                'autoPrint'=> true
+            ],
+            'colvis'
+        ];
         return $this->builder()
                     ->setTableId('client-table')
                     ->columns($this->getColumns())
@@ -89,15 +127,15 @@ class ClientDataTable extends DataTable
                         }'
                     ])
                     ->parameters([
-                        'dom' => 'Bfrtilp',
+                        'dom'          => 'Bfrtip',
+                        'buttons'      => [ $print],
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
                         'responsive' => true,
                         'lengthMenu' => [10, 15, 30, 50, 100],
-                        'buttons' => ['colvis',  'copy', 'excel', 'pdf'],
                         'processing' => false,
                         'serverSide' => true,
-                        'scrollX' => true,
+                        'scrollX' => false,
                         'bAutoWidth' => false,
                         'language' => [
                             ],

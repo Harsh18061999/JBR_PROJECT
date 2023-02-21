@@ -76,7 +76,7 @@ class RolesDataTable extends DataTable
                         'buttons' => ['colvis'],
                         'processing' => false,
                         'serverSide' => true,
-                        'scrollX' => true,
+                        'scrollX' => false,
                         'bAutoWidth' => false,
                         'language' => [
                             ],

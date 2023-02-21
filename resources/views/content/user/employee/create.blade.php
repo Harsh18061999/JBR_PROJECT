@@ -12,27 +12,15 @@
     </style>
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
     <style>
-        .chosen-container {
-            width: 100% !important;
-            height: 100%;
-        }
-
-        .chosen-single {
-            padding: 15px 0px 40px 0px !important;
-            background: white !important;
-        }
-
-        .chosen-container div {
-            padding: 15px 0px 0px 0px;
-        }
-
-        .chosen-container-single .chosen-drop {
-            margin-top: -20px !important;
-        }
-
         #countryCode-error {
             position: absolute;
             bottom: -28px;
+        }
+        .container-p-y:not([class^=pb-]):not([class*=" pb-"]) {
+            padding-bottom: 0px !important;
+        }
+        .container-p-y:not([class^=pt-]):not([class*=" pt-"]) {
+            padding-top: 0px !important;
         }
     </style>
     <div class="card shadow bg-transparent" id="grad1">
@@ -49,9 +37,12 @@
                     <h3><strong>Candidate Onboarding</strong></h3>
                     <hr class="mt-4 mx-4">
                     <form id="employee_from" action="{{ route('employee_store') }}" method="POST" novalidate
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="row mx-4">
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="verify_token" id="verify_token" value="{{$token_value->token}}">
+                    <input type="hidden" name="selected_contry_code" id="selected_contry_code" value="{{$token_value->country_code}}">
+                    <input type="hidden" name="selected_phone_number" id="selected_phone_number" value="{{$token_value->contact_number}}">
+                    <div class="row mx-4">
 
                             <div class="col-md-6">
                                 <div class=" mb-4">
@@ -79,9 +70,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 mb-2">
                                 <div class="form-floating">
-                                    <select name="countryCode" id="countryCode" class="form-select chosen-select">
+                                    <select name="countryCode" disabled id="countryCode" class="form-select chosen-select">
                                         <option data-countryCode="GB" value="">Select Contry Code</option>
                                         <option data-countryCode="GB" value="44">UK (+44)</option>
                                         <option data-countryCode="US" value="1">USA (+1)</option>
@@ -317,11 +308,11 @@
                                     <label for="countryCode">Country</label>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 mb-2">
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" name="contact_number"
+                                            <input type="number" readonly class="form-control" name="contact_number"
                                                 id="contact_number" placeholder="999666..."
                                                 aria-describedby="contact_numberHelp" />
                                             <label for="contact_number">Contact Number</label>
@@ -399,6 +390,7 @@
     <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
     <script src="{{ asset('assets/js/custom/employee.js') }}"></script>
     <script>
+       
         @php
             $eroor_message = '';
             if ($errors->any()) {

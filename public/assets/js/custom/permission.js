@@ -63,7 +63,7 @@ $(document).ready(function(){
                         swal("Poof! Your permission has been deleted!", {
                             icon: "success",
                         });
-                        $('#permission-table').DataTable().ajax.reload();
+                        $('#permissions-table').DataTable().ajax.reload();
                     }
                 });
             } else {

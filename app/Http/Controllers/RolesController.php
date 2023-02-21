@@ -20,7 +20,12 @@ class RolesController extends Controller
     public function create()
     {
         $permissions = Permission::get();
-        return view('roles.create', compact('permissions'));
+
+        $permissions_array = [];
+        foreach($permissions as $permission){
+            $permissions_array[$permission->title][] = $permission;
+        }
+        return view('roles.create', compact('permissions_array'));
     }
     
     public function store(Request $request)
@@ -30,7 +35,7 @@ class RolesController extends Controller
             'permission' => 'required',
         ]);
     
-        $role = Role::create(['name' => $request->get('name')]);
+        $role = Role::create(['name' => $request->get('name'),'guard_name' => 'web']);
         $role->syncPermissions($request->get('permission'));
     
         return redirect()->route('roles.index')
@@ -48,10 +53,19 @@ class RolesController extends Controller
     public function edit(Role $role)
     {
         $role = $role;
-        $rolePermissions = $role->permissions->pluck('name')->toArray();
+        $rolePermissions = $role->permissions->toArray();
+        $parent_array = array_count_values(array_column($rolePermissions,'title'));
+        $rolePermissions_array = array_column($rolePermissions,'name');
         $permissions = Permission::get();
+
+        $total_count = count($permissions);
+
+        $permissions_array = [];
+        foreach($permissions as $permission){
+            $permissions_array[$permission->title][] = $permission;
+        }
     
-        return view('roles.edit', compact('role', 'rolePermissions', 'permissions'));
+        return view('roles.edit', compact('role', 'rolePermissions_array', 'parent_array','permissions_array','total_count'));
     }    
 
     public function update(Role $role, Request $request)
@@ -61,7 +75,10 @@ class RolesController extends Controller
             'permission' => 'required',
         ]);
         
-        $role->update($request->only('name'));
+        $role->update([
+            "name" => $request->name,
+            "guard_name" => "web"
+        ]);
     
         $role->syncPermissions($request->get('permission'));
     

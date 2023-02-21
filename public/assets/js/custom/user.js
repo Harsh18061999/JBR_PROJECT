@@ -6,6 +6,10 @@ $(document).ready(function(){
 
     $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
 
+    $.validator.addMethod("valueNotEquals", function(value, element){
+        return value != '' && value != null;
+    }, "Please select field.");
+
     $("#user_from").validate({
             rules: {
                 name : {
@@ -17,6 +21,11 @@ $(document).ready(function(){
                     required: true,
                     email: true
                 },
+                contact_number:{
+                    required: true,
+                },
+                countryCode: { valueNotEquals: true, },
+                client_id: { valueNotEquals: true, },
             },
             messages : {
                 name: {
@@ -130,6 +139,40 @@ $(document).ready(function(){
             } else {
                 select.val(status);
               swal("Your user is safe!");
+            }
+        });
+    });
+
+    $("body").on("change","#contact_number",function(){
+        $("#employee_button").addClass("disabled");
+        let countryCode = $("#countryCode").val();
+        if(countryCode == '' || countryCode == null){
+            swal("Oops...", "Please select countery code.", "error");
+            $("#contact_number").val('');
+            return false;
+        }
+        $.ajax({
+            type: 'get',
+            url: '/user_contact_check',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                contact_number:$(this).val(),
+                countryCode: countryCode
+            },
+            success: function(response) {
+                setTimeout(function(){
+                    $("#employee_button").removeClass("disabled");
+                },500);
+                if(response.numberCheck == false){
+                    swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                    $("#contact_number").val('');   
+                }
+                if(response.success){
+                    swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                    $("#contact_number").val('');   
+                }
             }
         });
     });
