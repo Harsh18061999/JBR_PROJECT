@@ -37,7 +37,7 @@ class ClientController extends Controller
     public function store(Request $request) 
     {
         $request->validate([
-            'client_name' => 'required',
+            'client_name' => 'required|unique:clients,client_name',
             'supervisor' => 'required',
             'client_address' => 'required',
             // 'job' => 'required'
@@ -46,7 +46,7 @@ class ClientController extends Controller
         $client = $this->clientRepository->createClient($request->all());
 
         return redirect()->route('client.index')
-        ->with('success', 'Record created successfully.');
+        ->with('success', 'Record created successFully.');
     }
 
     public function edit(Client $client)
@@ -78,7 +78,7 @@ class ClientController extends Controller
         $this->clientRepository->updateClient($clientId,$orderDetails);
 
         return redirect()->route('client.index')
-            ->with('success', 'Client updated successfully');
+            ->with('success', 'Client updated successFully');
     }
 
     public function destory($id){

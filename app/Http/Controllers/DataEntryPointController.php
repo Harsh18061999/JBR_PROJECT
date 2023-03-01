@@ -72,8 +72,13 @@ class DataEntryPointController extends Controller
         if($request->message_token != ''){
             return redirect()->route('confirm_job',$request->message_token);
         }else{
-            return redirect()->back()
-            ->with('success', 'Record created successfully.');
+            if(auth()->user()){
+                return redirect()->route('data_entry_point.index')
+                ->with('success', 'Record created successFully.');
+            }else{
+                return redirect()->back()
+                ->with('success', 'Record created successFully.');
+            }
         }
     }
 
@@ -138,9 +143,13 @@ class DataEntryPointController extends Controller
         ]);
 
         $this->DataEntryPointRepository->updateDataEntry($dataId,$orderDetails);
-
-        return redirect()->back()
-        ->with('success', 'Record created successfully.');
+        if(auth()->user()){
+            return redirect()->route('data_entry_point.index')
+            ->with('success', 'Record updated successFully.');
+        }else{
+            return redirect()->back()
+            ->with('success', 'Record updated successFully.');
+        }
     }
 
     public function contactCheck(Request $request){

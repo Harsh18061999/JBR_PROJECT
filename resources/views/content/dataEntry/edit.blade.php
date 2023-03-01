@@ -11,7 +11,7 @@
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
                 <h3><strong>Payroll Data Entry Point</strong></h3>
                 <hr class="mt-4 mx-4">
-                <form id="data_entry_from_update" action="{{route('data_entry_point.update',$dataEntry->id)}}" method="POST" novalidate enctype="multipart/form-data"> 
+                <form id="data_entry_from" action="{{route('data_entry_point.update',$dataEntry->id)}}" method="POST" novalidate enctype="multipart/form-data"> 
                   @csrf
                     <div class="row mx-4">
                         <div class="col-md-4">
@@ -51,7 +51,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="sin" value="{{$dataEntry->sin}}" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="sin" value="{{$dataEntry->sin}}" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="SIN">SIN</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -130,7 +130,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" value="{{$dataEntry->postal_code}}"  name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" value="{{$dataEntry->postal_code}}"  name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Postal Code</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -143,8 +143,8 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" value="{{$dataEntry->transit_number}}" name="transit_number" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
-                                  <label for="Postal_code">Transit Number</label>
+                                  <input type="text" class="form-control" value="{{$dataEntry->transit_number}}" name="transit_number" id="transit_number" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <label for="transit_number">Transit Number</label>
                                 </div>
                                 <span id="errNm2"></span>
                               </div>

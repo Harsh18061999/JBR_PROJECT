@@ -19,7 +19,7 @@
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating error_message">
-                                            <input type="text" name="client_name" value={{ $client->client_name }}
+                                            <input type="text" name="client_name" value="{{ $client->client_name }}"
                                                 class="form-control" id="client_name" placeholder="John"
                                                 aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="client_name">Client Name</label>

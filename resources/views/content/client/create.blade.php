@@ -112,6 +112,19 @@
             const id = $(this).attr("data-id");
             $("#delete" + id).remove();
         });
+
+        @php
+            $eroor_message = '';
+            if ($errors->any()){
+                foreach ($errors->all() as $error){
+                $eroor_message .= $error;
+                }
+            }
+        @endphp
+        @if($eroor_message != '')
+            swal("Oops...", "{{ $eroor_message }}", "error");
+        @endif
+
     </script>
 
 @endsection

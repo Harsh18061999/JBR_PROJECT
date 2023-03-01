@@ -46,14 +46,14 @@ class UserController extends Controller
         $users = $this->userRepository->createUser($request->all());
         $users->syncRoles($request->get('role'));
         
-        $message = "Thank you for choosing Our Brand. Use the following link complete your procedures. OTP is valid for 5 minutes, \n";
+        $message = "Thank you for choosing Our Brand. Use the following link complete your procedures. \n";
         $message .= route('passwordCreate', $users->remember_token);
 
         $number = '+' . $users->countryCode . $users->contact_number;
         sendMessage($number, $message);
 
         return redirect()->route('user.index')
-        ->with('success', 'User created successfully.');
+        ->with('success', 'User created successFully.');
 
     }
 
@@ -82,7 +82,7 @@ class UserController extends Controller
         $user->syncRoles($request->get('role'));
 
         return redirect()->route('user.index')
-            ->with('success', 'User updated successfully');
+            ->with('success', 'User updated successFully');
     }
 
     public function destory($id){

@@ -216,7 +216,7 @@ class EmployeeController extends Controller
             $number = '+' . $employee->country_code . $employee->contact_number;
             sendMessage($number, $message);
             $response['success'] = true;
-            $response['message'] = 'Otp has been send successfully';
+            $response['message'] = 'Otp has been send successFully';
             return $response;
         } catch (Exception $e) {
             return redirect()

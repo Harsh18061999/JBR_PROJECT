@@ -84,7 +84,7 @@ class JobRequestController extends Controller
         $job_request = $this->jobRequestRepository->createJobRequest($orderDetails);
 
         return redirect()->route('job_request.index')
-        ->with('success', 'Job Request Added Successfully.');
+        ->with('success', 'Job Request Added successFully.');
     }
 
     public function edit(JobRequest $job_request)
@@ -132,7 +132,7 @@ class JobRequestController extends Controller
         $this->jobRequestRepository->updateJobRequest($job_request_id,$orderDetails);
 
         return redirect()->route('job_request.index')
-            ->with('success', 'Job Request updated successfully');
+            ->with('success', 'Job Request updated successFully');
     }
 
     public function destory($id){

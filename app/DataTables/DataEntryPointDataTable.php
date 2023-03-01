@@ -123,7 +123,7 @@ class DataEntryPointDataTable extends DataTable
                         'lengthMenu' => [10, 15, 30, 50, 100],
                         'dom'          => 'Bfrtip',
                         'buttons'      => [ $print],
-                        'processing' => false,
+                        'processing' => true,
                         'serverSide' => true,
                         'scrollX' => false,
                         'bAutoWidth' => false,
@@ -157,9 +157,10 @@ class DataEntryPointDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
+                  ->sortable(false)
                   ->width(60),
-            Column::make('employee_id')->title('Employee')->width(60),
-            Column::make('sin'),
+            Column::make('employee_id')->title('Employee')->width(200),
+            Column::make('sin')->width(200),
             Column::make('line_1')->title('Line1'),
             Column::make('line_2'),
             Column::make('country'),

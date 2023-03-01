@@ -54,7 +54,7 @@
         rules: {
             email: {
                 required: true,
-                email: true
+                // email: true
             },
             password:{
                 required:true,

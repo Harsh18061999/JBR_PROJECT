@@ -122,7 +122,7 @@ class EmployeeTimeSheetController extends Controller
 
         $send_message = sendMessage($number,$message);
         $data['success'] = true;
-        $data['message'] = 'Message Has Been Sent SuccessFully.';
+        $data['message'] = 'Message Has Been Sent successFully.';
         }
         return $data;
     }

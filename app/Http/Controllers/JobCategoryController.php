@@ -45,7 +45,7 @@ class JobCategoryController extends Controller
 
         $response = [
             'success' => true,
-            'message' => "JobCategory Has Been Added Successfully.",
+            'message' => "JobCategory Has Been Added successFully.",
         ];
 
         return $response;
@@ -95,7 +95,7 @@ class JobCategoryController extends Controller
 
         $response = [
             'success' => true,
-            'message' => "JobCategory Has Been Updated Successfully.",
+            'message' => "JobCategory Has Been Updated successFully.",
         ];
 
         return $response;

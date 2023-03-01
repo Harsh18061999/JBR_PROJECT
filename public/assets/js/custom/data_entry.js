@@ -13,13 +13,52 @@ $(document).ready(function(){
         return value != '';
     }, "Please select field.");
 
+    
+    $.validator.addMethod("notNull", function(value, element){
+        return value != '';
+    }, "This field is required.");
+
+    $.validator.addMethod("sinno", function(value, element) {
+        var sin = value.toString().replace(/\D/g,'');
+        var double = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9];
+
+        // Individual digit from sin string
+        var digit;
+    
+        // Running total of sum of digits
+        var total = 0;
+    
+        for(var i = 0; i < sin.length; i++) {
+    
+             // now we need the digit as an integer
+            digit = parseInt(sin.charAt(i));
+    
+            // Digit in odd position = digit * 1 (or just the digit)
+            // Digit in even position = digit * 2 (see doubled array)
+            total += (i % 2) ? double[digit] : digit ;
+    
+        }
+    
+        // Return true or false (as required by jQuery validate)
+        // True that... sin has an integer value other than 0
+        // AND
+        // total mod 10 === 0
+        return (parseInt(sin) && total % 10 == 0) ? true : this.optional(element);
+        // return this.optional(element) || value.match(/^[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? ?[0-9][a-zA-Z]{2}$/);
+    }, "Please enter valid sin number.");
+
+    $.validator.addMethod("postcode", function(value, element) {
+        return this.optional(element) || value.match(/^[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? ?[0-9][a-zA-Z]{2}$/);
+    }, "Please enter valid Postcode.");
+
     $("#data_entry_from").validate({
             rules: {
                 contact_number : {
                     required: true,
                 },
                 sin: {
-                    required: true,
+                    sinno: true,
+                    notNull : true
                 },
                 line_1: {
                     required: true
@@ -37,7 +76,8 @@ $(document).ready(function(){
                     valueNotEquals: true
                 },  
                 postal_code: {
-                    required: true
+                    postcode: true,
+                    notNull : true
                 },  
                 transit_number: {
                     required: true

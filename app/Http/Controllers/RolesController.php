@@ -39,7 +39,7 @@ class RolesController extends Controller
         $role->syncPermissions($request->get('permission'));
     
         return redirect()->route('roles.index')
-                        ->with('success','Role created successfully');
+                        ->with('success','Role created successFully');
     }
 
     public function show(Role $role)
@@ -83,7 +83,7 @@ class RolesController extends Controller
         $role->syncPermissions($request->get('permission'));
     
         return redirect()->route('roles.index')
-                        ->with('success','Role updated successfully');
+                        ->with('success','Role updated successFully');
     }
 
     public function destroy($id)
@@ -91,6 +91,6 @@ class RolesController extends Controller
         Role::where('id',$id)->delete();
 
         return redirect()->route('roles.index')
-            ->withSuccess(__('Role deleted successfully.'));
+            ->withSuccess(__('Role deleted successFully.'));
     }
 }

@@ -51,7 +51,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="sin" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="sin" id="SIN" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="SIN">SIN</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -124,7 +124,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Postal Code</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -137,8 +137,8 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="number" class="form-control" name="transit_number" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
-                                  <label for="Postal_code">Transit Number</label>
+                                  <input type="text" class="form-control" name="transit_number" id="transit_number" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <label for="transit_number">Transit Number</label>
                                 </div>
                                 <span id="errNm2"></span>
                               </div>
