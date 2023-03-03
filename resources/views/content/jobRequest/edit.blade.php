@@ -315,7 +315,7 @@
                                 <div class=" mb-4">
                                     <div class="">
                                         <div class="form-floating">
-                                            <input type="number" class="form-control" name="no_of_employee"
+                                            <input type="text" class="form-control" name="no_of_employee"
                                                 id="no_of_employee" value="{{ $job_request->no_of_employee }}"
                                                 placeholder="Enter the number of employee to hire"
                                                 aria-describedby="floatingInputHelp" />
