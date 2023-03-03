@@ -90,7 +90,7 @@ $(document).ready(function(){
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                        swal("Poof! Your Job Request has been deleted!", {
+                        swal("Poof! Your Job request has been deleted!", {
                             icon: "success",
                         });
                         $('#job-request-table').DataTable().ajax.reload();

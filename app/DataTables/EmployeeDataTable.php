@@ -78,7 +78,7 @@ class EmployeeDataTable extends DataTable
             ],
             [
                 'extend'=> 'csv',
-                'text'=> 'csv',
+                'text'=> 'Csv',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5,6],
@@ -88,7 +88,7 @@ class EmployeeDataTable extends DataTable
             ],
             [
                 'extend'=> 'excel',
-                'text'=> 'excel',
+                'text'=> 'Excel',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5,6],
@@ -98,7 +98,7 @@ class EmployeeDataTable extends DataTable
             ],
             [
                 'extend'=> 'pdf',
-                'text'=> 'pdf',
+                'text'=> 'Pdf',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5,6],

@@ -57,7 +57,7 @@ class PermissionsController extends Controller
             DB::commit();
 
             // drakify('success') ;
-            return redirect()->route('permissions.index')->with("success","Permission created successFully.");
+            return redirect()->route('permissions.index')->with("success","Permission created successfully.");
 
         }catch (Exception $e) {
             // drakify('error');
@@ -138,7 +138,7 @@ class PermissionsController extends Controller
         
             // drakify('success') ;
                
-            return redirect()->route('permissions.index')->with("success","Record updated successFully.");
+            return redirect()->route('permissions.index')->with("success","Record updated successfully.");
 
         }catch (Exception $e) {
             DB::rollback();

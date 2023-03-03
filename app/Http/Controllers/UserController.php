@@ -53,7 +53,7 @@ class UserController extends Controller
         sendMessage($number, $message);
 
         return redirect()->route('user.index')
-        ->with('success', 'User created successFully.');
+        ->with('success', 'User created successfully.');
 
     }
 
@@ -82,7 +82,7 @@ class UserController extends Controller
         $user->syncRoles($request->get('role'));
 
         return redirect()->route('user.index')
-            ->with('success', 'User updated successFully');
+            ->with('success', 'User updated successfully');
     }
 
     public function destory($id){

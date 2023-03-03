@@ -74,10 +74,10 @@ class DataEntryPointController extends Controller
         }else{
             if(auth()->user()){
                 return redirect()->route('data_entry_point.index')
-                ->with('success', 'Record created successFully.');
+                ->with('success', 'Record created successfully.');
             }else{
                 return redirect()->back()
-                ->with('success', 'Record created successFully.');
+                ->with('success', 'Record created successfully.');
             }
         }
     }
@@ -145,10 +145,10 @@ class DataEntryPointController extends Controller
         $this->DataEntryPointRepository->updateDataEntry($dataId,$orderDetails);
         if(auth()->user()){
             return redirect()->route('data_entry_point.index')
-            ->with('success', 'Record updated successFully.');
+            ->with('success', 'Record updated successfully.');
         }else{
             return redirect()->back()
-            ->with('success', 'Record updated successFully.');
+            ->with('success', 'Record updated successfully.');
         }
     }
 

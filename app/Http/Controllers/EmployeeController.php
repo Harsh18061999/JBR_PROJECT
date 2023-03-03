@@ -66,13 +66,13 @@ class EmployeeController extends Controller
             $last_name = $employees->last_name;
 
             $message = "👏 Hello $first_name $last_name , \n";
-            $message .= "Your Account Has Been successFully Created. \n";
+            $message .= "Your Account Has Been successfully Created. \n";
 
             $number = '+' . $employees->countryCode . $employees->contact_number;
             sendMessage($number, $message);
 
             return redirect()->route('employee.index')
-            ->with('success', 'Record created successFully.');
+            ->with('success', 'Record created successfully.');
         } catch (Exception $e) {
             return redirect()
                 ->back()
@@ -134,7 +134,7 @@ class EmployeeController extends Controller
             $this->employeeRepository->updateEmployee($employeeId,$orderDetails);
 
             return redirect()->route('employee.index')
-                ->with('success', 'Employee updated successFully');
+                ->with('success', 'Employee updated successfully');
         } catch (Exception $e) {
             return redirect()
                 ->back()

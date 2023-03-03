@@ -57,6 +57,27 @@
                         ? true
                         : auth()->user()->can($menu->slug))
                     {{-- main menu --}}
+                    @if($menu->name == 'Admin')
+                        @if(auth()->user()->getRoleNames()[0] == 'admin')
+                        <li class="menu-item {{ $activeClass }}">
+                            <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
+                                class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
+                                @if (isset($menu->target) and !empty($menu->target)) target="_self" @endif>
+                                @isset($menu->icon)
+                                    <i class="{{ $menu->icon }}"></i>
+                                @endisset
+                                <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                            </a>
+    
+                            {{-- submenu --}}
+                            @isset($menu->submenu)
+                                @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu])
+                            @endisset
+                        </li>
+                        @endif
+
+                    @else
+
                     <li class="menu-item {{ $activeClass }}">
                         <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
                             class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
@@ -72,6 +93,7 @@
                             @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu])
                         @endisset
                     </li>
+                    @endif
                 @endif
             @endif
         @endforeach

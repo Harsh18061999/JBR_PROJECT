@@ -46,7 +46,7 @@ class ClientController extends Controller
         $client = $this->clientRepository->createClient($request->all());
 
         return redirect()->route('client.index')
-        ->with('success', 'Record created successFully.');
+        ->with('success', 'Record created successfully.');
     }
 
     public function edit(Client $client)
@@ -78,7 +78,7 @@ class ClientController extends Controller
         $this->clientRepository->updateClient($clientId,$orderDetails);
 
         return redirect()->route('client.index')
-            ->with('success', 'Client updated successFully');
+            ->with('success', 'Client updated successfully');
     }
 
     public function destory($id){

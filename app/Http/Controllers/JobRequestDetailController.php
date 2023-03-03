@@ -614,7 +614,7 @@ class JobRequestDetailController extends Controller
                       'message_status' => '1'
                     ]);
                     $data['success'] = true;
-                    $data['message'] = 'Message Has Been Sent SuccessFully.';
+                    $data['message'] = 'Message Has Been Sent successfully.';
                 }else{
                   SendMessage::where('id',$message_data['id'])
                     ->update([
@@ -675,7 +675,7 @@ class JobRequestDetailController extends Controller
                 }
             }
             $data['success'] = true;
-            $data['message'] = 'Message Has Been Sent SuccessFully.';
+            $data['message'] = 'Message Has Been Sent successfully.';
         }
         return $data;
     }

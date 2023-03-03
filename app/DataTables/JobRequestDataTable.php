@@ -23,7 +23,7 @@ class JobRequestDataTable extends DataTable
      * @param QueryBuilder $query Results from query() method.
      * @return \Yajra\DataTables\EloquentDataTable
      */
-    public function dataTable(QueryBuilder $query): EloquentDataTable
+    public function dataTable(QueryBuilder $query,Request $request): EloquentDataTable
     {
         return (new EloquentDataTable($query))->rawColumns(['action','status','supervisor','client','job'])
             ->addColumn('action', function($query){
@@ -87,6 +87,8 @@ class JobRequestDataTable extends DataTable
         if($request->status && $request->status != ''){
             $model = $model->where('status',$request->status);
         }
+
+        
         return $model->newQuery();
     }
 
@@ -110,7 +112,7 @@ class JobRequestDataTable extends DataTable
             ],
             [
                 'extend'=> 'csv',
-                'text'=> 'csv',
+                'text'=> 'Csv',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
@@ -120,7 +122,7 @@ class JobRequestDataTable extends DataTable
             ],
             [
                 'extend'=> 'excel',
-                'text'=> 'excel',
+                'text'=> 'Excel',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
@@ -130,7 +132,7 @@ class JobRequestDataTable extends DataTable
             ],
             [
                 'extend'=> 'pdf',
-                'text'=> 'pdf',
+                'text'=> 'Pdf',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
@@ -160,7 +162,7 @@ class JobRequestDataTable extends DataTable
                         'dom'          => 'Bfrtip',
                         'buttons'      => [ $print],
                     ])
-                    ->orderBy(1)
+                   ->orderBy(1)
                     ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
@@ -175,12 +177,13 @@ class JobRequestDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
+                  ->sortable(false)
                   ->width(60),
-            Column::make('client') ,
-            Column::make('supervisor'),
-            Column::make('job'),
-            Column::make('job_date'),
-            Column::make('status') ,
+            Column::make('client')->sortable(false) ,
+            Column::make('supervisor')->sortable(false),
+            Column::make('job')->sortable(false),
+            Column::make('job_date')->sortable(false),
+            Column::make('status') ->sortable(false),
             // Column::make('job'),
             // Column::make('status'),
         ];
