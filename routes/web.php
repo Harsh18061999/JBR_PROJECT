@@ -19,7 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\CampaignController;
-
+// use Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -100,6 +100,11 @@ Route::get('/form/layouts-horizontal', $controller_path . '\form_layouts\Horizon
 // tables
 Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tables-basic');
 
+//Data Entry Point
+Route::delete('/data_entry_point/{id}', [DataEntryPointController::class, 'destory'])->name('data_entry_point.destory');
+Route::post('/data_entry_point/{id}', [DataEntryPointController::class, 'update'])->name('data_entry_point.update');
+Route::resource('/data_entry_point', DataEntryPointController::class);
+
 Route::group(['middleware' => ['auth', 'permission']], function () {
     Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
         Route::get('/dashboard', function () {
@@ -148,10 +153,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::POST('/send_bulk_message_job', [JobRequestDetailController::class, 'sendBulkMessageJob'])->name('sendBulkMessageJob');
         Route::GET('/total_employee_count', [JobRequestDetailController::class, 'employeeaCount'])->name('employeeaCount');
 
-        //Data Entry Point
-        Route::delete('/data_entry_point/{id}', [DataEntryPointController::class, 'destory'])->name('data_entry_point.destory');
-        Route::post('/data_entry_point/{id}', [DataEntryPointController::class, 'update'])->name('data_entry_point.update');
-        Route::resource('/data_entry_point', DataEntryPointController::class);
+     
 
         //Weekly Scheduler
         Route::get('/weekly_scheduler', [WeeklySchedulerController::class, 'index'])->name('weekly_scheduler.index');
