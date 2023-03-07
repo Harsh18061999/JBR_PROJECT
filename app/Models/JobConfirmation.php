@@ -22,4 +22,8 @@ class JobConfirmation extends Model
     public function employee(){
         return $this->hasOne(Employee::class,'id','employee_id');
     }
+
+    public function jobStatus(){
+        return $this->hasOne(JobReminder::class)->last();
+    }
 }
