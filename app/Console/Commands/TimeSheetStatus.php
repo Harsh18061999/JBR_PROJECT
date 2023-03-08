@@ -32,7 +32,7 @@ class TimeSheetStatus extends Command
      */
     public function handle()
     {
-        $job_c_id = JobReminder::whereDate('created_at',Carbon::now())->where('time_sheet_reminder','1')->pluck('job_confirmations_id')->toArray();
+        $job_c_id = JobReminder::whereDate('reminder_date',Carbon::now())->where('time_sheet_reminder','1')->pluck('job_confirmations_id')->toArray();
         $job_confirmation = JobConfirmation::whereNotIn('id',$job_c_id)->with(['job.supervisor.client','employee'])->where('job_status','<','2')->get();
         if($job_confirmation){
             foreach($job_confirmation as $k => $value){
