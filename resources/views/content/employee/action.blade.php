@@ -7,7 +7,7 @@
         <a type="button" title="Download License" class="dropdown-item" href="{{asset('storage/assets/'.$query->lincense)}}" target="_blank" download="{{$query->first_name.'_'.$query->last_name}}"> <i class="fa-solid fa-download"></i> Download</a>
         @endif
         <a href="{{route('employee.edit',$query->id)}}" title="Edite Employee" class="dropdown-item pointer"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-        <a data-href="{{route('employee.destory',$query->id)}}" title="Delete Employee" data-id="{{$query->id}}" class="delete pointer text-danger dropdown-item"><i class=" fa-solid fa-trash"></i> Delete</a>
+        {{-- <a data-href="{{route('employee.destory',$query->id)}}" title="Delete Employee" data-id="{{$query->id}}" class="delete pointer text-danger dropdown-item"><i class=" fa-solid fa-trash"></i> Delete</a> --}}
     </div>
 </div>
 

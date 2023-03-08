@@ -462,10 +462,10 @@ class PermissionsTableSeeder extends Seeder
             44 => 
             array (
                 'id' => 50,
-                'name' => 'data_entry_point,create',
+                'name' => 'data_entry_point.create',
                 'guard_name' => 'web',
                 'created_at' => '2023-02-20 17:14:54',
-                'updated_at' => '2023-02-20 17:14:54',
+                'updated_at' => '2023-03-03 17:54:36',
                 'title' => 'data_entry_point',
                 'description' => 'create',
             ),

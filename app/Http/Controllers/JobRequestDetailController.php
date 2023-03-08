@@ -183,9 +183,17 @@ class JobRequestDetailController extends Controller
                       </div>
                     </div>
                   </div>';
-                }else if($value['status'] == 1){
+                }else if($value['status'] == 1 || $value['status'] == 2){
+                  if($value['status'] == 1){
+                    
                     $background = 'bg-warning';
                     $status = 'ON GOING';
+                  }else{
+
+                    $background = 'bg-success';
+                    $status = 'COMPLETED';
+                  }
+
 
                     $result['data'][] = '         <div class="col-lg-12 mt-3">
                     <div class="col-12">

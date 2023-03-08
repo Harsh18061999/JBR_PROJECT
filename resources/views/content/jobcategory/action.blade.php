@@ -2,7 +2,7 @@
     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></button>
     <div class="dropdown-menu" style="">
       <a data-href="{{route('job_category.edit',$query->id)}}" data-editurl="{{route('job_category.update',$query->id)}}" class="dropdown-item pointer edit"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-      <a data-href="{{route('job_category.destroy',$query->id)}}" data-id="{{$query->id}}" class="dropdown-item delete pointer text-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+      {{-- <a data-href="{{route('job_category.destroy',$query->id)}}" data-id="{{$query->id}}" class="dropdown-item delete pointer text-danger"><i class="fa-solid fa-trash"></i> Delete</a> --}}
     </div>
   </div>
 

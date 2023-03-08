@@ -12,7 +12,7 @@
                 class="fa-solid fa-download"></i> Download</a>
         <a href="{{ route('data_entry_point.edit', $query->id) }}" title="Edite" class=" dropdown-item pointer"><i
                 class="fa-solid fa-pen-to-square"></i> Edit</a>
-        <a data-href="{{ route('data_entry_point.destory', $query->id) }}" title="Delete" data-id="{{ $query->id }}"
-            class=" dropdown-item delete pointer text-danger"><i class=" fa-solid fa-trash"> </i>Delete</a>
+        {{-- <a data-href="{{ route('data_entry_point.destory', $query->id) }}" title="Delete" data-id="{{ $query->id }}"
+            class=" dropdown-item delete pointer text-danger"><i class=" fa-solid fa-trash"> </i>Delete</a> --}}
     </div>
 </div>
