@@ -30,16 +30,16 @@ class JobRequestAlert extends Command
      */
     public function handle()
     {
-        $job_c_id = JobReminder::whereDate('reminder_date',Carbon::now())->pluck('job_confirmations_id')->toArray();
+        $job_c_id = JobReminder::whereDate('reminder_date',Carbon::now()->subRealHours(5))->pluck('job_confirmations_id')->toArray();
         $job_confirmation = JobConfirmation::whereNotIn('id',$job_c_id)->with(['job.supervisor.client','employee'])->where('job_status','<','2')->get();
         if($job_confirmation){
             foreach($job_confirmation as $k => $value){
                 
-                $startDate = Carbon::createFromFormat('Y-m-d',$value->job->job_date);
-                $endDate = Carbon::createFromFormat('Y-m-d', $value->job->end_date);
+                $startDate = Carbon::createFromFormat('Y-m-d',$value->job->job_date)->subRealHours(5);
+                $endDate = Carbon::createFromFormat('Y-m-d', $value->job->end_date)->subRealHours(5);
 
-                $date1 = Carbon::createFromFormat('Y-m-d', $value->job->end_date);
-                $date2 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
+                $date1 = Carbon::createFromFormat('Y-m-d', $value->job->end_date)->subRealHours(5);
+                $date2 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->subRealHours(5);
         
                 if(Carbon::now()->between($startDate, $endDate)){
                    $this->jobStatus($value);

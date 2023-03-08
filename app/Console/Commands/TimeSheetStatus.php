@@ -32,21 +32,24 @@ class TimeSheetStatus extends Command
      */
     public function handle()
     {
-        $job_c_id = JobReminder::whereDate('reminder_date',Carbon::now())->where('time_sheet_reminder','1')->pluck('job_confirmations_id')->toArray();
-        $job_confirmation = JobConfirmation::whereNotIn('id',$job_c_id)->with(['job.supervisor.client','employee'])->where('job_status','<','2')->get();
+        $job_c_id = JobReminder::whereDate('reminder_date',Carbon::now()->subRealHours(5))->where('time_sheet_reminder','1')->pluck('job_confirmations_id')->toArray();
+        $job_confirmation = JobConfirmation::whereNotIn('id',$job_c_id)->with(['job.supervisor.client','employee'])->with('job',function($q){
+            $q->where('status','<','2');
+        })->where('job_status','<','2')->get();
         if($job_confirmation){
             foreach($job_confirmation as $k => $value){
-                
-                $startDate = Carbon::createFromFormat('Y-m-d',$value->job->job_date);
-                $endDate = Carbon::createFromFormat('Y-m-d', $value->job->end_date);
-
-                $date1 = Carbon::createFromFormat('Y-m-d', $value->job->end_date);
-                $date2 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
-        
-                if(Carbon::now()->between($startDate, $endDate)){
-                   $this->jobStatus($value);
-                }else if($date1->eq($endDate)){
-                    $this->jobStatus($value);
+                if($value->job){
+                    $startDate = Carbon::createFromFormat('Y-m-d',$value->job->job_date)->subRealHours(5);
+                    $endDate = Carbon::createFromFormat('Y-m-d', $value->job->end_date)->subRealHours(5);
+    
+                    $date1 = Carbon::createFromFormat('Y-m-d', $value->job->end_date)->subRealHours(5);
+                    $date2 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->subRealHours(5);
+            
+                    if(Carbon::now()->between($startDate, $endDate)){
+                       $this->jobStatus($value);
+                    }else if($date1->eq($endDate)){
+                        $this->jobStatus($value);
+                    }
                 }
             }
      
@@ -60,6 +63,7 @@ class TimeSheetStatus extends Command
 
         $job_time = explode(":",$value->job->end_time);
         if(($job_time[0]-1) <= $time[0] && $job_time[2] == $time[2]){
+            echo $value->id;
             JobReminder::where('job_confirmations_id',$value->id)->latest()->update([
                 'time_sheet_reminder' => '1',
                 'reminder_date' => Carbon::now()

@@ -29,7 +29,7 @@ class JobStatus extends Command
      */
     public function handle()
     {
-        JobRequest::where('status','!=','2')->whereDate('end_date','<',date('Y-m-d'))->update([
+        JobRequest::where('status','!=','2')->whereDate('end_date','<',Carbon::now()->subRealHours(5))->update([
             'status' => '2'
         ]);
     }
