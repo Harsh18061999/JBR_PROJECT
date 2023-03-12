@@ -96,6 +96,27 @@
       "menu_slug":[]
     },
     {
+      "url" : "/country",
+      "name" : "Country",
+      "icon" : "menu-icon fa-solid fa-flag",
+      "slug": "country.index",
+      "menu_slug": ["country"]
+    },
+    {
+      "url" : "/province",
+      "name" : "Province",
+      "icon" : "menu-icon fa-solid fa-flag",
+      "slug": "province.index",
+      "menu_slug": ["province"]
+    },
+    {
+      "url" : "/city",
+      "name" : "City",
+      "icon" : "menu-icon fa-solid fa-flag",
+      "slug": "city.index",
+      "menu_slug": ["city"]
+    },
+    {
           "name": "Admin",
           "icon": "menu-icon tf-icons bx bx-lock-open-alt",
           "slug": "",
