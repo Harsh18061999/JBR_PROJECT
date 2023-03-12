@@ -87,7 +87,7 @@ class EmployeeController extends Controller
             // sendMessage($number, $message);
             return redirect()
                 ->route('successVerify')
-                ->with('success', 'Otp has been send to your whatsapp no.');
+                ->with('success', 'OTP has been send to your whatsapp no.');
         } catch (Exception $e) {
             return redirect()
                 ->back()
@@ -172,13 +172,13 @@ class EmployeeController extends Controller
             DB::commit();
             $message = "Thank you for choosing Our Brand. Use the following OTP to complete your procedures. OTP is valid for 5 minutes, \n";
             $message .= "OTP : $randomNumber \n";
-            $message .= route('verifyNumber', $token)." use this link to verify your number.";
+            $message .= route('verifyNumber', $token);
 
             $number = '+' . $request->countryCode . $request->contact_number;
             sendMessage($number, $message);
             return redirect()
             ->route('verifyNumber', $token)
-            ->with('success', 'Otp has been send to your whatsapp no.');
+            ->with('success', 'OTP has been send to your whatsapp no.');
         } catch (Exception $e) {
             DB::rollback();
             return redirect()
@@ -216,7 +216,7 @@ class EmployeeController extends Controller
             $number = '+' . $employee->country_code . $employee->contact_number;
             sendMessage($number, $message);
             $response['success'] = true;
-            $response['message'] = 'Otp has been send successfully';
+            $response['message'] = 'OTP has been send successfully';
             return $response;
         } catch (Exception $e) {
             return redirect()
@@ -272,7 +272,7 @@ class EmployeeController extends Controller
                     VerifyAccount::where('token', $request->token_value)->update([
                         "status" => '1'
                     ]);
-                    $message = "Your Phone Number Has Been Verify, \n";
+                    $message = "Your Phone Number Has Been Verified, \n";
                     $message .= route('employee_register', $request->token_value)." use this link to further process.";
         
                     $number = '+' . $request->countryCode . $request->contact_number;

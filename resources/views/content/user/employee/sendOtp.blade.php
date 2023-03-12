@@ -34,7 +34,7 @@
                                         <div class="">
                                             <div class="form-floating">
                                                 <select name="countryCode" id="countryCode" class="form-select chosen-select">
-                                                    <option data-countryCode="GB" value="">Select Contry Code</option>
+                                                    <option data-countryCode="GB" value="">Select Country Code</option>
                                                     <option data-countryCode="GB" value="44">UK (+44)</option>
                                                     <option data-countryCode="US" value="1">USA (+1)</option>
                                                     <optgroup label="Other countries">

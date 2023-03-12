@@ -37,7 +37,8 @@
                     <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
                         <img src="{{ asset('/assets/img/JBR_Staffing_Solutions.jpg') }}" class="m-auto" alt=""
                             width="250px" height="250px">
-                        <h3><strong>Verifay Account</strong></h3>
+                        <h3><strong>Verify Account</strong></h3>
+                        <p class="text-danger"> OTP has been valide for 5 minutes.</p>
                         <hr class="mt-4 mx-4">
                         <form id="verifyAccount" action="{{ route('verifyOtp') }}" method="POST" novalidate
                             enctype="multipart/form-data">
