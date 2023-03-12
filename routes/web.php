@@ -8,8 +8,6 @@ use App\Http\Controllers\User\JobRequestController as UserJobRequestController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\JobRequestController;
-use App\Http\Controllers\ProvienceController;
-use App\Http\Controllers\CityController;
 use App\Http\Controllers\EmployeeTimeSheetController;
 use App\Http\Controllers\JobRequestDetailController;
 use App\Http\Controllers\DataEntryPointController;
@@ -19,6 +17,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionsController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\ProvienceController;
+use App\Http\Controllers\CityController;
 // use Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -181,6 +182,21 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::resources([
             'permissions' => PermissionsController::class
         ]);
+
+        // Country Routes
+        Route::resource('/country', CountryController::class);
+        Route::post('/country/{id}',[CountryController::class,'update'])->name('country.update');
+        Route::delete('/country_destroy/{id}',[CountryController::class,'destory'])->name('country_destroy.destory');
+
+        // Province Routes
+        Route::resource('/province', ProvienceController::class);
+        Route::post('/province/{id}',[ProvienceController::class,'update'])->name('province.update');
+        Route::delete('/province_destroy/{id}',[ProvienceController::class,'destory'])->name('province_destroy.destory');
+        
+        // City Routes
+        Route::resource('/city', CityController::class);
+        Route::post('/city/{id}',[CityController::class,'update'])->name('city.update');
+        Route::delete('/city_destroy/{id}',[CityController::class,'destory'])->name('city_destroy.destory');
     });
 });
 

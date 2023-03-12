@@ -13,4 +13,9 @@ class Provience extends Model
         'country_id',
         'provience_name'
     ];
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }   
 }
