@@ -246,6 +246,7 @@ $(document).ready(function(){
     //         }
     //     });
     // });
+   
     $("body").on("change","#email",function(){
         $.ajax({
             type: 'get',
@@ -281,11 +282,11 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     if(response.numberCheck == false){
-                        swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                        swal("Oops...", "Given number is not whatsapp no.", "error");
                         $("#contact_number").val('');   
                     }
                     if(response.success){
-                        swal("Oops...", "Contact Number Is Already Register.", "error");
+                        swal("Oops...", "Contact number is already register.", "error");
                         $("#contact_number").val('');   
                     }
                 }
@@ -315,11 +316,11 @@ $(document).ready(function(){
                     $("#employee_button").removeClass("disabled");
                 },500);
                 if(response.numberCheck == false){
-                    swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                    swal("Oops...", "Given number is not whatsapp no.", "error");
                     $("#contact_number").val('');   
                 }
                 if(response.success){
-                    swal("Oops...", "Contact Number Is Already Register.", "error");
+                    swal("Oops...", "Contact number is already register.", "error");
                     $("#contact_number").val('');   
                 }
             }
@@ -487,7 +488,7 @@ $(document).ready(function(){
         changeMonth: true,
         changeYear: true,
         dateFormat: 'yy-mm-dd',
-        yearRange: '-99:-18',
+        yearRange: '-60:-18',
         maxDate: `${month}-${month}-${day}`,
         autoclose: true
     });

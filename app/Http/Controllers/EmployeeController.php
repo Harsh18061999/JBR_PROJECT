@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Interfaces\EmployeeRepositoryInterface;
 use App\DataTables\EmployeeDataTable;
 use App\Models\Employee;
+use App\Models\Country;
 use Illuminate\Support\Facades\Storage;
 use File;
 use App\Models\JobCategory;
@@ -29,7 +30,8 @@ class EmployeeController extends Controller
     public function create()
     {
         $jobCategory = JobCategory::get();
-        return view('content.employee.create',compact('jobCategory'));
+        $country_code = Country::get();
+        return view('content.employee.create',compact('jobCategory','country_code'));
     }
 
     public function store(Request $request) 
@@ -44,7 +46,7 @@ class EmployeeController extends Controller
             'job' => 'required'
             // 'licence' => 'required',
         ]);
-
+        $country = Country::where('id',$request->countryCode)->first();
         try {
             $filename = '';
             if($request->has('lincense')) {
@@ -66,9 +68,9 @@ class EmployeeController extends Controller
             $last_name = $employees->last_name;
 
             $message = "👏 Hello $first_name $last_name , \n";
-            $message .= "Your Account Has Been successfully Created. \n";
+            $message .= "Your account has been created successfully. \n";
 
-            $number = '+' . $employees->countryCode . $employees->contact_number;
+            $number = '+' . $country->country_code . $employees->contact_number;
             sendMessage($number, $message);
 
             return redirect()->route('employee.index')
@@ -83,8 +85,9 @@ class EmployeeController extends Controller
     public function edit(Employee $employee)
     {
         $jobCategory = JobCategory::get();
+        $country_code = Country::get();
         
-        return view('content.employee.edit', compact('employee','jobCategory'));
+        return view('content.employee.edit', compact('employee','jobCategory','country_code'));
     }
 
     public function update(Request $request)
@@ -94,9 +97,7 @@ class EmployeeController extends Controller
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
-            'countryCode' => 'required',
             'email' => 'required',
-            'contact_number' => 'required',
             'date_of_birth' => 'required',
             'job' => 'required'
             // 'licence' => 'required',

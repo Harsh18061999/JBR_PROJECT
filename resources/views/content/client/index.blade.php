@@ -10,6 +10,9 @@ thead{
 .dataTables_filter{
     margin-bottom: 30px;
 }
+.dataTables_filter{
+  margin-top:10px; 
+}
 </style>
 @section('content')
 <div class="d-flex justify-content-between align-items-center">
@@ -48,33 +51,6 @@ thead{
                       @endforeach
                     </select>
                 </div>
-                <div class="col-lg-3 mb-3">
-                    <label for="supervisor" class="form-label">Supervisor</label>
-                    <select class="form-select" name="supervisor" id="supervisor" aria-label="Default select example">
-                      <option selected value="">Open this select menu</option>
-                      @foreach ($client as $item)
-                        <option value="{{$item->id}}">{{$item->supervisor}}</option>
-                      @endforeach
-                    </select>
-                </div>
-                {{-- <div class="col-lg-3 mb-3">
-                    <label for="job_title" class="form-label">JobCategory</label>
-                    <select class="form-select" name="job_title" id="job_title" aria-label="Default select example">
-                      <option selected value="">Open this select menu</option>
-                      @foreach ($jobCategory as $item)
-                        <option value="{{$item->id}}">{{$item->job_title}}</option>
-                      @endforeach
-                    </select>
-                </div> --}}
-                {{-- <div class="col-lg-3 mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-select" name="status" id="status" aria-label="Default select example">
-                      <option selected value="">Open this select menu</option>
-                      <option value="1">Available</option>
-                      <option value="2">Not Available</option>
-                      <option value="3">Block</option>
-                    </select>
-                </div> --}}
                 <div class="col-lg-3 mt-2">
                     <br>
                       <button type="button" id="client_search" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> </button>

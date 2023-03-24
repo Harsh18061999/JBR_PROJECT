@@ -18,14 +18,13 @@
               <img src="{{asset('/assets/img/JBR_Staffing_Solutions.jpg')}}" class="m-auto" alt="" width="250px" height="250px">
             </a>
           </div>
-          <h4>Welcome to {{config('variables.templateName')}}! 👋</h4>
-          <p>Please sign-in to your account and start the adventure</p>
+          <h4>Welcome to {{config('variables.templateName')}}!</h4>
 
           <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-3 error_div">
               <label for="email" class="form-label">Email</label>
-              <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email or username" autofocus>
+              <input type="text" class="form-control" autocomplete="off" id="email" name="email" placeholder="Enter your email or phone number" autofocus>
             </div>
             <div class="mb-3 form-password-toggle error_div">
               <div class="d-flex justify-content-between">
@@ -50,11 +49,27 @@
 </div>
 
 <script>
+  $.validator.addMethod("emailOrPhone", function(value, element){
+      let re = /[A-Za-z]/g
+      let no = /[0-9]/g
+      if(value.match(no)){
+        if(value.length < 10 && value.length > 10){
+          return false;
+        }
+      }
+      if(value.match(re)){
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+          
+        return pattern.test(value);
+      }
+      return true;
+    }, "please specify a valid email or phone number.");
+
     $("#formAuthentication").validate({
         rules: {
             email: {
                 required: true,
-                // email: true
+                emailOrPhone: true
             },
             password:{
                 required:true,

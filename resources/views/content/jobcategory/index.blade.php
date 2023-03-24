@@ -43,7 +43,7 @@
                             </div>
                             <div class="row g-2 d-flex">
                                 <div class="">
-                                    <small class="fw-semibold d-block">License</small>
+                                    <small class="fw-semibold d-block">Licence</small>
                                     <div class="form-check form-check-inline mt-3">
                                     <input class="form-check-input" type="radio" name="license_status" id="inlineRadio1" value="1" />
                                     <label class="form-check-label" for="inlineRadio1">Required</label>

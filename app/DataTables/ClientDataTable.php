@@ -48,18 +48,6 @@ class ClientDataTable extends DataTable
         if($request->client_name && $request->client_name != ''){
             $model = $model->where('id',$request->client_name);
         }
-
-        if($request->supervisor && $request->supervisor != ''){
-            $model = $model->where('id',$request->supervisor);
-        }
-
-        if($request->job_title && $request->job_title != ''){
-            $model = $model->where('job',$request->job_title);
-        }
-        
-        if($request->status){
-            $model = $model->where('status',(string)($request->status - 1));
-        }
         return $model->newQuery();
     }
 
@@ -70,49 +58,49 @@ class ClientDataTable extends DataTable
      */
     public function html(): HtmlBuilder
     {
-        $print = [
-            [
-                'extend'=> 'print',
-                'text'=> 'Print',
-                'title'=> 'All JobCategory',
-                'exportOptions' =>  [
-                'columns' => [1,2,3],
-                ],
-                'footer'=> true,
-                'autoPrint'=> true
-            ],
-            [
-                'extend'=> 'csv',
-                'text'=> 'Csv',
-                'title'=> 'All JobCategory',
-                'exportOptions' =>  [
-                'columns' => [1,2,3],
-                ],
-                'footer'=> true,
-                'autoPrint'=> true
-            ],
-            [
-                'extend'=> 'excel',
-                'text'=> 'Excel',
-                'title'=> 'All JobCategory',
-                'exportOptions' =>  [
-                'columns' => [1,2,3],
-                ],
-                'footer'=> true,
-                'autoPrint'=> true
-            ],
-            [
-                'extend'=> 'pdf',
-                'text'=> 'Pdf',
-                'title'=> 'All JobCategory',
-                'exportOptions' =>  [
-                'columns' => [1,2,3],
-                ],
-                'footer'=> true,
-                'autoPrint'=> true
-            ],
-            'colvis'
-        ];
+        // $print = [
+        //     [
+        //         'extend'=> 'print',
+        //         'text'=> 'Print',
+        //         'title'=> 'All JobCategory',
+        //         'exportOptions' =>  [
+        //         'columns' => [1,2,3],
+        //         ],
+        //         'footer'=> true,
+        //         'autoPrint'=> true
+        //     ],
+        //     [
+        //         'extend'=> 'csv',
+        //         'text'=> 'Csv',
+        //         'title'=> 'All JobCategory',
+        //         'exportOptions' =>  [
+        //         'columns' => [1,2,3],
+        //         ],
+        //         'footer'=> true,
+        //         'autoPrint'=> true
+        //     ],
+        //     [
+        //         'extend'=> 'excel',
+        //         'text'=> 'Excel',
+        //         'title'=> 'All JobCategory',
+        //         'exportOptions' =>  [
+        //         'columns' => [1,2,3],
+        //         ],
+        //         'footer'=> true,
+        //         'autoPrint'=> true
+        //     ],
+        //     [
+        //         'extend'=> 'pdf',
+        //         'text'=> 'Pdf',
+        //         'title'=> 'All JobCategory',
+        //         'exportOptions' =>  [
+        //         'columns' => [1,2,3],
+        //         ],
+        //         'footer'=> true,
+        //         'autoPrint'=> true
+        //     ],
+        //     'colvis'
+        // ];
         return $this->builder()
                     ->setTableId('client-table')
                     ->columns($this->getColumns())
@@ -127,8 +115,8 @@ class ClientDataTable extends DataTable
                         }'
                     ])
                     ->parameters([
-                        'dom'          => 'Bfrtip',
-                        'buttons'      => [ $print],
+                        // 'dom'          => 'Bfrtip',
+                        // 'buttons'      => [ $print],
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
                         'responsive' => true,
@@ -137,14 +125,13 @@ class ClientDataTable extends DataTable
                         'serverSide' => true,
                         'scrollX' => false,
                         'bAutoWidth' => false,
-                        'language' => [
-                            ],
+                        // 'language'=>['search'=>'<span class="svg-icon svg-icon-1 position-absolute search_icon_input"></span>','searchPlaceholder'=>'Search...'],
                         'initComplete' => "function () {
                             var self = this.api();
                         }",
                         
                     ])
-                    ->dom('Bfrtip')
+                    // ->dom('Bfrtip')
                     ->orderBy(1)
                     ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }

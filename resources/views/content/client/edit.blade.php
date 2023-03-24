@@ -6,9 +6,9 @@
 
     <div class="card shadow bg-transparent" id="grad1">
         <div class="row mt-0">
-            <div class="text-center p-0">
+            <div class=" p-0">
                 <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                    <h3><strong><i class="fa-solid fa-user mx-2"></i> Client Register</strong></h3>
+                    <h3 class="text-center"><strong><i class="fa-solid fa-user mx-2"></i> Client Update</strong></h3>
                     <hr class="mt-4 mx-4">
                     <form id="client_from" action="{{ route('client.update', $client->id) }}" method="POST"
                         enctype="multipart/form-data" novalidate>
@@ -45,14 +45,14 @@
                                         <div class="col-md-12">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="w-100 row">
-                                                    <div class="col-md-6 form-floating error_message">
+                                                    <div class="col-md-6 my-2 form-floating error_message">
                                                         <input type="text" name="supervisor[{{ $supervisor['id'] }}]"
                                                             class="form-control" id="supervisor" placeholder="John"
                                                             aria-describedby="floatingInputHelp" data-error="errNm1"
                                                             value="{{ $supervisor['supervisor'] }}" />
                                                         <label for="supervisor">Supervisor</label>
                                                     </div>
-                                                    <div class="col-md-6 form-group ">
+                                                    <div class="col-md-6 my-2 form-group ">
                                                         <div class="form-floating">
                                                             <textarea class="form-control" name="supervisor_address[{{ $supervisor['id'] }}]" id="supervisor_address" rows="5"
                                                                 cols="5">{{$supervisor['address']}}</textarea>
@@ -69,14 +69,14 @@
                                         <div class="col-md-12 mt-2" id="delete{{ $k }}">
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="w-100 row">
-                                                    <div class="col-md-6 form-floating error_message">
+                                                    <div class="col-md-6 my-2 form-floating error_message">
                                                         <input type="text" name="supervisor[{{ $supervisor['id'] }}]"
                                                             class="form-control" id="supervisor" placeholder="John"
                                                             aria-describedby="floatingInputHelp" data-error="errNm1"
                                                             value="{{ $supervisor['supervisor'] }}" />
                                                         <label for="supervisor">Supervisor</label>
                                                     </div>
-                                                    <div class="col-md-6 form-group ">
+                                                    <div class="col-md-6 my-2 form-group ">
                                                         <div class="form-floating">
                                                             <textarea class="form-control" name="supervisor_address[{{ $supervisor['id'] }}]" id="supervisor_address" rows="5"
                                                                 cols="5">{{$supervisor['address']}}</textarea>
@@ -92,9 +92,9 @@
                                     @endif
                                 @endforeach
                             </div>
-                            <p>By clicking this button, you submit your information to the JBR Staffing Solutions, who will
+                            <p class="text-center mt-4">By clicking this button, you submit your information to the JBR Staffing Solutions, who will
                                 use it to communicate with you regarding this event and their other services.</p>
-                            <div class="my-4">
+                            <div class="my-4 text-center">
                                 <button type="submit" class="btn btn-primary" id="employee_button">Update</button>
                             </div>
                         </div>
@@ -111,13 +111,13 @@
                                     <div class="d-flex align-items-center justify-content-center">
                                             
                                         <div class="w-100 row">
-                                              <div class="col-md-6 form-floating error_message">
+                                              <div class="col-md-6 my-2 form-floating error_message">
                                                 <input type="text" name="supervisor[${id}]" class="form-control"
                                                     id="supervisor" placeholder="John" aria-describedby="floatingInputHelp"
                                                     data-error="errNm1" />
                                                 <label for="supervisor">Supervisor</label>
                                             </div>
-                                            <div class="col-md-6 form-group ">
+                                            <div class="col-md-6 my-2 form-group ">
                                                 <div class="form-floating">
                                                     <textarea class="form-control" name="supervisor_address[${id}]"  id="supervisor_address" rows="5" cols="5"></textarea>
                                                     <label for="floatingInput">Supervisor Address</label>

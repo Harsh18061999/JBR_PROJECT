@@ -218,14 +218,16 @@
                                         </div>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                <select id="start_minutes" name="start_minutes" class="form-select">
+                                                <input type="text" onkeypress="validate(event)" name="start_minutes" id="end_minutes" placeholder=""
+                                                class="form-control" required maxlength="2" />
+                                                {{-- <select id="start_minutes" name="start_minutes" class="form-select">
                                                     <option value="00"> 00 </option>
                                                     <option value="10"> 10 </option>
                                                     <option value="20"> 20 </option>
                                                     <option value="30"> 30 </option>
                                                     <option value="40"> 40 </option>
                                                     <option value="50"> 50 </option>
-                                                </select>
+                                                </select> --}}
                                                 <label for="start_minutes">Minutes</label>
                                             </div>
                                         </div>
@@ -268,14 +270,17 @@
                                         </div>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                <select id="end_minutes" name="end_minutes" class="form-select">
+                                                {{-- <input type="text" name="end_minutes" id="end_minutes"> --}}
+                                                <input type="text" onkeypress="validate(event)" name="end_minutes" id="end_minutes" placeholder=""
+                                                    class="form-control" required maxlength="2" />
+                                                {{-- <select id="end_minutes" name="end_minutes" class="form-select">
                                                     <option value="00"> 00 </option>
                                                     <option value="10"> 10 </option>
                                                     <option value="20"> 20 </option>
                                                     <option value="30"> 30 </option>
                                                     <option value="40"> 40 </option>
                                                     <option value="50"> 50 </option>
-                                                </select>
+                                                </select> --}}
                                                 <label for="end_minutes">Minutes</label>
                                             </div>
                                         </div>
@@ -291,7 +296,7 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <div class="col-lg-4 mt-4">
                                 <div class=" mb-4">
                                     <div class="">
@@ -315,6 +320,25 @@
     </div>
     <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
     <script src="{{ asset('assets/js/custom/job_request.js') }}"></script>
+    <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+    </script>
     <script></script>
 
 @endsection

@@ -29,6 +29,7 @@ class EmployeeController extends Controller
 
     public function create($token = null)
     {
+        $country_code = Country::get();
         $link = Campaign::first();
         if ($link) {
             $firstDate = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
@@ -39,7 +40,7 @@ class EmployeeController extends Controller
                 $token_value = VerifyAccount::where('token',$token)->first();
                 if($token_value && $token_value->status == 1){
                     $jobCategory = JobCategory::get();
-                    return view('content.user.employee.create', compact('jobCategory','token_value'));
+                    return view('content.user.employee.create', compact('jobCategory','token_value','country_code'));
                 }else{
                     return redirect()->route('sendOtp');
                 }
@@ -86,8 +87,8 @@ class EmployeeController extends Controller
             // $number = '+' . $employees->countryCode . $employees->contact_number;
             // sendMessage($number, $message);
             return redirect()
-                ->route('successVerify')
-                ->with('success', 'OTP has been send to your whatsapp no.');
+                ->route('sendOtp')
+                ->with('success', 'Account created successfully.');
         } catch (Exception $e) {
             return redirect()
                 ->back()
@@ -114,7 +115,8 @@ class EmployeeController extends Controller
     public function contactCheck(Request $request)
     {
         try {
-            $whatsappNumber = json_decode(checkNumber($request->countryCode . $request->contact_number));
+            $country = Country::where('id',$request->countryCode)->first();
+            $whatsappNumber = json_decode(checkNumber($country->country_code . $request->contact_number));
             $response['numberCheck'] = $whatsappNumber->status == 'invalid' ? false : true;
             $employee = Employee::where('contact_number', $request->contact_number)
                 ->first();
@@ -155,12 +157,14 @@ class EmployeeController extends Controller
     }
 
     public function sendOtp(Request $request){
-        return view('content.user.employee.sendOtp');
+        $country_code = Country::get();
+        return view('content.user.employee.sendOtp',compact('country_code'));
     }
 
     public function sendOtpEmployee(Request $request){
         DB::beginTransaction();
         try {
+            $country = Country::where('id',$request->countryCode)->first();
             $randomNumber = random_int(100000, 999999);
             $token = Str::random(40);
             VerifyAccount::create([
@@ -174,7 +178,7 @@ class EmployeeController extends Controller
             $message .= "OTP : $randomNumber \n";
             $message .= route('verifyNumber', $token);
 
-            $number = '+' . $request->countryCode . $request->contact_number;
+            $number = '+' . $country->country_code . $request->contact_number;
             sendMessage($number, $message);
             return redirect()
             ->route('verifyNumber', $token)
@@ -213,7 +217,9 @@ class EmployeeController extends Controller
             $message = "Thank you for choosing Our Brand. Use the following OTP to complete your procedures. OTP is valid for 5 minutes, \n";
             $message .= "OTP : $randomNumber";
 
-            $number = '+' . $employee->country_code . $employee->contact_number;
+            $country = Country::where('id', $employee->country_code)->first();
+            
+            $number = '+' .$country->country_code . $employee->contact_number;
             sendMessage($number, $message);
             $response['success'] = true;
             $response['message'] = 'OTP has been send successfully';
@@ -238,7 +244,7 @@ class EmployeeController extends Controller
                 $end = Carbon::now();
                 if ($start->diff($end)->format('%I') > 5) {
                     $response['success'] = false;
-                    $response['message'] = 'OTP Has Been Expired Please Resend OTP.';
+                    $response['message'] = 'OTP has been expired please resend OTP.';
                     return $response;
                 } else {
                     $response['success'] = true;
@@ -272,7 +278,7 @@ class EmployeeController extends Controller
                     VerifyAccount::where('token', $request->token_value)->update([
                         "status" => '1'
                     ]);
-                    $message = "Your Phone Number Has Been Verified, \n";
+                    $message = "Your phone number has been verified, \n";
                     $message .= route('employee_register', $request->token_value)." use this link to further process.";
         
                     $number = '+' . $request->countryCode . $request->contact_number;
@@ -281,7 +287,7 @@ class EmployeeController extends Controller
                     $link = Campaign::first();
                     return redirect()
                     ->route('employee_register',$request->token_value)
-                    ->withSuccess('Phone nuber hass been verify');
+                    ->withSuccess('Phone number has been verified successfully');
                 }
             } else {
                 return redirect()
