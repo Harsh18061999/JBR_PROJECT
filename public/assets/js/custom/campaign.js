@@ -54,13 +54,16 @@ $(document).ready(function(){
         },
     });
 
+    const unsecuredCopyToClipboard = (text) => { const textArea = document.createElement("textarea"); textArea.value=text; document.body.appendChild(textArea); textArea.focus();textArea.select(); try{document.execCommand('copy')}catch(err){console.error('Unable to copy to clipboard',err)}document.body.removeChild(textArea)};
+
     $("body").on("click","#copyLink",function(){
-        // var copyText = $("#link_url_copy").html();
-        // navigator.clipboard.writeText(copyText);
         var copyText = document.getElementById("link_url");
         copyText.select();
-        // copyText.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(copyText.value);
+        if (window.isSecureContext && navigator.clipboard) {
+            navigator.clipboard.writeText(copyText.value);
+          } else {
+            unsecuredCopyToClipboard(content);
+          }
     });
 
     $("#campaign_from").validate({
