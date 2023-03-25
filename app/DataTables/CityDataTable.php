@@ -78,6 +78,10 @@ class CityDataTable extends DataTable
                         'bAutoWidth' => false,
                         'language' => [
                             ],
+                            'customize'=> "function ( doc ) {
+                                doc.content[0].alignment = 'center';
+                                doc.styles.tableHeader.alignment = 'left';
+                              }",
                         'initComplete' => "function () {
                             var self = this.api();
                         }",

@@ -44,7 +44,7 @@ class JobRequestDataTable extends DataTable
                 }else if($query->status == 1){
                     return '<span class="badge bg-label-warning me-1">On Going</span>';
                 }else if($query->status == 2){
-                    return '<span class="badge bg-label-success me-1">Complete</span>';
+                    return '<span class="badge bg-label-success me-1">Completed</span>';
                 }
             })
             ->setRowId('id');
@@ -137,6 +137,10 @@ class JobRequestDataTable extends DataTable
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
                 ],
+                'customize'=> "function ( doc ) {
+                    doc.content[0].alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'left';
+                  }",
                 'footer'=> true,
                 'autoPrint'=> true
             ],

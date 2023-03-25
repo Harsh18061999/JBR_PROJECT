@@ -88,6 +88,10 @@ class DataEntryPointDataTable extends DataTable
                 'exportOptions' =>  [
                 'columns' => [2,3,4,5,6,7,8,9,10,11,12],
                 ],
+                'customize'=> "function ( doc ) {
+                    doc.content[0].alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'left';
+                  }",
                 'footer'=> true,
                 'autoPrint'=> true
             ],

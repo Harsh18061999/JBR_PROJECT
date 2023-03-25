@@ -103,6 +103,10 @@ class EmployeeDataTable extends DataTable
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5,6],
                 ],
+                'customize'=> "function ( doc ) {
+                    doc.content[0].alignment = 'center';
+                    doc.styles.tableHeader.alignment = 'left';
+                  }",
                 'footer'=> true,
                 'autoPrint'=> true
             ],
