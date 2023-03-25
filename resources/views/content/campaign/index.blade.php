@@ -114,7 +114,7 @@
                             <div class=" mb-4">
                                 <div class="">
                                     <div class="form-floating">
-                                        <input class="form-control" name="start_date" id="start_date"
+                                        <input class="form-control" autocomplete="off" name="start_date" id="start_date"
                                             placeholder="yyyy-mm-dd" aria-describedby="floatingInputHelp" />
                                         <label for="start_date">Start Date</label>
                                     </div>
@@ -124,8 +124,8 @@
                         <div class="col-lg-4">
                             <div class=" mb-4">
                                 <div class="">
-                                    <div class="form-floating">
-                                        <input class="form-control" name="end_date" required id="end_date"
+                                    <div class="form-floating"> 
+                                        <input class="form-control" autocomplete="off" name="end_date" required id="end_date"
                                             placeholder="yyyy-mm-dd" aria-describedby="floatingInputHelp" />
                                         <label for="end_date">End Date</label>
                                     </div>
