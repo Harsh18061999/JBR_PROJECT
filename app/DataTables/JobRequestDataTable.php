@@ -112,7 +112,7 @@ class JobRequestDataTable extends DataTable
             ],
             [
                 'extend'=> 'csv',
-                'text'=> 'Csv',
+                'text'=> 'CSV',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
@@ -132,7 +132,7 @@ class JobRequestDataTable extends DataTable
             ],
             [
                 'extend'=> 'pdf',
-                'text'=> 'Pdf',
+                'text'=> 'PDF',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2,3,4,5],
@@ -179,7 +179,7 @@ class JobRequestDataTable extends DataTable
                   ->printable(false)
                   ->sortable(false)
                   ->width(60),
-            Column::make('client')->sortable(false) ,
+            Column::make('client'),
             Column::make('supervisor')->sortable(false),
             Column::make('job')->sortable(false),
             Column::make('job_date')->sortable(false),

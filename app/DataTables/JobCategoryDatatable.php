@@ -69,7 +69,7 @@ class JobCategoryDatatable extends DataTable
             ],
             [
                 'extend'=> 'csv',
-                'text'=> 'Csv',
+                'text'=> 'CSV',
                 'title'=> 'All JobCategory',
                 'exportOptions' =>  [
                 'columns' => [1,2],
