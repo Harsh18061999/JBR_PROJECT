@@ -10,6 +10,8 @@ use App\Models\JobRequest;
 use App\Models\SendMessage;
 use App\Models\Supervisor;
 use App\Models\Employee;
+use App\Models\Country;
+use DB;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 class JobRequestDetailController extends Controller
@@ -398,38 +400,10 @@ class JobRequestDetailController extends Controller
     {
         $message = SendMessage::where('job_request_id',$request->job_id)->pluck('message_status','employee_id')->toArray();
         $jobRequest = JobRequest::where('id',$request->job_id)->first();
+        $notAvailableEmployee = SendMessage::whereBetween('job_date',[$jobRequest->job_date,$jobRequest->end_date])->pluck('employee_id')->toArray();
         $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
           ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
-        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','0')->where('job',$jobRequest->job_id);
-
-        // $employee = $employee->with('message')->whereHas('message', function ($query) use ($request) {
-        //     $query->where(function ($q) use ($request) {
-        //         $q->orWhere('job_request_id', $request->job_id);
-        //     });
-        // });
-        // dd($employee->get()->toArray());
-        // if($request->get('search')['value'])
-        // {
-        //     $value = $request->get('search')['value'];
-        //     $abiGta = $abiGta->where('abi_month_of_rates',$value)
-        //         ->orWhere('abi_years_of_rates','like','%'.$value.'%')
-        //         ->orWhere('abi_files','like','%'.$value.'%');
-        // }
-
-        // $searchInputs = $request->input('searchInput') ? array_filter($request->input('searchInput'), function($value) { return $value != ''; }) : [];
-        // if(!empty($searchInputs)) {
-        //     foreach ($searchInputs as $key => $value) {
-        //         if($key == 'abi_month_of_rates') {
-        //             $abiGta = $abiGta->where('abi_month_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_years_of_rates') {
-        //             $abiGta = $abiGta->where('abi_years_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_files') {
-        //             $abiGta = $abiGta->where('abi_files','like',"%$value%");
-        //         }
-        //     }
-        // }
+        $employee = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','0')->where('job',$jobRequest->job_id);
 
      
         return Datatables::of($employee)
@@ -454,39 +428,8 @@ class JobRequestDetailController extends Controller
       $jobRequest = JobRequest::where('id',$request->job_id)->first();
       $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
       ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
-        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','1')->where('job',$jobRequest->job_id);
-        // $employee = $employee->with('message')
-        
-        // ->whereHas('message', function ($query) use ($request) {
-        //     $query->where('job_request_id', $request->job_id);
-        //     // $query->where(function ($q) use ($request) {
-        //     // });
-        // });
-  
-        // if($request->get('search')['value'])
-        // {
-        //     $value = $request->get('search')['value'];
-        //     $abiGta = $abiGta->where('abi_month_of_rates',$value)
-        //         ->orWhere('abi_years_of_rates','like','%'.$value.'%')
-        //         ->orWhere('abi_files','like','%'.$value.'%');
-        // }
-
-        // $searchInputs = $request->input('searchInput') ? array_filter($request->input('searchInput'), function($value) { return $value != ''; }) : [];
-        // if(!empty($searchInputs)) {
-        //     foreach ($searchInputs as $key => $value) {
-        //         if($key == 'abi_month_of_rates') {
-        //             $abiGta = $abiGta->where('abi_month_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_years_of_rates') {
-        //             $abiGta = $abiGta->where('abi_years_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_files') {
-        //             $abiGta = $abiGta->where('abi_files','like',"%$value%");
-        //         }
-        //     }
-        // }
-
-     
+      $notAvailableEmployee = SendMessage::whereBetween('job_date',[$jobRequest->job_date,$jobRequest->end_date])->pluck('employee_id')->toArray();
+        $employee = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','1')->where('job',$jobRequest->job_id);
         return Datatables::of($employee)
         ->addColumn('action', function($row) use($request) {
             return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'" data-tableid="'.$request->table_id.'"></i></div>';
@@ -509,36 +452,8 @@ class JobRequestDetailController extends Controller
       $jobRequest = JobRequest::where('id',$request->job_id)->first();
       $allReadySent = SendMessage::where('job_request_id',$jobRequest->id)
       ->where('job_date',$jobRequest->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
-        $employee = Employee::whereNotIn('id',$allReadySent)->where('status','5')->where('job',$jobRequest->job_id);
-        // $employee = $employee->with('message')->whereHas('message', function ($query) use ($request) {
-        //     $query->where(function ($q) use ($request) {
-        //         $q->where('job_request_id', $request->job_id);
-        //     });
-        // });
-        // if($request->get('search')['value'])
-        // {
-        //     $value = $request->get('search')['value'];
-        //     $abiGta = $abiGta->where('abi_month_of_rates',$value)
-        //         ->orWhere('abi_years_of_rates','like','%'.$value.'%')
-        //         ->orWhere('abi_files','like','%'.$value.'%');
-        // }
-
-        // $searchInputs = $request->input('searchInput') ? array_filter($request->input('searchInput'), function($value) { return $value != ''; }) : [];
-        // if(!empty($searchInputs)) {
-        //     foreach ($searchInputs as $key => $value) {
-        //         if($key == 'abi_month_of_rates') {
-        //             $abiGta = $abiGta->where('abi_month_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_years_of_rates') {
-        //             $abiGta = $abiGta->where('abi_years_of_rates','like',"%$value%");
-        //         }
-        //         if($key == 'abi_files') {
-        //             $abiGta = $abiGta->where('abi_files','like',"%$value%");
-        //         }
-        //     }
-        // }
-
-     
+      $notAvailableEmployee = SendMessage::whereBetween('job_date',[$jobRequest->job_date,$jobRequest->end_date])->pluck('employee_id')->toArray();
+        $employee = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','5')->where('job',$jobRequest->job_id);
         return Datatables::of($employee)
         ->addColumn('action', function($row) use($request) {
             return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="regular_check" value="'.$row->id.'" data-jobid="'.$request->job_id.'" data-bulck="'.$request->table_id.'" /><i class="mx-2 send_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$row->id.'" data-jobid="'.$request->job_id.'" data-tableid="'.$request->table_id.'"></i></div>';
@@ -587,56 +502,68 @@ class JobRequestDetailController extends Controller
         $job = JobRequest::where('id',$request->job_id)->first();
         $data['success'] = false;
         $data['message'] = 'something went wrong';
-        if($job){
-            $message = SendMessage::where('employee_id',$request->employee_id)
-            ->where('job_request_id',$job->id)
-            ->whereDate('job_date',$job->job_date)->first();
-            if($message){
-                $data['success'] = true;
-                $data['message'] = 'Message All Redy Been Send.';
-            }else{
-                $message_status = SendMessage::create([
-                    'confirmation_id' => Str::random(30),
-                    'employee_id' => $request->employee_id,
-                    'job_request_id' => $job->id,
-                    'job_date' => $job->job_date
-                ]);
-                $message_data = SendMessage::with('employee')->where('id',$message_status->id)
-                  ->first()->toArray();
-
-                $first_name =  $message_data['employee']['first_name'];
-                $last_name =  $message_data['employee']['last_name'];
-                
-                $message = "Hello $first_name $last_name , \n";
-                $message .= "Here's an interesting job that we think might be relevant for you. \n";
-                $message .= "Please confirm your job below given link. \n";
-                $message .= route('confirm_job',$message_data['confirmation_id']);
-
-                $number = '+'.$message_data['employee']['countryCode'].$message_data['employee']['contact_number'];
-
-                $send_message = sendMessage($number,$message);
-
-                if($send_message){
-                  SendMessage::where('id',$message_data['id'])
-                    ->update([
-                      'message_status' => '1'
-                    ]);
-                    $data['success'] = true;
-                    $data['message'] = 'Message Has Been Sent successfully.';
-                }else{
-                  SendMessage::where('id',$message_data['id'])
-                    ->update([
-                      'message_status' => '2'
-                    ]);
-                    $data['success'] = false;
-                    $data['message'] = 'Somthing Went To Wrong.';
-                }
-            }
+        DB::beginTransaction();
+        try{
+          if($job){
+              $message = SendMessage::where('employee_id',$request->employee_id)
+              ->where('job_request_id',$job->id)
+              ->whereDate('job_date',$job->job_date)->first();
+              if($message){
+                  $data['success'] = true;
+                  $data['message'] = 'Message All Redy Been Send.';
+              }else{
+                  $message_status = SendMessage::create([
+                      'confirmation_id' => Str::random(30),
+                      'employee_id' => $request->employee_id,
+                      'job_request_id' => $job->id,
+                      'job_date' => $job->job_date
+                  ]);
+                  $message_data = SendMessage::with('employee')->where('id',$message_status->id)
+                    ->first()->toArray();
+  
+                  $first_name =  $message_data['employee']['first_name'];
+                  $last_name =  $message_data['employee']['last_name'];
+                  
+                  $message = "Hello $first_name $last_name , \n";
+                  $message .= "Here's an interesting job that we think might be relevant for you. \n";
+                  $message .= "Please confirm your job below given link. \n";
+                  $message .= route('confirm_job',$message_data['confirmation_id']);
+  
+                  $country = Country::where('id',$message_data['employee']['countryCode'])->first();
+                  $number = '+'.$country->country_code.$message_data['employee']['contact_number'];
+  
+                  $send_message = sendMessage($number,$message);
+  
+                  if($send_message){
+                    SendMessage::where('id',$message_data['id'])
+                      ->update([
+                        'message_status' => '1'
+                      ]);
+                      $data['success'] = true;
+                      $data['message'] = 'Message Has Been Sent successfully.';
+                  }else{
+                    SendMessage::where('id',$message_data['id'])
+                      ->update([
+                        'message_status' => '2'
+                      ]);
+                      $data['success'] = false;
+                      $data['message'] = 'Somthing Went To Wrong.';
+                  }
+              }
+          }
+          DB::commit();
+          return $data;
+        }catch (Exception $e) {
+          // drakify('error');
+            DB::rollback();
+            return redirect()->back()
+                    ->withError('Try again');
         }
-        return $data;
     }
 
     public function sendBulkMessageJob(Request $request){
+      DB::beginTransaction();
+      try{
         $data['success'] = false;
         $data['message'] = 'something went wrong';
         if(count($request->employee_id) > 0){
@@ -685,16 +612,25 @@ class JobRequestDetailController extends Controller
             $data['success'] = true;
             $data['message'] = 'Message Has Been Sent successfully.';
         }
+        DB::commit();
         return $data;
+      }catch (Exception $e) {
+        // drakify('error');
+          DB::rollback();
+          return redirect()->back()
+                  ->withError('Try again');
+      }
+       
     }
 
     public function employeeaCount(Request $request){
       $job = JobRequest::where('id',$request->job_id)->first();
       $allReadySent = SendMessage::where('job_request_id',$job->id)
       ->where('job_date',$job->job_date)->where('message_status','1')->pluck('employee_id')->toArray();
-      $regular = Employee::whereNotIn('id',$allReadySent)->where('status','0')->where('job',$job->job_id)->count();
-      $available = Employee::whereNotIn('id',$allReadySent)->where('status','1')->where('job',$job->job_id)->count();
-      $oncall = Employee::whereNotIn('id',$allReadySent)->where('status','5')->where('job',$job->job_id)->count();
+      $notAvailableEmployee = SendMessage::whereBetween('job_date',[$job->job_date,$job->end_date])->pluck('employee_id')->toArray();
+      $regular = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','0')->where('job',$job->job_id)->count();
+      $available = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','1')->where('job',$job->job_id)->count();
+      $oncall = Employee::whereNotIn('id',array_merge($allReadySent,$notAvailableEmployee))->where('status','5')->where('job',$job->job_id)->count();
       return [
         'regular' => $regular,
         'available' => $available,

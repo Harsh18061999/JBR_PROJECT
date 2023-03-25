@@ -43,7 +43,7 @@ class CampaignController extends Controller
             );
             return redirect()
                 ->back()
-                ->with('success', 'Link Gnerated Successfully');
+                ->with('success', 'Link generated successfully');
         } catch (Exception $e) {
             return redirect()
                 ->back()
