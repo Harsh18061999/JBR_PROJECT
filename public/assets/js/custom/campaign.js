@@ -55,8 +55,12 @@ $(document).ready(function(){
     });
 
     $("body").on("click","#copyLink",function(){
-        var copyText = $("#link_url").html();
-        navigator.clipboard.writeText(copyText);
+        // var copyText = $("#link_url_copy").html();
+        // navigator.clipboard.writeText(copyText);
+        var copyText = document.getElementById("link_url");
+        copyText.select();
+        // copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
     });
 
     $("#campaign_from").validate({

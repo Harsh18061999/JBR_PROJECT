@@ -96,6 +96,12 @@
         /* Recent browsers */
         text-transform: none;
     }
+    .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next {
+        position: absolute !important;
+        top: 0px !important;
+        width: 1.8em !important;
+        height: 1.8em !important;
+    }
 </style>
 <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
 @section('content')
@@ -138,7 +144,8 @@
                     </div>
                 </form>
                 <div class="border p-4">
-                    <p>Currently Available Link  :  <a class="mx-4" id="link_url" href="{{route('employee_register')}}">{{route('employee_register')}}</a> <button class="btn btn-outline-primary" id="copyLink"><i class="fa-solid fa-copy"></i></button></p>
+                    <input type="hidden" name="" id="link_url" value="{{route('employee_register')}}">
+                    <p>Currently Available Link  :  <a class="mx-4" href="{{route('employee_register')}}">{{route('employee_register')}}</a> <button class="btn btn-outline-primary" id="copyLink"><i class="fa-solid fa-copy"></i></button></p>
                     <p> Start Date : {{isset($link->start_date) ? $link->start_date : 'N/A'}}</p>
                     <p>End Date : {{isset($link->end_date) ? $link->end_date : 'N/A'}}</p>
                     @if($status == true)
