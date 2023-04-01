@@ -10,11 +10,61 @@ use App\DataTables\EmployeeTimeSheetDataTable;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 class EmployeeTimeSheetController extends Controller
 {
     public function index(EmployeeTimeSheetDataTable $dataTable)
     {
         return $dataTable->render('content.employeeTimesheet.index');
+    }
+
+    public function datatable(Request $request){
+        $job = JobConfirmation::get();
+
+        return Datatables::of($job)
+        ->rawColumns(['action','job_status','time_sheet_status','job_title','client','supervisor'])
+        ->addColumn('employee_name', function($query){
+            return isset($query->employee) ? $query->employee->first_name .' '.$query->employee->last_name : '';
+        })
+        ->addColumn('action', function($query){
+            if($query->job_status == 2){
+                return "N/A";
+            }else{
+                return '<div class="d-flex justify-content-center align-items-center"><input type="checkbox" class="job_alert" value="'.$query->id.'" /><i class="mx-2 time_sheet_message text-success font-weight-bold pointer fa-brands fa-lg fa-whatsapp" data-id="'.$query->id.'"></i></div>';
+            }
+        })
+        ->addColumn('job_date', function($query){
+            return isset($query->job) ? $query->job->job_date : '';
+        })
+        ->addColumn('job_title', function($query){
+            return isset($query->job) ? $query->job->jobCategory->job_title : '';
+        })
+        ->addColumn('client', function($query){
+            return isset($query->job) ? $query->job->supervisor->client->client_name : '';
+        })
+        ->addColumn('supervisor', function($query){
+            return isset($query->job) ? $query->job->supervisor->supervisor : '';
+        })
+        ->addColumn('job_time', function($query){
+            return isset($query->job) ? $query->job->start_time : '0:00';
+        })
+        ->addColumn('job_status', function($query){
+            if($query->job_status == 0){
+                return '<span class="badge bg-label-primary me-1">Pending</span>';
+            }else if($query->job_status == 1){
+                return '<span class="badge bg-label-warning me-1">On Going</span>';
+            }else if($query->job_status == 2){
+                return '<span class="badge bg-label-success me-1">Completed</span>';
+            }
+        })
+        ->addColumn('time_sheet_status', function($query){
+            if($query->time_sheet == 0){
+                return '<a href="'.route('employee_timesheet.create',$query->id).'"><i class="fa-solid fa-pen-to-square pe-auto" title="Add workig time"></i></a><span class="badge bg-label-primary me-1">Pending</span>';
+            }else if($query->time_sheet == 1){
+                return '<span class="badge bg-label-success me-1">Completed</span>';
+            }
+        })
+        ->setRowId('id')->make(true);
     }
 
     public function create($id)

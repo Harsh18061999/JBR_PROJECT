@@ -64,6 +64,20 @@ $(document).ready(function(){
                 }
             }
         });
+        $.each($('#client_from select'), function() {
+            if (!this.value) {
+               
+                if (!$(this).hasClass('is-invalid')) {
+                    $(this).addClass('is-invalid');
+                    const error = document.createElement("span");
+                    error.className = 'invalid-feedback';
+                    error.innerText = 'this field is required';
+                    $(this).parent().closest('.form-floating').append(error);
+                    submit = false;
+                }
+            
+            }
+        });
         $.each($('#client_from textarea'), function() {
             if (!this.value) {
                 if (this.name != 'client_address') {
@@ -196,4 +210,29 @@ $(document).ready(function(){
         });
     });
 
+
+    $("body").on("click","#more",function(){
+        const id = parseInt($(this).attr("data-id")) + 1;
+        $.ajax({
+            type: 'get',
+            url: '/add-more',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                provience_id:$(this).val(),
+                key : id
+            },
+            success: function(response) {
+                if(response.success){
+                    $("#permission_div").append(response.div);
+                    $("#more").attr('data-id',id);
+                }
+            }
+        });
+    });
+    $("body").on("click", ".less", function() {
+            const id = $(this).attr("data-id");
+            $("#delete" + id).remove();
+        });
 });

@@ -112,7 +112,7 @@
                         <div class="row mx-4">
 
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <select id="client_name" name="client_name" class="form-select">
@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <select id="supervisor" name="supervisor_id" class="form-select">
@@ -148,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <select id="job_category" name="job_id" class="form-select">
@@ -166,7 +166,7 @@
                                 </div>
                             </div>
                             {{-- <div class="col-lg-4">
-                          <div class=" mb-4">
+                          <div class=" mb-2">
                             <div class="">
                               <div class="form-floating">
                                 <input type="date" class="form-control" name="job_date" id="job_date" placeholder="xyz@gmail.com" value="{{$job_request->job_date}}" aria-describedby="floatingInputHelp" />
@@ -177,7 +177,7 @@
                         </div> --}}
 
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input class="form-control" value="{{ $job_request->job_date }}"
@@ -189,7 +189,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input class="form-control" value="{{ $job_request->end_date }}"
@@ -201,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class="mb-4">
+                                <div class="mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input type="text" value="{{ $job_request->hireperiod }}" name="hireperiod"
@@ -214,7 +214,7 @@
                         <div class="col-lg-6">
                                 <div class="p-2">
 
-                                    <div class="row border">
+                                    <div class="row">
                                         <label for="">Strat Time</label>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
@@ -264,7 +264,7 @@
                             <div class="col-lg-6">
                                 <div class="p-2">
 
-                                    <div class="row border">
+                                    <div class="row">
                                         <label for="" class="">End Time</label>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
@@ -311,8 +311,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 mt-4">
-                                <div class=" mb-4">
+                            <div class="col-lg-4 mt-2">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" name="no_of_employee"
@@ -325,7 +325,7 @@
                                 </div>
                             </div>
                             <div class="my-4">
-                                <button type="submit" class="btn btn-primary" id="employee_button">Register</button>
+                                <button type="submit" class="btn btn-primary" id="employee_button">Update</button>
                             </div>
                         </div>
                     </form>

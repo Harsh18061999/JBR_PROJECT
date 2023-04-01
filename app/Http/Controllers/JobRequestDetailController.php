@@ -53,7 +53,7 @@ class JobRequestDetailController extends Controller
             $jobRequest = $jobRequest->whereIn('supervisor_id',$supervisor);
           }
         }
-        $jobRequest = $jobRequest->get()->toArray();
+        $jobRequest = $jobRequest->orderBy('created_at','DESC')->get()->toArray();
         $result['data'] = array();
         $result['success'] = true;
         if(count($jobRequest) > 0){
@@ -276,115 +276,84 @@ class JobRequestDetailController extends Controller
                         </div>
                     </div>
                 </div>';
-                  
-                  //   $result['data'][] = '<div class="col-lg-12 mt-3"> 
-                  //   <div class="col-12">
-                  //     <div class="card mb-4">
-                  //       <div class="card-body p-2">
-                  //         <div class="row">
-                  //           <div class="col-lg-3 col-md-3 my-2">
-                  //             <h5 class="m-0">'.ucwords($status).'</h5>
-                  //           </div>
-                  //           <div class="col-lg-3 col-md-3 my-2 ">
-                  //             <h5 class="m-0">'.ucwords($supervisor).'</h5>
-                  //           </div>
-                  //           <div class="col-lg-3 col-md-3 my-2 ">
-                  //             <h5 class="m-0">'.ucwords($job).'</h5>
-                  //           </div>
-                  //           <div class="col-lg-2 col-md-2 my-2 text-center">
-                  //             <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
-                  //           </div>
-                  //           <div class="col-lg-1 col-md-1 text-center">
-                  //             <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
-                  //               <i class="fa-solid fa-filter"></i> 
-                  //             </button>
-                  //           </div>
-                  //         </div>
-                  //         <div class="collapse" id="collapseExample'.$k.'">
-                  //           <div class="d-grid d-sm-flex p-3 mt-3">
-        
-                  //           </div>
-                  //         </div>
-                  //       </div>
-                  //     </div>
-                  //   </div>
-                  // </div>';
 
-                }else if($value['status'] == 2){
-                    $background = 'bg-success';
-                    $status = 'COMPLETED';
-
-
-                    $result['data'][] = '<div class="col-lg-12 mt-3"> 
-                    <div class="col-12">
-                      <div class="card mb-4">
-                        <div class="card-body p-2">
-                          <div class="row">
-                            <div class="col-lg-3 col-md-3 my-2">
-                              <h5 class="m-0">'.ucwords($client).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($supervisor).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($job).'</h5>
-                            </div>
-                            <div class="col-lg-2 col-md-2 my-2 text-center">
-                              <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
-                            </div>
-                            <div class="col-lg-1 col-md-1 text-center">
-                              <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa-solid fa-filter"></i> 
-                              </button>
-                            </div>
-                          </div>
-                          <div class="collapse" id="collapseExample'.$k.'">
-                            <div class="d-grid d-sm-flex p-3 mt-3">
-        
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>';
-                }else if($value['status'] == 3){
-                    $background = 'bg-danger';
-                    $status = 'NOT COMPLETEDS';
-
-
-                    $result['data'][] = '<div class="col-lg-12 mt-3"> 
-                    <div class="col-12">
-                      <div class="card mb-4">
-                        <div class="card-body p-2">
-                          <div class="row">
-                            <div class="col-lg-3 col-md-3 my-2">
-                              <h5 class="m-0">'.ucwords($client).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($supervisor).'</h5>
-                            </div>
-                            <div class="col-lg-3 col-md-3 my-2 ">
-                              <h5 class="m-0">'.ucwords($job).'</h5>
-                            </div>
-                            <div class="col-lg-2 col-md-2 my-2 text-center">
-                              <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
-                            </div>
-                            <div class="col-lg-1 col-md-1 text-center">
-                              <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="fa-solid fa-filter"></i> 
-                              </button>
-                            </div>
-                          </div>
-                          <div class="collapse" id="collapseExample'.$k.'">
-                            <div class="d-grid d-sm-flex p-3 mt-3">
-        
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>';
                 }
+                
+                // else if($value['status'] == 2){
+                //     $background = 'bg-success';
+                //     $status = 'COMPLETED';
+
+
+                //     $result['data'][] = '<div class="col-lg-12 mt-3"> 
+                //     <div class="col-12">
+                //       <div class="card mb-4">
+                //         <div class="card-body p-2">
+                //           <div class="row">
+                //             <div class="col-lg-3 col-md-3 my-2">
+                //               <h5 class="m-0">'.ucwords($client).'</h5>
+                //             </div>
+                //             <div class="col-lg-3 col-md-3 my-2 ">
+                //               <h5 class="m-0">'.ucwords($supervisor).'</h5>
+                //             </div>
+                //             <div class="col-lg-3 col-md-3 my-2 ">
+                //               <h5 class="m-0">'.ucwords($job).'</h5>
+                //             </div>
+                //             <div class="col-lg-2 col-md-2 my-2 text-center">
+                //               <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
+                //             </div>
+                //             <div class="col-lg-1 col-md-1 text-center">
+                //               <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
+                //                 <i class="fa-solid fa-filter"></i> 
+                //               </button>
+                //             </div>
+                //           </div>
+                //           <div class="collapse" id="collapseExample'.$k.'">
+                //             <div class="d-grid d-sm-flex p-3 mt-3">
+        
+                //             </div>
+                //           </div>
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </div>';
+                // }else if($value['status'] == 3){
+                //     $background = 'bg-danger';
+                //     $status = 'NOT COMPLETEDS';
+
+
+                //     $result['data'][] = '<div class="col-lg-12 mt-3"> 
+                //     <div class="col-12">
+                //       <div class="card mb-4">
+                //         <div class="card-body p-2">
+                //           <div class="row">
+                //             <div class="col-lg-3 col-md-3 my-2">
+                //               <h5 class="m-0">'.ucwords($client).'</h5>
+                //             </div>
+                //             <div class="col-lg-3 col-md-3 my-2 ">
+                //               <h5 class="m-0">'.ucwords($supervisor).'</h5>
+                //             </div>
+                //             <div class="col-lg-3 col-md-3 my-2 ">
+                //               <h5 class="m-0">'.ucwords($job).'</h5>
+                //             </div>
+                //             <div class="col-lg-2 col-md-2 my-2 text-center">
+                //               <span class="p-2 '.$background.' text-white rounded">'.$status.'</span>
+                //             </div>
+                //             <div class="col-lg-1 col-md-1 text-center">
+                //               <button class="btn btn-primary me-1" data-status="" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample'.$k.'" aria-expanded="false" aria-controls="collapseExample">
+                //                 <i class="fa-solid fa-filter"></i> 
+                //               </button>
+                //             </div>
+                //           </div>
+                //           <div class="collapse" id="collapseExample'.$k.'">
+                //             <div class="d-grid d-sm-flex p-3 mt-3">
+        
+                //             </div>
+                //           </div>
+                //         </div>
+                //       </div>
+                //     </div>
+                //   </div>';
+                // }
              
             }
         }else{
@@ -533,7 +502,6 @@ class JobRequestDetailController extends Controller
                   $number = '+'.$country->country_code.$message_data['employee']['contact_number'];
   
                   $send_message = sendMessage($number,$message);
-  
                   if($send_message){
                     SendMessage::where('id',$message_data['id'])
                       ->update([

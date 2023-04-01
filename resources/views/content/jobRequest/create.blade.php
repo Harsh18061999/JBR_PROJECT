@@ -112,7 +112,7 @@
                         <div class="row mx-4">
 
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <select id="client_name" name="client_name" class="form-select">
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <select id="supervisor" name="supervisor_id" class="form-select">
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <select id="job_category" name="job_id" class="form-select">
@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input class="form-control" name="job_date" id="job_date"
@@ -170,7 +170,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class=" mb-4">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input class="form-control" name="end_date" required id="end_date"
@@ -181,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class="mb-4">
+                                <div class="mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input type="text" name="hireperiod" id="hireperiod" placeholder=""
@@ -194,7 +194,7 @@
                             <div class="col-lg-6">
                                 <div class="p-2">
 
-                                    <div class="row border">
+                                    <div class="row ">
                                         <label for="">Strat Time</label>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
@@ -220,14 +220,6 @@
                                             <div class="form-floating error_message">
                                                 <input type="text" onkeypress="validate(event)" name="start_minutes" id="end_minutes" placeholder=""
                                                 class="form-control" required maxlength="2" />
-                                                {{-- <select id="start_minutes" name="start_minutes" class="form-select">
-                                                    <option value="00"> 00 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="20"> 20 </option>
-                                                    <option value="30"> 30 </option>
-                                                    <option value="40"> 40 </option>
-                                                    <option value="50"> 50 </option>
-                                                </select> --}}
                                                 <label for="start_minutes">Minutes</label>
                                             </div>
                                         </div>
@@ -246,7 +238,7 @@
                             <div class="col-lg-6">
                                 <div class="p-2">
 
-                                    <div class="row border">
+                                    <div class="row">
                                         <label for="" class="">End Time</label>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
@@ -297,8 +289,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4 mt-4">
-                                <div class=" mb-4">
+                            <div class="col-lg-4 mt-2">
+                                <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" name="no_of_employee"

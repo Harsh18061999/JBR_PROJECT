@@ -2,11 +2,7 @@
 
 @section('title', ' Horizontal Layouts - Forms')
 <style>
-    thead {
-        background: #152d47;
-        color: white;
-        margin-top: 10px;
-    }
+
 
     .dataTables_filter {
         margin-bottom: 30px;
@@ -19,6 +15,18 @@
     .harsh {
         width: 100%;
         height: 100%;
+    }
+    th,
+    td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+    .dataTables_scrollBody{
+      min-height: 294px;
     }
 </style>
 @section('content')
@@ -93,7 +101,7 @@
                     </div>
                 </div>
                 <div class="table-responsive text-nowrap p-2">
-                    {!! $dataTable->table(['class' => 'w-100'], true) !!}
+                    {!! $dataTable->table(['class' => 'w-100 table table-striped table-hover'], true) !!}
                     {{ $dataTable->scripts() }}
                 </div>
             </div>

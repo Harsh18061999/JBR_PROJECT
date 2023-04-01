@@ -36,7 +36,8 @@ class ClientRepsitory implements ClientRepositoryInterface
             Supervisor::create([
                 'client_id' => $client->id,
                 'supervisor' => $value,
-                'address' => $clientDetails['supervisor_address'][$k]
+                'address' => $clientDetails['supervisor_address'][$k],
+                'city_id' => $clientDetails['city_id'][$k],
             ]);
         }
         return $client;
@@ -57,13 +58,15 @@ class ClientRepsitory implements ClientRepositoryInterface
                 Supervisor::where('id',$k)->update([
                     'client_id' => $client->id,
                     'supervisor' => $value,
-                    'address' => $newDetails['supervisor_address'][$k]
+                    'address' => $newDetails['supervisor_address'][$k],
+                    'city_id' => $newDetails['city_id'][$k],
                 ]);
             }else{
                 Supervisor::create([
                     'client_id' => $client->id,
                     'supervisor' => $value,
-                    'address' => $newDetails['supervisor_address'][$k]
+                    'address' => $newDetails['supervisor_address'][$k],
+                    'city_id' => $newDetails['city_id'][$k],
                 ]);
             }
         }

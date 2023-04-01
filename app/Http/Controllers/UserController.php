@@ -7,6 +7,7 @@ use App\Interfaces\UserRepositoryInterface;
 use App\DataTables\UserDataTable;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Country;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
@@ -33,7 +34,8 @@ class UserController extends Controller
         $userRole = $user->roles->pluck('name')->toArray();
         $roles = Role::latest()->get();
         $client = Client::get();
-        return view('content.user.user.create',compact('user','userRole','roles','client'));
+        $country = Country::get();
+        return view('content.user.user.create',compact('user','userRole','roles','client','country'));
     }
 
     public function store(Request $request) 
@@ -48,8 +50,8 @@ class UserController extends Controller
         
         $message = "Thank you for choosing Our Brand. Use the following link complete your procedures. \n";
         $message .= route('passwordCreate', $users->remember_token);
-
-        $number = '+' . $users->countryCode . $users->contact_number;
+        $country = Country::where('id',$users->countryCode)->first();
+        $number = '+' . $country->country_code . $users->contact_number;
         sendMessage($number, $message);
 
         return redirect()->route('user.index')
@@ -112,7 +114,8 @@ class UserController extends Controller
 
     public function checknumber(Request $request){
         try {
-            $whatsappNumber = json_decode(checkNumber($request->countryCode . $request->contact_number));
+            $country = Country::where('id',$request->$request->countryCode)->first();
+            $whatsappNumber = json_decode(checkNumber($country->country_code . $request->contact_number));
             $response['numberCheck'] = $whatsappNumber->status == 'invalid' ? false : true;
             $user = User::where('contact_number', $request->contact_number)
                 ->first();

@@ -35,6 +35,7 @@
                     $activeClass = 'asd';
                     $currentRouteName = Str::before(Route::currentRouteName(), '.');
                     $route_prefix = Request::route()->getPrefix();
+                   
                     if (in_array($currentRouteName,$menu->menu_slug)) {
                         $activeClass = 'active open';
                     } elseif (isset($menu->submenu)) {

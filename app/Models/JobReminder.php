@@ -13,6 +13,7 @@ class JobReminder extends Model
         'job_confirmations_id',
         'job_reminder',
         'time_sheet_reminder',
-        'reminder_date'
+        'reminder_date',
+        'job_id'
     ];
 }

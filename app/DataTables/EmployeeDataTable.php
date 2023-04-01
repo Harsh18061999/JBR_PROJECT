@@ -127,7 +127,7 @@ class EmployeeDataTable extends DataTable
                     ->parameters([
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
-                        'responsive' => true,
+                        'responsive' => false,
                         'lengthMenu' => [10, 15, 30, 50, 100],
                         'dom'          => 'Bfrtip',
                         'buttons'      => [ $print],
@@ -135,6 +135,13 @@ class EmployeeDataTable extends DataTable
                         'serverSide' => true,
                         'scrollX' => false,
                         'bAutoWidth' => false,
+                        'scrollX' => true,
+                        "scrollY" => false,
+                        "scrollCollapse" => true,
+                        "fixedColumns" => true,
+                        "fixedColumns" =>  [
+                            "left" => 1,
+                        ],
                         'language' => [
                             ],
                         'initComplete' => "function () {
@@ -144,7 +151,7 @@ class EmployeeDataTable extends DataTable
                     ])
                     ->dom('Bfrtip')
                     ->orderBy(1)
-                    ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
     /**

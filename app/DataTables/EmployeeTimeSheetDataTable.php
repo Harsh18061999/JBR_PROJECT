@@ -62,7 +62,7 @@ class EmployeeTimeSheetDataTable extends DataTable
         })
         ->addColumn('time_sheet_status', function($query){
             if($query->time_sheet == 0){
-                return '<a href="'.route('employee_timesheet.create',$query->id).'"><i class="fa-solid fa-pen-to-square pe-auto" title="Add workig time"></i></a><span class="badge bg-label-primary me-1">Pending</span>';
+                return '<div class="text-center"><a href="'.route('employee_timesheet.create',$query->id).'"><i class="fa-solid fa-pen-to-square pe-auto me-2" title="Add workig time"></i></a><span class="badge bg-label-primary me-1">Pending</span></div>';
             }else if($query->time_sheet == 1){
                 return '<span class="badge bg-label-success me-1">Completed</span>';
             }
@@ -103,7 +103,9 @@ class EmployeeTimeSheetDataTable extends DataTable
                     ])
                     ->parameters([
                         'dom' => 'Bfrtilp',
-                        'stateSave' => true,//true,
+                        "scrollY" => false,
+                        "scrollCollapse" => true,
+                        'stateSave' => false,//true,
                         'bScrollInfinite' => true,
                         'responsive' => false,
                         'lengthMenu' => [10, 15, 30, 50, 100],
@@ -112,6 +114,11 @@ class EmployeeTimeSheetDataTable extends DataTable
                         'serverSide' => true,
                         'scrollX' => true,
                         'bAutoWidth' => false,
+                        "fixedColumns" => true,
+                        "fixedColumns" =>  [
+                            "left" => 4,
+                            "right" => 1
+                        ],
                         'language' => [
                             ],
                         'drawCallback' => "function () {
@@ -119,7 +126,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                             function format(d) {
                                 // `d` is the original data object for the row
                                 console.log(d)
-                                var string = '<table class='+'table table-bordered'+'>'+
+                                var string = '<div class='+'table-responsive'+'><table class='+'table table-bordered align-middle'+'>'+
                                 ' <thead>'+
                                 '<tr>'+
                                 '<th scope='+'col'+'>'+'Job Date</th>'+
@@ -144,7 +151,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                                     string += '<td colspan='+5+' class='+'text-center'+'>'+'No result Found'+'</td>';
                                     string += '</tr>';
                                 }
-                                string += '</tbody>'+'</table>';
+                                string += '</tbody>'+'</table></div>';
                                 return (
                                     string
                                 );
@@ -195,7 +202,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                     ])
                     ->dom('Bfrtip')
                     ->orderBy(1)
-                    ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(false)->addTableClass('table table-dark table-hover gy-5 gs-7 border');
     }
 
     /**
@@ -220,10 +227,10 @@ class EmployeeTimeSheetDataTable extends DataTable
                   ->printable(false)
                   ->width(60)->addClass('text-center'),
             // Column::make('id'),
-            Column::make('employee_name') ,
-            Column::make('job_title') ,
             Column::make('client') ,
             Column::make('supervisor') ,
+            Column::make('employee_name') ,
+            Column::make('job_title') ,
             Column::make('job_date') ,
             Column::make('job_time') ,
             Column::make('job_status'),

@@ -166,8 +166,8 @@ class JobRequestDataTable extends DataTable
                         'dom'          => 'Bfrtip',
                         'buttons'      => [ $print],
                     ])
-                   ->orderBy(1)
-                    ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                   ->orderBy([4,'desc'])
+                    ->responsive(true)->addTableClass('stripe row-border order-column gy-5 gs-7 border');
     }
 
     /**
@@ -186,7 +186,8 @@ class JobRequestDataTable extends DataTable
             Column::make('client'),
             Column::make('supervisor')->sortable(false),
             Column::make('job')->sortable(false),
-            Column::make('job_date')->sortable(false),
+            Column::make('job_date'),
+            Column::make('end_date'),
             Column::make('status') ->sortable(false),
             // Column::make('job'),
             // Column::make('status'),

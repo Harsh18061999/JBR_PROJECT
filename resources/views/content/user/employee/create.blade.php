@@ -140,8 +140,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3 license_div" style="display: none;">
-                                <label for="formFile" class="form-label text-start w-100" id="license_text">Upload
-                                    Forklift License</label>
+                                <label for="formFile" class="form-label text-start w-100" id="license_text">UPLOAD LICENSE/CERTIFICATE</label>
                                 <input class="form-control" type="file" name="lincense" id="formFile">
                             </div>
                             <p class="text-center">By clicking this button, you submit your information to the JBR Staffing

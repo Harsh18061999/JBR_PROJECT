@@ -45,7 +45,7 @@ $(document).ready(function(){
         // total mod 10 === 0
         return (parseInt(sin) && total % 10 == 0) ? true : this.optional(element);
         // return this.optional(element) || value.match(/^[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? ?[0-9][a-zA-Z]{2}$/);
-    }, "Please enter valid sin number.");
+    }, "Please enter valid SIN number.");
 
     $.validator.addMethod("postcode", function(value, element) {
         return this.optional(element) || value.match(/^[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? ?[0-9][a-zA-Z]{2}$/);

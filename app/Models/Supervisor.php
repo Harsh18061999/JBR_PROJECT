@@ -14,11 +14,16 @@ class Supervisor extends Model
         'supervisor',
         'job',
         'address',
-        'status'
+        'status',
+        'city_id'
     ];
 
     public function client(){
         return $this->hasOne(Client::class,'id','client_id');
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class);
     }
 
 }

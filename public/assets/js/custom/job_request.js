@@ -187,6 +187,11 @@ $(document).ready(function(){
         var end_minutes = $("#end_minutes").val();
         var start_day = $("#start_day").val();
         var end_day = $("#end_day").val();
+        if(start_day == "PM" && end_day == "AM"){
+            $("#start_day").val('AM');
+            $("#end_day").val('PM');
+            swal("Oops...", "Please select valid days", "error"); 
+        }
         if(start_day == end_day){
             if(parseInt(start_hours) > parseInt(end_hours)  && end_hours != ''){
                 swal("Oops...", "Please select valid hours", "error");

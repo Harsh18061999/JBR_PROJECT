@@ -166,11 +166,11 @@ $(document).ready(function(){
                     $("#employee_button").removeClass("disabled");
                 },500);
                 if(response.numberCheck == false){
-                    swal("Oops...", "Given Number Is Not Whatsapp No.", "error");
+                    swal("Oops...", "Given number is not whatsapp no.", "error");
                     $("#contact_number").val('');   
                 }
                 if(response.success){
-                    swal("Oops...", "Contact Number Is All Redy Register.", "error");
+                    swal("Oops...", "Contact number is all redy register.", "error");
                     $("#contact_number").val('');   
                 }
             }

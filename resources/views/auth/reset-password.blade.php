@@ -18,8 +18,7 @@
               <img src="{{asset('/assets/img/JBR_Staffing_Solutions.jpg')}}" class="m-auto" alt="" width="250px" height="250px">
             </a>
           </div>
-          <h4>Welcome to {{config('variables.templateName')}}! 👋</h4>
-          <p>Please sign-in to your account and start the adventure</p>
+          <h4>Welcome to {{config('variables.templateName')}}!</h4>
 
           <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('passwordConfirm') }}">
             @csrf

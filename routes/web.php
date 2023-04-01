@@ -20,6 +20,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProvienceController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ClientJobRequest;
 // use Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::get('/client-unblock/{id}', [ClientController::class, 'unBlock'])->name('client.unblock');
         Route::post('/client/{id}', [ClientController::class, 'update'])->name('client.update');
         Route::resource('client', ClientController::class);
+        Route::get('/add-more',[ClientController::class,'addMore'])->name('client.addmore');
 
         //JobRequest
         Route::delete('/job_request/{id}', [JobRequestController::class, 'destory'])->name('job_request.destory');
@@ -166,7 +168,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::post('/employee_time_sheet/store', [EmployeeTimeSheetController::class, 'store'])->name('employee_timesheet.store');
         Route::get('/get_job_timesheet', [EmployeeTimeSheetController::class, 'getTimeSheet']);
         Route::post('/time_sheet_message_job', [EmployeeTimeSheetController::class, 'timeSheetMessage']);
-        
+        Route::POST('/time-sheet-datatable', [EmployeeTimeSheetController::class, 'datatable'])->name('employee_timesheet.datatable');
         // User Routes
         Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'destory'])->name('user.destory');
@@ -197,6 +199,9 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::resource('/city', CityController::class);
         Route::post('/city/{id}',[CityController::class,'update'])->name('city.update');
         Route::delete('/city_destroy/{id}',[CityController::class,'destory'])->name('city_destroy.destory');
+
+        //Client Job Request details
+        Route::get('/client_job_request',[ClientJobRequest::class,'index'])->name("client_job_request.index");
     });
 });
 

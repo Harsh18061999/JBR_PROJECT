@@ -1,11 +1,16 @@
 <ul class="menu-sub">
     @if (isset($menu))
+    @php
+    // echo "<pre>";
+    // print_r($menu);
+    @endphp
         @foreach ($menu as $submenu)
             {{-- active menu method --}}
             @php
                 $activeClass = null;
                 $active = 'active open';
                 $currentRouteName = Str::before(Route::currentRouteName(), '.');
+               
                 if ($currentRouteName == Str::before($submenu->slug, '.')) {
                     $activeClass = 'active';
                 } elseif (isset($submenu->submenu)) {

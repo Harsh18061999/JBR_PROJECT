@@ -18,7 +18,7 @@
       "name": "Job",
       "icon": "menu-icon fa-solid fa-file-circle-plus",
       "slug": "",
-      "menu_slug":["job_category","job_request","job_request_details"],
+      "menu_slug":["job_category","job_request","job_request_details","client_job_request"],
       "submenu": [
         {
           "url": "auth/job_category",
@@ -36,6 +36,12 @@
           "url": "/job_request_details",
           "name": "Job Request Details",
           "slug": "job_request_details",
+          "target": "_self"
+        },
+        {
+          "url": "/client_job_request",
+          "name": "Job Request Module",
+          "slug": "client_job_request.index",
           "target": "_self"
         }
       ]

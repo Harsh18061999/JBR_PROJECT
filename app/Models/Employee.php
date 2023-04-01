@@ -30,4 +30,8 @@ class Employee extends Model
     public function message(){
         return $this->hasOne(SendMessage::class,'employee_id','id');
     }
+
+    public function country(){
+        return $this->belongsTo(Country::class,'countryCode');
+    }
 }
