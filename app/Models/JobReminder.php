@@ -16,4 +16,12 @@ class JobReminder extends Model
         'reminder_date',
         'job_id'
     ];
+
+    public function job(){
+        return $this->belongsTo(JobRequest::class,'job_id');
+    }
+
+    public function jobConfirmarion(){
+        return $this->belongsTo(JobRequest::class,'job_id');
+    }
 }

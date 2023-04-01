@@ -29,8 +29,22 @@ class JobStatus extends Command
      */
     public function handle()
     {
-        JobRequest::where('status','!=','2')->whereDate('end_date','<',Carbon::now()->subRealHours(5))->update([
-            'status' => '2'
-        ]);
+        $jobRequest = JobRequest::where('status','!=','2')
+            ->get();
+        foreach($jobRequest as $job){
+            $GmtTime = str_ireplace("gmt","",$job->supervisor->city->province->gmt_time);
+            if($GmtTime > 0){
+                $date1 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->addHours(abs((int)$GmtTime));
+            }else{
+                $date1 = Carbon::createFromFormat('Y-m-d', date('Y-m-d'))->subHours(abs((int)$GmtTime));
+            }
+           
+            $date2 = Carbon::createFromFormat('Y-m-d', $job->end_date);
+            if($date1->gt($date2)){
+                $job->update([
+                    "status" => '2'
+                ]);
+            }
+        }
     }
 }
