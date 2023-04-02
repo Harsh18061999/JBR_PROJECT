@@ -64,7 +64,7 @@ class EmployeeTimeSheetDataTable extends DataTable
             if($query->time_sheet == 0){
                 return '<div class="text-center"><a href="'.route('employee_timesheet.create',$query->id).'"><i class="fa-solid fa-pen-to-square pe-auto me-2" title="Add workig time"></i></a><span class="badge bg-label-primary me-1">Pending</span></div>';
             }else if($query->time_sheet == 1){
-                return '<span class="badge bg-label-success me-1">Completed</span>';
+                return '<div class="text-center"><span class="badge bg-label-success me-1">Completed</span></div>';
             }
         })
             ->setRowId('id');
@@ -126,7 +126,7 @@ class EmployeeTimeSheetDataTable extends DataTable
                             function format(d) {
                                 // `d` is the original data object for the row
                                 console.log(d)
-                                var string = '<div class='+'table-responsive'+'><table class='+'table table-bordered align-middle'+'>'+
+                                var string = '<div class='+'table-responsive'+'><table class='+'table'+' table-bordered align-middle'+'>'+
                                 ' <thead>'+
                                 '<tr>'+
                                 '<th scope='+'col'+'>'+'Job Date</th>'+

@@ -13,6 +13,9 @@
     .dataTables_filter {
         margin-bottom: 30px;
     }
+    .dataTables_length {
+        display: none;
+}
 </style>
 <style type="text/css">
     .ms-parent {
@@ -180,11 +183,13 @@
                 <table class="table" id="weekly" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Date & Time</th>
-                            <th style="width:60px;">Client Name</th>
-                            <th  style="width:100px;">Supervisor Name</th>
-                            <th>Employee</th>
-                            <th style="width:30px;">Job Status</th>
+                            {{-- <th>Date & Time</th> --}}
+                            <th>Client Name</th>
+                            <th>Supervisor Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Job Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -194,6 +199,36 @@
             </div>
         </div>
     </div>
-
+      <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel4">Employee Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table" id="employee_data"
+                width="100%">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Contact Number</th>
+                        <th>Job Status</th>
+                        <th>Time Sheet</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                </tbody>
+            </table>
+            </div>
+            <div class="modal-footer">
+              {{-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button> --}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="job_request_id" id="job_request_id">
     <script src="{{ asset('assets/js/custom/weekly_scheduler.js') }}"></script>
 @endsection

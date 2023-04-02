@@ -440,7 +440,7 @@ class JobRequestDetailController extends Controller
     }
 
     public function onGoingJob(Request $request){
-
+// dd($request->all());
       $jobRequest = JobConfirmation::where('job_id',$request->job_id);
        
       return Datatables::of($jobRequest)

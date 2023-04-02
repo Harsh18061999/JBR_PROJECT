@@ -15,6 +15,13 @@ class WeeklySchedulerController extends Controller
         return view('content.weeklyScheduler.index',compact('jobCategory','client'));
     }
 
+    public function employeeDataTable(Request $request){
+        $jobRequest = array();
+        if($request->job_id){
+
+        }
+        return Datatables::of($jobRequest);
+    }
     public function weeklyJobDataTable(Request $request){
         if($request->weekly == 0){
             $day = date('w');
@@ -58,31 +65,24 @@ class WeeklySchedulerController extends Controller
          ->addColumn('supervisor', function($row)  {
           return  isset($row->supervisor) ? $row->supervisor->supervisor : 'N/A';    
          })
-         ->addColumn('employee', function($row)  {
-                $div = "<div class='row'>";
-                foreach($row->employees as $employee){
-                    $div .= "<div class='col-md-6 mt-2'>
-                        <span class='badge bg-label-primary me-1'>
-                            <div class='d-flex align-items-center'> 
-                               <p class='m-0'> $employee->first_name $employee->last_name <br><br>
-                                $employee->contact_number </p>
-                                <i class='fa-solid fa-eye mx-2'></i>
-                            </div>
-                        </span>
-                    </div>";
-                }
-                $div .="</div>";
-                return $div;
-        })
         ->addColumn('status', function($row)  {
             if($row->status == 0){
                 return '<span class="badge bg-label-primary me-1">Pending</span>';
             }else if($row->status == 1){
                 return '<span class="badge bg-label-warning me-1">On Going</span>';
             }else if($row->status == 2){
-                return '<span class="badge bg-label-warning me-1">Completed</span>';
+                return '<span class="badge bg-label-success me-1">Completed</span>';
             }
         })
-        ->addIndexColumn()->rawColumns(['Date','client_name','employee','status'])->make(true);
+        ->addColumn('action',function($row){
+            return  "<div class='col-md-6 mt-2 employee_list' data-id='$row->id' data-bs-toggle='modal' data-bs-target='#exLargeModal'>
+            <span class='badge bg-label-primary me-1'>
+                <div class='d-flex align-items-center'> 
+                    <i class='fa-solid fa-eye mx-2'></i>
+                </div>
+            </span>
+        </div>";
+        })
+        ->addIndexColumn()->rawColumns(['Date','client_name','employee','status','action'])->make(true);
     }
 }
