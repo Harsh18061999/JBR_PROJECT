@@ -32,7 +32,8 @@ class JobRequestDetailController extends Controller
         $role = auth()->user()->getRoleNames()->toArray();
         $role_name = isset($role[0]) ? $role[0] : '';
        
-        $jobRequest = JobRequest::withCount('jobConfirmation')->with('supervisor.client','jobCategory');
+        $jobRequest = JobRequest::withCount('jobConfirmation')->with('supervisor.client','jobCategory')
+          ->where('status','<','1');
         if($request->date && $request->to_date){
           $jobRequest = $jobRequest->where('job_date','>=',$request->date)
           ->where('end_date','<=',$request->to_date);
@@ -440,7 +441,7 @@ class JobRequestDetailController extends Controller
     }
 
     public function onGoingJob(Request $request){
-// dd($request->all());
+        // dd($request->all());
       $jobRequest = JobConfirmation::where('job_id',$request->job_id);
        
       return Datatables::of($jobRequest)

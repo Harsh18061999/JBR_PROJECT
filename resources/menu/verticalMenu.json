@@ -34,13 +34,13 @@
         },
         {
           "url": "/job_request_details",
-          "name": "Job Request Details",
+          "name": "Assignee Employee",
           "slug": "job_request_details",
           "target": "_self"
         },
         {
           "url": "/client_job_request",
-          "name": "Job Request Module",
+          "name": "Job Request Details",
           "slug": "client_job_request.index",
           "target": "_self"
         }

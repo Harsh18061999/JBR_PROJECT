@@ -218,7 +218,7 @@
                                         <label for="">Strat Time</label>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                <select id="start_hours" name="start_hours" value={{$start_time[0]}} class="form-select">
+                                                <select id="start_hours" name="start_hours" class="form-select">
                                                     <option value=""></option>
                                                     <option value="1"> 1 </option>
                                                     <option value="2"> 2 </option>
@@ -238,7 +238,10 @@
                                         </div>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                <select id="start_minutes"  value={{$start_time[1]}} name="start_minutes" class="form-select">
+                                                <input type="text"   onkeypress="validate(event)" name="start_minutes" id="start_minutes" placeholder=""
+                                                class="form-control" required maxlength="2" />
+                                                <label for="start_minutes">Minutes</label>
+                                                {{-- <select id="start_minutes"  value={{$start_time[1]}} name="start_minutes" class="form-select">
                                                     <option value="00"> 00 </option>
                                                     <option value="10"> 10 </option>
                                                     <option value="20"> 20 </option>
@@ -246,7 +249,7 @@
                                                     <option value="40"> 40 </option>
                                                     <option value="50"> 50 </option>
                                                 </select>
-                                                <label for="start_minutes">Minutes</label>
+                                                <label for="start_minutes">Minutes</label> --}}
                                             </div>
                                         </div>
                                         <div class="col-md-4 my-2">
@@ -288,14 +291,16 @@
                                         </div>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                <select id="end_minutes"  value={{$end_time[1]}} name="end_minutes" class="form-select">
+                                                <input type="text" onkeypress="validate(event)" name="end_minutes" id="end_minutes" placeholder=""
+                                                class="form-control" required maxlength="2" />
+                                                {{-- <select id="end_minutes"  value={{$end_time[1]}} name="end_minutes" class="form-select">
                                                     <option value="00"> 00 </option>
                                                     <option value="10"> 10 </option>
                                                     <option value="20"> 20 </option>
                                                     <option value="30"> 30 </option>
                                                     <option value="40"> 40 </option>
                                                     <option value="50"> 50 </option>
-                                                </select>
+                                                </select> --}}
                                                 <label for="end_minutes">Minutes</label>
                                             </div>
                                         </div>
@@ -332,16 +337,42 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="start_time_h" id="start_time_h" value="{{$start_time[0]}}">
+        <input type="hidden" name="start_time_m" id="start_time_m" value="{{$start_time[1]}}">
+        <input type="hidden" name="start_time_d" id="start_time_d" value="{{$start_time[2]}}">
+        <input type="hidden" name="end_time_h" id="end_time_h" value="{{$end_time[0]}}">
+        <input type="hidden" name="end_time_m" id="end_time_m" value="{{$end_time[1]}}">
+        <input type="hidden" name="end_time_d" id="end_time_d" value="{{$end_time[2]}}">
     </div>
     <script src="{{ asset('assets/js/custom/job_request.js') }}"></script>
     <script>
-        $("#start_hours").val("{{$start_time[0]}}")
-        $("#start_minutes").val("{{$start_time[1]}}")
-        $("#start_day").val("{{$start_time[2]}}")
+    
+    </script>
+       <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
 
-        $("#end_hours").val("{{$end_time[0]}}")
-        $("#end_minutes").val("{{$end_time[1]}}")
-        $("#end_day").val("{{$end_time[2]}}")
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+                // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+        $("#start_hours").val($("#start_time_h").val())
+        $("#start_minutes").val($("#start_time_m").val())
+        $("#start_day").val($("#start_time_d").val())
+
+        $("#end_hours").val($("#end_time_h").val())
+        $("#end_minutes").val($("#end_time_m").val())
+        $("#end_day").val($("#end_time_d").val())
     </script>
 
 @endsection

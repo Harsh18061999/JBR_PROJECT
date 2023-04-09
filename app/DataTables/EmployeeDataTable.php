@@ -135,9 +135,9 @@ class EmployeeDataTable extends DataTable
                         'serverSide' => true,
                         'scrollX' => false,
                         'bAutoWidth' => false,
-                        'scrollX' => true,
+                      'scrollX' => true,
                         "scrollY" => false,
-                        "scrollCollapse" => true,
+                        "scrollCollapse" => true,  
                         "fixedColumns" => true,
                         "fixedColumns" =>  [
                             "left" => 1,

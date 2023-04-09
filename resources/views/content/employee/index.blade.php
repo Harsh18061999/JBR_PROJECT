@@ -28,6 +28,7 @@
     .dataTables_scrollBody{
       min-height: 294px;
     }
+    .dataTables_scrollFoot { display: none; }
 </style>
 @section('content')
     <div class="d-flex justify-content-between align-items-center">
