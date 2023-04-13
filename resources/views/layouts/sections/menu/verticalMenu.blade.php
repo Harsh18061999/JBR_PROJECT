@@ -65,7 +65,9 @@
                                 class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
                                 @if (isset($menu->target) and !empty($menu->target)) target="_self" @endif>
                                 @isset($menu->icon)
-                                    <i class="{{ $menu->icon }}"></i>
+                                {{-- {{ $menu->icon }} --}}
+                                    {{-- <i class="{{ $menu->icon }}"></i> --}}
+                                    <iconify-icon icon="line-md:account"></iconify-icon>
                                 @endisset
                                 <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
                             </a>

@@ -26,4 +26,8 @@ class JobConfirmation extends Model
     public function jobStatus(){
         return $this->hasOne(JobReminder::class)->last();
     }
+
+    public function timeSheet(){
+        return $this->hasMany(EmployeeTimeSheet::class,'job_confirmations_id');
+    }
 }

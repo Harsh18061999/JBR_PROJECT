@@ -3,13 +3,11 @@
 @section('title', ' Horizontal Layouts - Forms')
 <style>
     thead {
-        background: #152d47;
-        color: white;
+        
+        color:black;
         margin-top: 10px;
     }
-    .table:not(.table-dark) th {
-        color: white !important;
-    }
+   
 
     .dataTables_filter {
         margin-bottom: 30px;
@@ -125,6 +123,14 @@
                 <h5 class="m-0"><span class="text-muted fw-light"><i class="fa-sharp fa-solid fa-users mx-2"></i>
                         Job Request Details</h5>
                 <div class="d-flex">
+                    <div class="mx-2">
+                        <a href="{{ route('job_request.create') }}">
+                            <button type="button" class="btn btn-primary" title="Add Job Request">
+                                <i class="fa-sharp fa-solid fa-user-plus mx-2"></i>
+                            </button>
+                        </a>
+                    </div>
+
                     <button class="btn btn-primary me-1" type="button" data-bs-toggle="collapse" title="Filter"
                         data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa-solid fa-filter"></i>
@@ -217,5 +223,5 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/custom/client_jobrequest.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/emmployeeTimeSheet.js') }}"></script>
 @endsection

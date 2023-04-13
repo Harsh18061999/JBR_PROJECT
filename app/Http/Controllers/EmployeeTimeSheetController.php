@@ -6,16 +6,46 @@ use Illuminate\Http\Request;
 use App\Models\EmployeeTimeSheet;
 use App\Models\JobConfirmation;
 use App\Models\VerifyToken;
-use App\DataTables\EmployeeTimeSheetDataTable;
+use App\Models\Client;
+use App\Models\JobCategory;
+use App\Models\Supervisor;
+use App\DataTables\JobListTable;
 use Carbon\Carbon;
+use App\Models\JobRequest;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 class EmployeeTimeSheetController extends Controller
 {
-    public function index(EmployeeTimeSheetDataTable $dataTable)
+    public function index(JobListTable $dataTable)
     {
-        return $dataTable->render('content.employeeTimesheet.index');
+        $user = auth()->user();
+        $client = Client::get();
+        $role = $user->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        $jobCategory = JobCategory::get();
+
+        if($user->hasRole('admin')){
+            $supervisor = array();    
+        }else{
+            $supervisor = new Supervisor;
+            $supervisor = $supervisor->where('client_id',$user->client->id)->get();
+        }
+        return $dataTable->render('content.employeeTimesheet.joblist',compact('supervisor','client','role_name','jobCategory'));
+        // return $dataTable->render('content.employeeTimesheet.index');
+    }
+
+    public function timeSheetStatus($id){
+        $jobReuest = JobRequest::with(['supervisor.client'])->where('id',$id)->first();
+        // dd($jobReuest);
+        $employeeDetails = JobConfirmation::with(['employee','timeSheet'])->where('job_id',$id)->get();
+        // foreach($employeeDetails as $job){
+        //     dd($job->timeSheet);
+        // }
+        return view('content.employeeTimesheet.timesheetindex',with([
+            'jobReuest' => $jobReuest,
+            'employeeDetails' => $employeeDetails
+        ]));
     }
 
     public function datatable(Request $request){
