@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\EmployeeDataEntryPoint;
 use App\Models\JobConfirmation;
 use App\Models\JobRequest;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use DB;
 
@@ -55,7 +56,8 @@ class JobConfirmationController extends Controller
         $message .= "Start Time : ".$job['start_time']." \n";
         $message .= "End Time : ".$job['end_time']." \n";
 
-        $number = '+'.$employee->countryCode.$employee->contact_number;
+        $country = Country::where('id',$employee->countryCode)->first();
+        $number = '+'.$country->country_code.$employee->contact_number;
 
         $send_message = sendMessage($number,$message);
         if($job['no_of_employee'] == ($job['job_confirmation_count'])){
