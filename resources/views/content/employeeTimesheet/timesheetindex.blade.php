@@ -73,7 +73,7 @@
                                     <td class="text-nowrap">{{ $job->employee->email }}</td>
                                     <td>+{{ $job->employee->country->country_code . ' ' . $job->employee->contact_number }}</td>
                                     <td class="text-end">
-                                        <span class="badge bg-label-primary pointer rounded p-2" data-bs-toggle="collapse"
+                                        <span class="badge bg-label-primary pointer rounded p-2" title="TimeSheet" data-bs-toggle="collapse"
                                             data-bs-target="#collapseExample{{ $job->id }}" aria-expanded="false"
                                             aria-controls="collapseExample">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -107,7 +107,12 @@
 
 
                                         </span>
-                                        <span class="badge bg-label-success pointer rounded p-2">
+                                       
+                                        <span style="display: {{$job->time_sheet == 1 ? "inline-block" : "none"}}" class="badge bg-label-danger pointer rounded p-2 not_apprpved_time_sheet" id="not_approve{{$job->id}}" title="Not Approved"  data-jobid="{{$job->id}}" data-employeeid="{{$job->employee->id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linecap="round" stroke-width="2"><path fill="currentColor" fill-opacity="0" stroke-dasharray="60" stroke-dashoffset="60" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.15s" values="0;0.3"/></path><path fill="none" stroke-dasharray="8" stroke-dashoffset="8" d="M12 12L16 16M12 12L8 8M12 12L8 16M12 12L16 8"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="8;0"/></path></g></svg>
+                                        </span>
+                                      
+                                        <span title="Approved" style="display: {{$job->time_sheet == 0 ? "inline-block" : "none"}}"  id="approve{{$job->id}}" class="badge bg-label-success pointer rounded p-2 apprpved_time_sheet" data-jobid="{{$job->id}}" data-employeeid="{{$job->employee->id}}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24">
                                                 <g fill="none" stroke="currentColor" stroke-linecap="round"
@@ -121,6 +126,19 @@
                                                 </g>
                                             </svg>
                                         </span>
+                                        @if($job->timeSheet->count() == 0)
+                                        <span  class="badge bg-label-primary pointer rounded p-2" title="Upload time sheet">
+                                            <a href="{{route("employee_timesheet.create",$job->id)}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke-dasharray="64" stroke-dashoffset="64" stroke-width="2" d="M13 3L19 9V21H5V3H13"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M12.5 3V8.5H19"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.7s" dur="0.2s" values="14;0"/></path><g stroke-dasharray="8" stroke-dashoffset="8" stroke-width="2"><path d="M9 14H15"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1s" dur="0.2s" values="8;0"/></path><path d="M12 11V17"><animate fill="freeze" attributeName="stroke-dashoffset" begin="1.2s" dur="0.2s" values="8;0"/></path></g></g></svg>
+                                            </a>
+                                        </span>
+                                        @endif
+                                        @if($job->time_sheet_image)
+                                        <span  class="badge bg-label-primary pointer rounded p-2" title="Download time sheet">
+                                        <a class="pointer license_view" title="View License" data-href="{{asset('storage/assets/timesheet/'.$job->time_sheet_image)}}" data-pdfname="time_sheet"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="none" stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="14;0"/></path><path fill="currentColor" d="M12 4 h2 v6 h2.5 L12 14.5M12 4 h-2 v6 h-2.5 L12 14.5"><animate attributeName="d" calcMode="linear" dur="1.5s" keyTimes="0;0.7;1" repeatCount="indefinite" values="M12 4 h2 v6 h2.5 L12 14.5M12 4 h-2 v6 h-2.5 L12 14.5;M12 4 h2 v3 h2.5 L12 11.5M12 4 h-2 v3 h-2.5 L12 11.5;M12 4 h2 v6 h2.5 L12 14.5M12 4 h-2 v6 h-2.5 L12 14.5"/></path></g></svg></a>
+                                        {{-- <a type="button" title="Download License" class="dropdown-item" href="{{asset('storage/assets/timesheet/'.$job->time_sheet_image)}}" target="_blank" download="time_sheet"> <i class="fa-solid fa-download"></i> Download</a> --}}
+                                        </span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
@@ -149,24 +167,24 @@
                                                                     <td><input type="time" disabled id="end_time{{$time->id}}" name="appt" value="{{ $time->end_time }}">
                                                                     </td>
                                                                     <td>
-                                                                        {{-- @php
+                                                                        @php
                                                                             $start_time = explode(':', $time->start_time);
                                                                             $end_time = explode(':', $time->end_time);
                                                                             
                                                                             $total_minutes = (int) ($end_time[1] - $start_time[1]);
                                                                             
                                                                             $break_time = $time->break_time;
-                                                                            if ($end_time[2] == 'PM') {
-                                                                                $end_hours = $end_time[0] + 12;
-                                                                            } else {
-                                                                                $end_hours = $end_time[0];
-                                                                            }
+                                                                            // if ($end_time[2] == 'PM') {
+                                                                            //     $end_hours = $end_time[0] + 12;
+                                                                            // } else {
+                                                                            //     $end_hours = $end_time[0];
+                                                                            // }
                                                                             
-                                                                            $total_hours = (int) ($end_hours - $start_time[0]) * 60;
-                                                                            $total = ($total_hours - $break_time) / 60;
-                                                                        @endphp --}}
-                                                                        {{-- {{$total}} --}}
-                                                                        10
+                                                                            $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                                                                            $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                                                                        @endphp
+                                                                        {{$total}}
+                                                                        {{-- 10 --}}
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex">
@@ -200,6 +218,27 @@
                         @endif
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-lg-3">
+        <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalScrollableTitle">Employee License</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="height: 100vh;">
+                        <iframe id="myFrame" style="width: 100%;height:100%;"></iframe>
+                        <img src="" alt="" id="my_img" style="display: block;width:100%;height:100%;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-primary" id="license_download" href="" target="_blank"
+                            download="pdfName">Download</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

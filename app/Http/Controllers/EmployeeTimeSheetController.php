@@ -15,6 +15,9 @@ use App\Models\JobRequest;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage;
+use File;
+
 class EmployeeTimeSheetController extends Controller
 {
     public function index(JobListTable $dataTable)
@@ -110,26 +113,9 @@ class EmployeeTimeSheetController extends Controller
             foreach ($period as $date) {
                 $all_date[] = $date->format('Y-m-d');
             }
-
-            $time_sheet = EmployeeTimeSheet::where('job_confirmations_id', $id)
-                ->latest()
-                ->first();
-            if ($time_sheet && in_array($time_sheet->job_date, $all_date)) {
-                $key = array_search($time_sheet->job_date, $all_date) + 1;
-                if (isset($all_date[$key])) {
-                    $job_date = $all_date[$key];
-                } else {
-                    return redirect()->route('employee_timesheet.index');
-                }
-            } else {
-                $job_date = $all_date[0];
-            }
-            if(count($all_date) == 1){
-                $time_sheet_status = 1;
-            }else if($job_date == $all_date[count($all_date)-1]){
-                $time_sheet_status = 1;
-            }
-            return view('content.employeeTimesheet.create', compact('job_details','job_date','time_sheet_status'));
+            // dd($all_date);
+            $time_sheet_status = 1;
+            return view('content.employeeTimesheet.create', compact('job_details','all_date','time_sheet_status'));
         } else {
             return redirect()
                 ->route('employee_timesheet.index')
@@ -139,20 +125,44 @@ class EmployeeTimeSheetController extends Controller
 
     public function store(Request $request)
     {    
-        $orderDetails = $request->only([
-            'job_confirmations_id',
-            'job_date',
-            'break_time'
-        ]);
-        $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
-        $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
-
-        $job_status = $request->time_sheet == 0 ? '1' : '2';
+        // dd($request->all());
+        $filename = '';
+        if($request->has('time_sheet_image')) {
+            $uploadedFile = $request->file('time_sheet_image');
+            $filename = uniqid(). '.' .File::extension($uploadedFile->getClientOriginalName());
+            Storage::disk('local')->putFileAs(
+            'public/assets/timesheet',
+            $uploadedFile,
+            $filename
+            );
+        }
         JobConfirmation::where('id',$request->job_confirmations_id)->update([
-            "time_sheet" => $request->time_sheet,
-            'job_status' => $job_status
+            'time_sheet_image' => $filename
         ]);
-        EmployeeTimeSheet::create($orderDetails);
+        foreach($request->job_date as $k => $date){
+            EmployeeTimeSheet::create([
+              'job_confirmations_id' => $request->job_confirmations_id,
+                'time_sheet' => $request->time_sheet,
+                'job_date' => $date,
+                'start_time' => $request->start_time[$k],
+                'break_time' => $request->break_time[$k],
+                'end_time' => $request->end_time[$k],
+            ]);
+        }
+        // $orderDetails = $request->only([
+        //     'job_confirmations_id',
+        //     'job_date',
+        //     'break_time'
+        // ]);
+        // $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
+        // $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
+
+        // $job_status = $request->time_sheet == 0 ? '1' : '2';
+        // JobConfirmation::where('id',$request->job_confirmations_id)->update([
+        //     "time_sheet" => $request->time_sheet,
+        //     'job_status' => $job_status
+        // ]);
+        // EmployeeTimeSheet::create($orderDetails);
         return redirect()
         ->route('employee_timesheet.index')
         ->with('success', 'Something went wrong.');
@@ -266,5 +276,33 @@ class EmployeeTimeSheetController extends Controller
         ]);
         EmployeeTimeSheet::create($orderDetails);
         return redirect()->route('success');
+    }
+
+    public function saveTimeSheet(Request $request){
+        EmployeeTimeSheet::where('id',$request->job_id)->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time
+        ]);
+        $response['success'] = true;
+        return $response;
+    }
+
+    public function approve(Request $request){
+        JobConfirmation::where('id',$request->id)
+            ->where('employee_id',$request->employee_id)
+            ->update([
+                'time_sheet' => '1'
+            ]);
+        $response['success'] = true;
+        return $response;
+    }
+
+    public function cancle(Request $request){
+        JobConfirmation::where('id',$request->id)
+        ->where('employee_id',$request->employee_id)
+        ->update([
+            'time_sheet' =>'0']);
+        $response['success'] = true;
+        return $response;
     }
 }

@@ -43,11 +43,11 @@ class CurrentJobRequest extends DataTable
                 }
             })
             ->addColumn('employee_list',function($query){
-                return  "<div class='text-center'><span class='badge bg-label-primary me-1'>
+                return  "<div class='text-center'><a href=".route('employee_timesheet.status',$query->id)."><span class='badge bg-label-primary me-1'>
                 <div class='d-flex align-items-center'> 
                     <i class='fa-solid fa-eye mx-2'></i>
                 </div>
-            </span></div>";
+            </span></a></div>";
             });
     }
 

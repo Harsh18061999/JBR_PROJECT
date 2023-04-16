@@ -44,7 +44,13 @@ class JobListTable extends DataTable
                 }
             })
             ->addColumn('time_sheet',function($query){
-                return "fgjhgjhg";
+                if($query->jobConfirmation->count() == 0){
+                    return '<span class="badge bg-label-primary me-1">Pending</span>';
+                }else if( $query->jobConfirmation->count() == $query->jobConfirmation->where('time_sheet','1')->count()){
+                    return '<span class="badge bg-label-success me-1">Completed</span>';
+                }else{
+                    return '<span class="badge bg-label-danger me-1">Not Completed</span>';
+                }
             })
             ->addColumn('employee_list',function($query){
                 return  "<div class='text-center'><a href=".route('employee_timesheet.status',$query->id)."><span class='badge bg-label-primary me-1'>

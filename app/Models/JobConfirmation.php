@@ -12,6 +12,9 @@ class JobConfirmation extends Model
     protected $fillable = [
         'employee_id',
         'job_id',
+        'job_status',
+        'time_sheet',
+        'time_sheet_image',
         'status'
     ];
 

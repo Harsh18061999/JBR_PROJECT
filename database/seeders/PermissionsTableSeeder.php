@@ -355,7 +355,7 @@ class PermissionsTableSeeder extends Seeder
                 'name' => 'job_request_details',
                 'guard_name' => 'web',
                 'created_at' => '2023-02-20 17:13:41',
-                'updated_at' => '2023-02-20 17:13:41',
+                'updated_at' => '2023-03-30 16:50:49',
                 'title' => 'job_request_details',
                 'description' => 'index',
             ),
@@ -808,6 +808,196 @@ class PermissionsTableSeeder extends Seeder
                 'updated_at' => '2023-02-20 17:40:23',
                 'title' => 'Employee',
                 'description' => 'index',
+            ),
+            79 => 
+            array (
+                'id' => 87,
+                'name' => 'province.index',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'index',
+            ),
+            80 => 
+            array (
+                'id' => 88,
+                'name' => 'province.create',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'create',
+            ),
+            81 => 
+            array (
+                'id' => 89,
+                'name' => 'province.store',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'store',
+            ),
+            82 => 
+            array (
+                'id' => 90,
+                'name' => 'province.edit',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'edit',
+            ),
+            83 => 
+            array (
+                'id' => 91,
+                'name' => 'province.update',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'update',
+            ),
+            84 => 
+            array (
+                'id' => 92,
+                'name' => 'province_destroy.destory',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:40:52',
+                'updated_at' => '2023-03-22 19:40:52',
+                'title' => 'Province',
+                'description' => 'destory',
+            ),
+            85 => 
+            array (
+                'id' => 93,
+                'name' => 'country.index',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'index',
+            ),
+            86 => 
+            array (
+                'id' => 94,
+                'name' => 'country.create',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'create',
+            ),
+            87 => 
+            array (
+                'id' => 95,
+                'name' => 'country.store',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'store',
+            ),
+            88 => 
+            array (
+                'id' => 96,
+                'name' => 'country.edit',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'edit',
+            ),
+            89 => 
+            array (
+                'id' => 97,
+                'name' => 'country.update',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'update',
+            ),
+            90 => 
+            array (
+                'id' => 98,
+                'name' => 'country_destroy.destory',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-22 19:50:39',
+                'updated_at' => '2023-03-22 19:50:39',
+                'title' => 'Country',
+                'description' => 'destory',
+            ),
+            91 => 
+            array (
+                'id' => 99,
+                'name' => 'client.addmore',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-26 05:35:27',
+                'updated_at' => '2023-03-26 05:35:27',
+                'title' => 'Country',
+                'description' => 'add more',
+            ),
+            92 => 
+            array (
+                'id' => 100,
+                'name' => 'client_job_request.index',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-27 18:55:44',
+                'updated_at' => '2023-03-27 19:23:04',
+                'title' => 'Client Job Details @ Report',
+                'description' => 'job request',
+            ),
+            93 => 
+            array (
+                'id' => 101,
+                'name' => 'employee_timesheet.datatable',
+                'guard_name' => 'web',
+                'created_at' => '2023-03-30 18:08:00',
+                'updated_at' => '2023-03-30 18:08:00',
+                'title' => 'employee_timesheet',
+                'description' => 'datatable',
+            ),
+            94 => 
+            array (
+                'id' => 102,
+                'name' => 'employee_timesheet.status',
+                'guard_name' => 'web',
+                'created_at' => '2023-04-09 05:08:59',
+                'updated_at' => '2023-04-09 05:08:59',
+                'title' => 'employee_timesheet',
+                'description' => 'status',
+            ),
+            95 => 
+            array (
+                'id' => 103,
+                'name' => 'saveTimeSheet.update',
+                'guard_name' => 'web',
+                'created_at' => '2023-04-16 05:38:28',
+                'updated_at' => '2023-04-16 05:38:28',
+                'title' => 'employee_timesheet',
+                'description' => 'update time sheet',
+            ),
+            96 => 
+            array (
+                'id' => 104,
+                'name' => 'timesheet.approve',
+                'guard_name' => 'web',
+                'created_at' => '2023-04-16 06:25:39',
+                'updated_at' => '2023-04-16 06:25:39',
+                'title' => 'employee_timesheet',
+                'description' => 'approve',
+            ),
+            97 => 
+            array (
+                'id' => 105,
+                'name' => 'timesheet.cancle',
+                'guard_name' => 'web',
+                'created_at' => '2023-04-16 07:28:31',
+                'updated_at' => '2023-04-16 07:28:31',
+                'title' => 'employee_timesheet',
+                'description' => 'cancle',
             ),
         ));
         

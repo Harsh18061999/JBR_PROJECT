@@ -107,7 +107,6 @@ $(document).ready(function(){
         }else{
             $(".select_date").css("display","none"); 
         }
-            
     });
 
 });

@@ -171,6 +171,9 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
         Route::POST('/time-sheet-datatable', [EmployeeTimeSheetController::class, 'datatable'])->name('employee_timesheet.datatable');
 
         Route::get('/timesheet_status/{id}',[EmployeeTimeSheetController::class,'timeSheetStatus'])->name('employee_timesheet.status');
+        Route::post('/save_time_sheet',[EmployeeTimeSheetController::class,'saveTimeSheet'])->name('saveTimeSheet.update');
+        Route::post('/approve_time_sheet',[EmployeeTimeSheetController::class,'approve'])->name('timesheet.approve');
+        Route::post('/not_approve_time_sheet',[EmployeeTimeSheetController::class,'cancle'])->name('timesheet.cancle');
         // User Routes
         Route::post('/user/{id}', [UserController::class, 'update'])->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'destory'])->name('user.destory');
