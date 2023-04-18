@@ -7,9 +7,9 @@
 
 <div class="card shadow bg-transparent" id="grad1">
     <div class="row mt-0">
-        <div class="text-center p-0">
+        <div class="p-0">
             <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                <h3><strong>Payroll Data Entry Point</strong></h3>
+                <h3 class="text-center"><strong>Payroll Data Entry Point</strong></h3>
                 <hr class="mt-4 mx-4">
                 <form id="data_entry_from" action="{{route('data_entry_point.store')}}" method="POST" novalidate enctype="multipart/form-data"> 
                   @csrf
@@ -124,7 +124,7 @@
                             <div class=" mb-4">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" maxlength="8" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Postal Code</label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -170,7 +170,7 @@
                             <label for="formFile" class="form-label text-start w-100" id="license_text">Personal Identification</label>
                             <input class="form-control" type="file" name="personal_identification" id="formFile">
                           </div>
-                        <div class="my-4">
+                        <div class="my-4 text-center">
                             <button type="submit" class="btn btn-primary" id="employee_button">Register</button>
                         </div>
                     </div>

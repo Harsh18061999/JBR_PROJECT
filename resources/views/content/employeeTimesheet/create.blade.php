@@ -34,7 +34,7 @@
         <div class="row mt-0">
             <div class="p-0">
                 <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                    <h3><strong><i class="fa-solid fa-user mx-2"></i> Employee Time Sheet</strong></h3>
+                    <h3 class="text-center"><strong><i class="fa-solid fa-user mx-2"></i> Employee Time Sheet</strong></h3>
                     <hr class="mt-4 mx-4">
                     <form id="employee_timesheet_from" action="{{ route('employee_timesheet.store') }}" method="POST"
                         enctype="multipart/form-data" novalidate>
@@ -60,7 +60,7 @@
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <input type="text" name="client_name" class="form-control" id="client_name"
-                                                value="{{ $job_details->job->supervisor->client->client_name . ' ' . $job_details->employee->last_name }}"
+                                                value="{{ $job_details->job->supervisor->client->client_name }}"
                                                 readonly aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="client_name">Client Name</label>
                                         </div>
@@ -73,7 +73,7 @@
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <input type="text" name="supervisor" class="form-control" id="supervisor"
-                                                value="{{ $job_details->job->supervisor->client->client_name . ' ' . $job_details->employee->supervisor }}"
+                                                value="{{ $job_details->job->supervisor->supervisor }}"
                                                 readonly aria-describedby="floatingInputHelp" data-error="errNm1" />
                                             <label for="supervisor">Supervisor</label>
                                         </div>

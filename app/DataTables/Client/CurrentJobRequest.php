@@ -3,6 +3,7 @@
 namespace App\DataTables\Client;
 
 use App\Models\JobRequest;
+use App\Models\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -74,24 +75,37 @@ class CurrentJobRequest extends DataTable
             $week_end = date('Y-m-d', strtotime('+'.(6-$day).' days'));
         }
 
-        if($request->supervisor && $request->supervisor != ''){
-            $model = $model->where('supervisor_id',$request->supervisor);
-        }else if($request->client_name && $request->client_name != ''){
-            $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
-            $model = $model->whereIn('supervisor_id',$client_id);
+        
+        $model = $model->with(['employees','supervisor','jobCategory','jobConfirmation'])
+        ->whereDate('job_date','>=',$week_start)
+        ->whereDate('end_date','<=',$week_end);
+
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        if($role_name != "admin"){
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else{
+                $supervisor_id = Supervisor::where('client_id',auth()->user()->client_id)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$supervisor_id);
+            }
+        }else{
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else if($request->client_name && $request->client_name != ''){
+                $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$client_id);
+            }
         }
 
         if($request->job_id && $request->job_id != ''){
             $model = $model->where('job_id',$request->job_id);
         }
 
-        if($request->status && $request->status != ''){
+        if($request->status > -1){
             $model = $model->where('status',$request->status);
         }
 
-        $model = $model->with(['employees','supervisor','jobCategory','jobConfirmation'])
-        ->whereDate('job_date','>=',$week_start)
-        ->whereDate('end_date','<=',$week_end);
         return $model->newQuery();
     }
 

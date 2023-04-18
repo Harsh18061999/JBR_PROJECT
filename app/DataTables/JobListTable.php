@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\JobRequest;
 use Illuminate\Http\Request;
+use App\Models\Supervisor;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -84,18 +85,30 @@ class JobListTable extends DataTable
             $week_end = date('Y-m-d', strtotime('+'.(6-$day).' days'));
         }
 
-        if($request->supervisor && $request->supervisor != ''){
-            $model = $model->where('supervisor_id',$request->supervisor);
-        }else if($request->client_name && $request->client_name != ''){
-            $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
-            $model = $model->whereIn('supervisor_id',$client_id);
+
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        if($role_name != "admin"){
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else{
+                $supervisor_id = Supervisor::where('client_id',auth()->user()->client_id)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$supervisor_id);
+            }
+        }else{
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else if($request->client_name && $request->client_name != ''){
+                $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$client_id);
+            }
         }
 
         if($request->job_id && $request->job_id != ''){
             $model = $model->where('job_id',$request->job_id);
         }
 
-        if($request->status && $request->status != ''){
+        if($request->status > -1){
             $model = $model->where('status',$request->status);
         }
 

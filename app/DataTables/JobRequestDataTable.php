@@ -67,24 +67,27 @@ class JobRequestDataTable extends DataTable
                 $supervisor_id = Supervisor::where('client_id',auth()->user()->client_id)->pluck('id')->toArray();
                 $model = $model->whereIn('supervisor_id',$supervisor_id);
             }
+        }else{
+            if($request->supervisor && $request->supervisor != ''){
+                $model = $model->where('supervisor_id',$request->supervisor);
+            }else if($request->client_name && $request->client_name != ''){
+                $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
+                $model = $model->whereIn('supervisor_id',$client_id);
+            }
         }
+        
         if($request->job_date && $request->job_date != '' && $request->end_date && $request->end_date){
             $model = $model->where('job_date','>=',$request->job_date)
                 ->where('end_date','<=',$request->end_date);
         }
 
-        if($request->supervisor && $request->supervisor != ''){
-            $model = $model->where('supervisor_id',$request->supervisor);
-        }else if($request->client_name && $request->client_name != ''){
-            $client_id = Supervisor::where('client_id',$request->client_name)->pluck('id')->toArray();
-            $model = $model->whereIn('supervisor_id',$client_id);
-        }
+        
 
         if($request->job_id && $request->job_id != ''){
             $model = $model->where('job_id',$request->job_id);
         }
 
-        if($request->status && $request->status != ''){
+        if($request->status > -1){
             $model = $model->where('status',$request->status);
         }
 

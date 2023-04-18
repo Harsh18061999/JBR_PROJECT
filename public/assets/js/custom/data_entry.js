@@ -63,9 +63,6 @@ $(document).ready(function(){
                 line_1: {
                     required: true
                 },
-                line_2: {
-                    required: true
-                },  
                 country: {
                     valueNotEquals: true
                 },  
@@ -76,8 +73,7 @@ $(document).ready(function(){
                     valueNotEquals: true
                 },  
                 postal_code: {
-                    postcode: true,
-                    notNull : true
+                  required:true
                 },  
                 transit_number: {
                     required: true
