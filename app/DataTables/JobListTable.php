@@ -114,7 +114,7 @@ class JobListTable extends DataTable
 
         $model = $model->with(['employees','supervisor','jobCategory','jobConfirmation'])
         ->whereDate('job_date','>=',$week_start)
-        ->whereDate('end_date','<=',$week_end);
+        ->whereDate('job_date','<=',$week_end);
         return $model->newQuery();
     }
 

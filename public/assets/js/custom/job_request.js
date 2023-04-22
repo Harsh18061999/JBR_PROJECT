@@ -46,14 +46,11 @@ $(document).ready(function(){
     $("#job_request_form").validate({
             rules: {
                 client_name : {valueNotEquals: true},
+                supervisor_id : {valueNotEquals: true},
                 client_id: {valueNotEquals: true},
                 job_id: { valueNotEquals: true, },
-                start_hours: { timeSelect: true, },
-                end_hours: { timeSelect: true, },
-                start_minutes: { timeSelect: true, },
-                end_minutes: { timeSelect: true, },
-                start_day: { timeSelect: true, },
-                end_day: { timeSelect: true, },
+                start_time: { required: true, },
+                end_time: { required: true, },
                 job_date:{ required:true },
                 no_of_employee:{ required:true }
             },
@@ -107,7 +104,6 @@ $(document).ready(function(){
         changeMonth: true,
         changeYear: true,
         dateFormat: 'yy-mm-dd',
-        minDate: new Date(),
         autoclose: true,
         onSelect: function() {
             var startdate = $('#job_date').datepicker('getDate');
@@ -142,7 +138,6 @@ $(document).ready(function(){
         changeMonth: true,
         changeYear: true,
         dateFormat: 'yy-mm-dd',
-        minDate: new Date(),
         autoclose: true,
         onSelect: function() {
             var end_date = $('#end_date').datepicker('getDate');

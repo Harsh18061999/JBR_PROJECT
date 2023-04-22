@@ -281,9 +281,21 @@ class EmployeeTimeSheetController extends Controller
     public function saveTimeSheet(Request $request){
         EmployeeTimeSheet::where('id',$request->job_id)->update([
             'start_time' => $request->start_time,
-            'end_time' => $request->end_time
+            'end_time' => $request->end_time,
+            "break_time" => $request->break_time
         ]);
         $response['success'] = true;
+        $start_time = explode(':', $request->start_time);
+        $end_time = explode(':', $request->end_time);
+        
+        $total_minutes = (int) ($end_time[1] - $start_time[1]);
+        
+        $break_time = $request->break_time;
+        
+        $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+        $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+        $response['total'] = $total;
+        
         return $response;
     }
 

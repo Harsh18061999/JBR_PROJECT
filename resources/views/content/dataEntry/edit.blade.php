@@ -175,22 +175,13 @@
                         <div class="col-md-3" style="margin-top: -15px">
                             <label for="formFile" class="form-label text-start w-100" id="license_text">Personal Identification</label>
                             <input class="form-control" value={{$dataEntry->personal_identification}} type="file" name="personal_identification" id="formFile">
+                            <input type="hidden" name="" id="edit_license_view" data-href="{{ asset('storage/assets/' . $dataEntry->personal_identification) }}">
                           </div>
                         <div class="my-4">
                             <button type="submit" class="btn btn-primary" id="employee_button">UPDATE</button>
                         </div>
                     </div>
                 </form>
-                <div class="row">
-                    <div class="col-md-12 mx-4">
-                        <form action="">
-                            <div class="row">
-
-                                
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

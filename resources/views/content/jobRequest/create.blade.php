@@ -102,15 +102,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
     <div class="card shadow bg-transparent" id="grad1">
         <div class="row mt-0">
-            <div class="text-center p-0">
+            <div class="p-0">
                 <div class="card px-0 pt-4 pb-0 d-flex justify-content-center">
-                    <h3><strong><i class="fa-solid fa-user mx-2"></i> Add Job Request</strong></h3>
+                    <h3 class="text-center"><strong><i class="fa-solid fa-user mx-2"></i> Add Job Request</strong></h3>
                     <hr class="mt-4 mx-4">
                     <form id="job_request_form" action="{{ route('job_request.store') }}" method="POST"
                         enctype="multipart/form-data" novalidate>
                         @csrf
                         <div class="row mx-4">
-
+                            @if($role_name == "admin")
                             <div class="col-lg-4">
                                 <div class=" mb-2">
                                     <div class="">
@@ -128,12 +128,16 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-lg-4">
                                 <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating error_message">
                                             <select id="supervisor" name="supervisor_id" class="form-select">
                                                 <option value="">Please select Supervisor</option>
+                                                @foreach($supervisor as $value)
+                                                <option value="{{ $value->id }}">{{ $value->supervisor }}</option>
+                                                @endforeach
                                             </select>
                                             <label for="supervisor">Supervisor</label>
                                         </div>
@@ -191,7 +195,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <div class="p-2">
 
                                     <div class="row ">
@@ -262,17 +266,8 @@
                                         </div>
                                         <div class="col-md-4 my-2">
                                             <div class="form-floating error_message">
-                                                {{-- <input type="text" name="end_minutes" id="end_minutes"> --}}
                                                 <input type="text" onkeypress="validate(event)" name="end_minutes" id="end_minutes" placeholder=""
                                                     class="form-control" required maxlength="2" />
-                                                {{-- <select id="end_minutes" name="end_minutes" class="form-select">
-                                                    <option value="00"> 00 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="20"> 20 </option>
-                                                    <option value="30"> 30 </option>
-                                                    <option value="40"> 40 </option>
-                                                    <option value="50"> 50 </option>
-                                                </select> --}}
                                                 <label for="end_minutes">Minutes</label>
                                             </div>
                                         </div>
@@ -287,9 +282,24 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div> --}}
+                            <div class="col-lg-4">
+                                <div class=" mb-4">
+                                    <div class="form-floating error_message">
+                                        <input type="time" class="form-control" name="start_time" id="start_time">
+                                        <label for="job_date">Start Time</label>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="col-lg-4 mt-2">
+                            <div class="col-lg-4">
+                                <div class=" mb-4">
+                                    <div class="form-floating error_message">
+                                        <input type="time" class="form-control" name="end_time" id="end_time">
+                                        <label for="job_date">End Time</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
                                 <div class=" mb-2">
                                     <div class="">
                                         <div class="form-floating">
@@ -301,8 +311,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="my-4">
-                                <button type="submit" class="btn btn-primary" id="employee_button">Register</button>
+                            <div class="my-4 text-center">
+                                <button type="submit" class="btn btn-primary " id="employee_button">Register</button>
                             </div>
                         </div>
                     </form>

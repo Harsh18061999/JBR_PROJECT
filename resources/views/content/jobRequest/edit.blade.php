@@ -110,7 +110,7 @@
                         enctype="multipart/form-data" novalidate>
                         @csrf
                         <div class="row mx-4">
-
+                            @if($role_name == "admin")
                             <div class="col-lg-4">
                                 <div class=" mb-2">
                                     <div class="">
@@ -129,6 +129,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-lg-4">
                                 <div class=" mb-2">
                                     <div class="">
@@ -211,108 +212,19 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="col-lg-6">
-                                <div class="p-2">
-
-                                    <div class="row">
-                                        <label for="">Strat Time</label>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <select id="start_hours" name="start_hours" class="form-select">
-                                                    <option value=""></option>
-                                                    <option value="1"> 1 </option>
-                                                    <option value="2"> 2 </option>
-                                                    <option value="3"> 3 </option>
-                                                    <option value="4"> 4 </option>
-                                                    <option value="5"> 5 </option>
-                                                    <option value="6"> 6 </option>
-                                                    <option value="7"> 7 </option>
-                                                    <option value="8"> 8 </option>
-                                                    <option value="9"> 9 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="11"> 11 </option>
-                                                    <option value="12"> 12 </option>
-                                                </select>
-                                                <label for="start_hours">Hours</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <input type="text"   onkeypress="validate(event)" name="start_minutes" id="start_minutes" placeholder=""
-                                                class="form-control" required maxlength="2" />
-                                                <label for="start_minutes">Minutes</label>
-                                                {{-- <select id="start_minutes"  value={{$start_time[1]}} name="start_minutes" class="form-select">
-                                                    <option value="00"> 00 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="20"> 20 </option>
-                                                    <option value="30"> 30 </option>
-                                                    <option value="40"> 40 </option>
-                                                    <option value="50"> 50 </option>
-                                                </select>
-                                                <label for="start_minutes">Minutes</label> --}}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <select id="start_day"  value={{$start_time[2]}} name="start_day" class="form-select">
-                                                    <option selected="" value="AM"> AM </option>
-                                                    <option value="PM"> PM </option>
-                                                </select>
-                                                <label for="start_day">Meridiem</label>
-                                            </div>
-                                        </div>
+                            <div class="col-lg-4">
+                                <div class=" mb-4">
+                                    <div class="form-floating error_message">
+                                        <input type="time" class="form-control" name="start_time" id="start_time" value="{{$job_request->start_time}}">
+                                        <label for="job_date">Start Time</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="p-2">
-
-                                    <div class="row">
-                                        <label for="" class="">End Time</label>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <select id="end_hours"  value={{$end_time[0]}} name="end_hours" class="form-select">
-                                                    <option value=""></option>
-                                                    <option value="1"> 1 </option>
-                                                    <option value="2"> 2 </option>
-                                                    <option value="3"> 3 </option>
-                                                    <option value="4"> 4 </option>
-                                                    <option value="5"> 5 </option>
-                                                    <option value="6"> 6 </option>
-                                                    <option value="7"> 7 </option>
-                                                    <option value="8"> 8 </option>
-                                                    <option value="9"> 9 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="11"> 11 </option>
-                                                    <option value="12"> 12 </option>
-                                                </select>
-                                                <label for="end_hours">Hours</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <input type="text" onkeypress="validate(event)" name="end_minutes" id="end_minutes" placeholder=""
-                                                class="form-control" required maxlength="2" />
-                                                {{-- <select id="end_minutes"  value={{$end_time[1]}} name="end_minutes" class="form-select">
-                                                    <option value="00"> 00 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="20"> 20 </option>
-                                                    <option value="30"> 30 </option>
-                                                    <option value="40"> 40 </option>
-                                                    <option value="50"> 50 </option>
-                                                </select> --}}
-                                                <label for="end_minutes">Minutes</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating error_message">
-                                                <select id="end_day"  value={{$end_time[2]}} name="end_day" class="form-select">
-                                                    <option selected="" value="PM"> PM </option>
-                                                    <option value="AM"> AM </option>
-                                                </select>
-                                                <label for="end_day">Meridiem</label>
-                                            </div>
-                                        </div>
+                            <div class="col-lg-4">
+                                <div class=" mb-4">
+                                    <div class="form-floating error_message">
+                                        <input type="time" class="form-control" name="end_time" id="end_time" value="{{$job_request->end_time}}">
+                                        <label for="job_date">End Time</label>
                                     </div>
                                 </div>
                             </div>
@@ -337,12 +249,6 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" name="start_time_h" id="start_time_h" value="{{$start_time[0]}}">
-        <input type="hidden" name="start_time_m" id="start_time_m" value="{{$start_time[1]}}">
-        <input type="hidden" name="start_time_d" id="start_time_d" value="{{$start_time[2]}}">
-        <input type="hidden" name="end_time_h" id="end_time_h" value="{{$end_time[0]}}">
-        <input type="hidden" name="end_time_m" id="end_time_m" value="{{$end_time[1]}}">
-        <input type="hidden" name="end_time_d" id="end_time_d" value="{{$end_time[2]}}">
     </div>
     <script src="{{ asset('assets/js/custom/job_request.js') }}"></script>
     <script>
@@ -366,13 +272,6 @@
                 if (theEvent.preventDefault) theEvent.preventDefault();
             }
         }
-        $("#start_hours").val($("#start_time_h").val())
-        $("#start_minutes").val($("#start_time_m").val())
-        $("#start_day").val($("#start_time_d").val())
-
-        $("#end_hours").val($("#end_time_h").val())
-        $("#end_minutes").val($("#end_time_m").val())
-        $("#end_day").val($("#end_time_d").val())
     </script>
 
 @endsection

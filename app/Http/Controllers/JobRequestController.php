@@ -41,7 +41,13 @@ class JobRequestController extends Controller
     {
         $jobCategory = JobCategory::get();
         $client = Client::get();
-        return view('content.jobRequest.create',compact('jobCategory','client'));
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        $supervisor = array();
+        if($role_name != 'admin'){
+            $supervisor = Supervisor::where('client_id',auth()->user()->client_id)->get();
+        }
+        return view('content.jobRequest.create',compact('jobCategory','client','supervisor','role_name'));
     }
 
     public function get_supervisor(Request $request){
@@ -60,12 +66,8 @@ class JobRequestController extends Controller
             'job_date' => 'required',
             'end_date' => 'required',
             'hireperiod' => 'required',
-            'start_hours' => 'required',
-            'end_hours' => 'required',
-            'start_minutes' => 'required',
-            'end_minutes' => 'required',
-            'start_day' => 'required',
-            'end_day' => 'required',
+            'start_time' => "required",
+            'end_time' => "required",
             'no_of_employee' => 'required'
         ]);
     
@@ -75,11 +77,10 @@ class JobRequestController extends Controller
             'job_date',
             'end_date',
             'hireperiod',
+            'start_time',
+            'end_time',
             'no_of_employee'
         ]);
-
-        $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
-        $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
 
         $job_request = $this->jobRequestRepository->createJobRequest($orderDetails);
 
@@ -89,14 +90,13 @@ class JobRequestController extends Controller
 
     public function edit(JobRequest $job_request)
     {
-        $start_time = explode(":",$job_request->start_time);
-        $end_time = explode(":",$job_request->end_time);
         $jobCategory = JobCategory::get();
         $client = Client::get();
         $selected_supervisor = Supervisor::where('id',$job_request->supervisor_id)->first();
         $supervisor = Supervisor::where('client_id',$selected_supervisor->client_id)->get();
-        
-        return view('content.jobRequest.edit', compact('job_request','jobCategory','client','supervisor','selected_supervisor','start_time','end_time'));
+        $role = auth()->user()->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        return view('content.jobRequest.edit', compact('job_request','jobCategory','client','supervisor','selected_supervisor','role_name'));
     }
 
     public function update(Request $request)
@@ -108,12 +108,8 @@ class JobRequestController extends Controller
             'job_date' => 'required',
             'end_date' => 'required',
             'hireperiod' => 'required',
-            'start_hours' => 'required',
-            'end_hours' => 'required',
-            'start_minutes' => 'required',
-            'end_minutes' => 'required',
-            'start_day' => 'required',
-            'end_day' => 'required',
+            'start_time' => "required",
+            'end_time' => "required",
             'no_of_employee' => 'required'
         ]);
     
@@ -123,11 +119,10 @@ class JobRequestController extends Controller
             'job_date',
             'end_date',
             'hireperiod',
+            'start_time',
+            'end_time',
             'no_of_employee'
         ]);
-
-        $orderDetails['start_time'] = $request->start_hours.":".$request->start_minutes.":".$request->start_day;
-        $orderDetails['end_time'] = $request->end_hours.":".$request->end_minutes.":".$request->end_day;
 
         $this->jobRequestRepository->updateJobRequest($job_request_id,$orderDetails);
 

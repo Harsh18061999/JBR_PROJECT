@@ -166,7 +166,7 @@
                                                                     <td><input type="text" style="width: 50%"  disabled id="break_time{{$time->id}}" name="appt" value="{{ $time->break_time }}"></td>
                                                                     <td><input type="time" disabled id="end_time{{$time->id}}" name="appt" value="{{ $time->end_time }}">
                                                                     </td>
-                                                                    <td>
+                                                                    <td id="total_time{{$time->id}}">
                                                                         @php
                                                                             $start_time = explode(':', $time->start_time);
                                                                             $end_time = explode(':', $time->end_time);

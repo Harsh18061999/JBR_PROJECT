@@ -51,6 +51,12 @@ $(document).ready(function(){
         return this.optional(element) || value.match(/^[a-zA-Z]{1,2}[0-9][a-zA-Z0-9]? ?[0-9][a-zA-Z]{2}$/);
     }, "Please enter valid Postcode.");
 
+    var licence_status = $("#edit_license_view").attr("data-href");
+    lincense_status = licence_status === undefined ? true : false;
+    $.validator.addMethod("license_value", function(value, element){
+        return lincense_status == true ? false : true;
+    }, "Please select field.");
+
     $("#data_entry_from").validate({
             rules: {
                 contact_number : {
@@ -80,7 +86,7 @@ $(document).ready(function(){
                 },
                 institution_number: { required: true },
                 account_number:{required:true},
-                personal_identification:{required:true},
+                personal_identification:{license_value:true},
             },
             messages : {
                

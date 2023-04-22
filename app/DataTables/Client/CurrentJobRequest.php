@@ -78,7 +78,7 @@ class CurrentJobRequest extends DataTable
         
         $model = $model->with(['employees','supervisor','jobCategory','jobConfirmation'])
         ->whereDate('job_date','>=',$week_start)
-        ->whereDate('end_date','<=',$week_end);
+        ->whereDate('job_date','<=',$week_end);
 
         $role = auth()->user()->getRoleNames()->toArray();
         $role_name = isset($role[0]) ? $role[0] : '';

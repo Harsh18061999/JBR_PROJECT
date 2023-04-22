@@ -123,13 +123,19 @@ class DataEntryPointDataTable extends DataTable
                     ->parameters([
                         'stateSave' => true,//true,
                         'bScrollInfinite' => true,
-                        'responsive' => true,
+                        'responsive' => false,
                         'lengthMenu' => [10, 15, 30, 50, 100],
                         'dom'          => 'Bfrtip',
                         'buttons'      => [ $print],
                         'processing' => true,
                         'serverSide' => true,
-                        'scrollX' => false,
+                        'scrollX' => true,
+                        "scrollY" => false,
+                        "scrollCollapse" => true,  
+                        "fixedColumns" => true,
+                        "fixedColumns" =>  [
+                            "left" => 1,
+                        ],
                         'bAutoWidth' => false,
                         'language' => [
                             ],
@@ -139,7 +145,7 @@ class DataEntryPointDataTable extends DataTable
                         
                     ])
                     ->orderBy(1)
-                    ->responsive(true)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
+                    ->responsive(false)->addTableClass('table table-striped table-row-bordered gy-5 gs-7 border');
     }
 
     /**
@@ -150,14 +156,14 @@ class DataEntryPointDataTable extends DataTable
     protected function getColumns(): array
     {
         return [
-            Column::make('')
-            ->title('')
-            ->searchable(false)
-            ->orderable(false)
-            ->className('dt-control')
-            ->defaultContent('')
-            ->exportable(false)
-            ->printable(false),
+            // Column::make('')
+            // ->title('')
+            // ->searchable(false)
+            // ->orderable(false)
+            // ->className('dt-control')
+            // ->defaultContent('')
+            // ->exportable(false)
+            // ->printable(false),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

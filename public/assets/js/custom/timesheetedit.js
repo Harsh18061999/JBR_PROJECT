@@ -131,6 +131,7 @@ $(document).ready(function(){
                     $("#end_time"+id).prop('disabled',true);
                     $("#cancle"+id).css("display","none")
                     $("#edit"+id).css("display","block")
+                    $("#total_time"+id).html(response.total);
                     swal("Details has been update");
                 }
             },

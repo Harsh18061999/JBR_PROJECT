@@ -77,8 +77,14 @@ class JobRequestDataTable extends DataTable
         }
         
         if($request->job_date && $request->job_date != '' && $request->end_date && $request->end_date){
-            $model = $model->where('job_date','>=',$request->job_date)
-                ->where('end_date','<=',$request->end_date);
+            $model = $model->whereDate('job_date','>=',$request->job_date)
+                ->whereDate('job_date','<=',$request->end_date);
+        }else{
+            $day = date('w');
+            $week_start = date('Y-m-d-', strtotime('-'.$day.' days'));
+            $week_end = date('Y-m-d', strtotime('+'.(6-$day).' days'));
+            $model = $model->whereDate('job_date','>=',$week_start)
+            ->whereDate('job_date','<=',$week_end);
         }
 
         

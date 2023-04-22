@@ -10,7 +10,12 @@
             <a href="{{ route('job_request.edit', $query->id) }}" title="Edite Job Request" class="pointer me-2"><i
             class="fa-solid fa-pen-to-square"></i></a>
         @else
-                -
+        <div class='text-center'><a href="{{route('employee_timesheet.status',$query->id)}}"><span class='badge bg-label-primary me-1'>
+                <div class='d-flex align-items-center'> 
+                    <i class='fa-solid fa-eye mx-2'></i>
+                </div>
+            </span></a>
+        </div>
         @endif
         @if($query->status == 0)
         <a data-href="{{ route('job_request.destory', $query->id) }}" title="Delete Job Request"
