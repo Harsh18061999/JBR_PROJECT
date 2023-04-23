@@ -1,21 +1,37 @@
 @extends('layouts/contentNavbarLayout')
-
-@section('title', ' Horizontal Layouts - Forms')
+@section('title', 'Weekly scheduler')
 <style>
     thead {
         background: #152d47;
         color: white;
         margin-top: 10px;
     }
-    th{
+
+    .table:not(.table-dark) th {
         color: white !important;
     }
+
     .dataTables_filter {
         margin-bottom: 30px;
     }
-    .dataTables_length {
+
+    th,
+    td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .dataTables_scrollBody {
+        min-height: 294px;
+    }
+
+    .dataTables_scrollFoot {
         display: none;
-}
+    }
 </style>
 <style type="text/css">
     .ms-parent {
@@ -105,130 +121,125 @@
 </style>
 <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.css') }}">
 @section('content')
-    <div class="d-flex justify-content-between align-items-center">
-
-    </div>
-    <div class="col-12">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center p-2">
-                <h5 class="m-0"><span class="text-muted fw-light"><i class="fa-sharp fa-solid fa-users mx-2"></i>
-                        Weekly Scheduler</h5>
-                <div class="d-flex">
-                    <button class="btn btn-primary me-1" type="button" data-bs-toggle="collapse" title="Filter"
-                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        <i class="fa-solid fa-filter"></i>
-                    </button>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center p-2">
+            <h5 class="m-0"><span class="text-muted fw-light"><i class="fa-sharp fa-solid fa-users mx-2"></i>
+                    Weekly Scheduler</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-3 mb-3">
+                    <label for="job_date">RANGE</label>
+                    <select class="form-select" name="custome_range" id="custome_range" aria-label="Default select example">
+                        <option value="1" selected>Current Week</option>
+                        <option value="2">Previous Week</option>
+                        <option value="3">Custome Range</option>
+                    </select>
                 </div>
-            </div>
-            <div class="card-body p-0">
-                <div class="collapse" id="collapseExample">
-                    <div class="d-grid p-3">
-                        <div class="row">
-                            <div class="col-lg-3 mb-3">
-                                <label for="client_name" class="form-label">Client</label>
-                                <select class="form-select" name="client_name" id="client_name"
-                                    aria-label="Default select example">
-                                    <option selected value="">Open this select menu</option>
-                                    @foreach ($client as $item)
-                                        <option value="{{ $item->client_name }}">{{ $item->client_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-3 mb-3">
-                                <label for="supervisor" class="form-label">Supervisor</label>
-                                <select class="form-select" name="supervisor" id="supervisor"
-                                    aria-label="Default select example">
-                                    <option selected value="">Open this select menu</option>
-                                    {{-- @foreach ($client as $item)
-                                        <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
-                                    @endforeach --}}
-                                </select>
-                            </div>
-                            <div class="col-lg-3 mb-3">
-                                <label for="job_title" class="form-label">JobCategory</label>
-                                <select class="form-select" name="job_title" id="job_title"
-                                    aria-label="Default select example">
-                                    <option selected value="">Open this select menu</option>
-                                    @foreach ($jobCategory as $item)
-                                        <option value="{{ $item->id }}">{{ $item->job_title }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            <div class="col-lg-3 mt-2">
-                                <br>
-                                <button type="button" id="job_search" data-week="0" class="btn btn-primary"><i
-                                        class="fa-solid fa-magnifying-glass"></i> </button>
-                                <button type="button" id="job_search_reset" class="btn btn-primary"><i
-                                        class="fa-solid fa-arrows-rotate"></i> </button>
-                            </div>
-                        </div>
+                <div class="col-lg-3 mb-3 select_date" style="display: none;">
+                    <label for="job_date">JOB START DATE</label>
+                    <input class="form-control" name="job_date" id="job_date" placeholder="yyyy-mm-dd"
+                        aria-describedby="floatingInputHelp" />
+                </div>
+                <div class="col-lg-3 mb-3 select_date" style="display: none;">
+                    <label for="end_date">JOB END DATE</label>
+                    <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
+                        aria-describedby="floatingInputHelp" />
+                </div>
+
+                @if ($role_name == 'admin')
+                    <div class="col-lg-3 mb-3">
+                        <label for="client_name" class="form-label">CLIENT</label>
+                        <select class="form-select" name="client_name" id="client_name" aria-label="Default select example">
+                            <option selected value="">Open this select menu</option>
+                            @foreach ($client as $item)
+                                <option value="{{ $item->id }}">{{ $item->client_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                @endif
+
+                <div class="col-lg-3 mb-3">
+                    <label for="supervisor" class="form-label">Supervisor</label>
+                    <select class="form-select" name="supervisor" id="supervisor" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        @foreach ($supervisor as $item)
+                            <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-3 mb-3">
+                    <label for="job_title" class="form-label">JobCategory</label>
+                    <select class="form-select" name="job_title" id="job_title" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        @foreach ($jobCategory as $item)
+                            <option value="{{ $item->id }}">{{ $item->job_title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-3 mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" name="status" id="status" aria-label="Default select example">
+                        <option selected value="">Open this select menu</option>
+                        <option value="0">PENDING</option>
+                        <option value="1">ON GOING</option>
+                        <option value="2">COMPLETED</option>
+                    </select>
+                </div>
+                <div class="col-lg-3 mt-2">
+                    <br>
+                    <button type="button" id="job_search" class="btn btn-primary"><i
+                            class="fa-solid fa-magnifying-glass"></i> </button>
+                    <button type="button" id="job_search_reset" class="btn btn-primary"><i
+                            class="fa-solid fa-arrows-rotate"></i> </button>
                 </div>
             </div>
         </div>
-        <div class="card mb-4">
-            <ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="current" data-bs-toggle="pill" data-bs-target="#pills-home"
-                        type="button" role="tab" aria-controls="pills-home" aria-selected="true">Current Week</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="previous" data-bs-toggle="pill" data-bs-target="#pills-home"
-                        type="button" role="tab" aria-controls="pills-home" aria-selected="false">Previous
-                        week</button>
-                </li>
-            </ul>
-            <div class="table-responsive p-2 text-white">
-                <table class="table" id="weekly" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            {{-- <th>Date & Time</th> --}}
-                            <th>Client Name</th>
-                            <th>Supervisor Name</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Job Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-      <div class="modal fade" id="exLargeModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel4">Employee Details</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table" id="employee_data"
-                width="100%">
+    {{-- <div class="card">
+        <div class="table-responsive text-nowrap p-2">
+            {!! $dataTable->table(['class' => 'w-100 table table-striped table-hover'], true) !!}
+            {{ $dataTable->scripts() }}
+        </div>
+    </div> --}}
+    <div class="card my-4">
+        <div class="table-responsive p-4">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Contact Number</th>
-                        <th>Job Status</th>
-                        <th>Time Sheet</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Supervisor</th>
+                        <th scope="col">Employee</th>
                     </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody>
+                    @foreach ($all_data as $k => $item)
+                        @foreach ($item as $key => $value)
+                            <tr>
+                                @if ($key == 0)
+                                    <td rowspan="{{ count($item) }}">{{ $k }}</td>
+                                @endif
+                                <td>{{ $value['client_name'] ?? 'N/A' }}</td>
+                                <td>{{ $value['supervisour'] ?? 'N/A' }} </td>
+                                <td>
+                                    @foreach($value['employee'] as $employee)
+                                    <span class="badge bg-label-primary me-1">
+                                        
+                                        {{$employee['first_name']." ".$employee['last_name']}}<span class="text-danger ms-2 border border-danger rounded-circle"><i class="fa-solid fa-xmark" style="cursor: pointer;padding:2px;"></i></span>
+                                        <br>
+                                        <br>
+                                        {{$employee['contact_number']}}
+                                    </span>
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
                 </tbody>
             </table>
-            </div>
-            <div class="modal-footer">
-              {{-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button> --}}
-            </div>
-          </div>
         </div>
-      </div>
-      <input type="hidden" name="job_request_id" id="job_request_id">
-    <script src="{{ asset('assets/js/custom/weekly_scheduler.js') }}"></script>
+    </div>
+    <script src="{{ asset('assets/js/custom/weekly.js') }}"></script>
 @endsection

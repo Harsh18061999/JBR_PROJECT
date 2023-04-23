@@ -6,83 +6,50 @@ use Illuminate\Http\Request;
 use App\Models\JobCategory;
 use App\Models\JobRequest;
 use App\Models\Client;
+use App\DataTables\WeeklyDataTable;
 use Yajra\DataTables\Facades\DataTables;
+use Carbon\CarbonPeriod;
 class WeeklySchedulerController extends Controller
 {
     public function index(){
-        $jobCategory = JobCategory::get();
+        $user = auth()->user();
         $client = Client::get();
-        return view('content.weeklyScheduler.index',compact('jobCategory','client'));
-    }
+        $role = $user->getRoleNames()->toArray();
+        $role_name = isset($role[0]) ? $role[0] : '';
+        $jobCategory = JobCategory::get();
 
-    public function employeeDataTable(Request $request){
-        $jobRequest = array();
-        if($request->job_id){
-
-        }
-        return Datatables::of($jobRequest);
-    }
-    public function weeklyJobDataTable(Request $request){
-        if($request->weekly == 0){
-            $day = date('w');
-            $week_start = date('Y-m-d-', strtotime('-'.$day.' days'));
-            $week_end = date('Y-m-d', strtotime('+'.(6-$day).' days'));
+        if($user->hasRole('admin')){
+            $supervisor = array();    
         }else{
-            $previous_week = strtotime("-1 week +1 day");
-
-            $start_week = strtotime("last sunday midnight",$previous_week);
-            $end_week = strtotime("next saturday",$start_week);
-            
-            $week_start = date("Y-m-d",$start_week);
-            $week_end = date("Y-m-d",$end_week);
+            $supervisor = new Supervisor;
+            $supervisor = $supervisor->where('client_id',$user->client->id)->get();
         }
-        $jobRequest = JobRequest::with(['employees','supervisor','jobCategory'])
-        ->whereDate('job_date','>=',$week_start)
-        ->whereDate('end_date','<=',$week_end);
-        if($request->client_name){
-
-            $client = Client::where('client_name',$request->client_name);
-
-            if($request->supervisor){
-                $client = $client->where('id',$request->supervisor);
-            }
-
-            $client = $client->pluck('id')->toArray();
-            $jobRequest =  $jobRequest->whereIn('client_id',$client);;
-            if($request->job_title){
-                $jobRequest = $jobRequest->where('job_id',$request->job_title);
+        $model = new JobRequest;
+        $model = $model->with(['employees','supervisor.client','jobCategory','jobConfirmation']);
+        // ->whereDate('job_date','>=',$week_start)
+        // ->whereDate('job_date','<=',$week_end);
+        $data = $model->get()->toArray();
+        $all_data = array();
+        foreach($data as $k => $value){
+            $client_name = $value['supervisor']['client']['client_name'];
+            $supervisour = $value['supervisor']['supervisor'];
+            $period = CarbonPeriod::create($value['job_date'], $value['end_date']);
+    
+            foreach ($period as $date) {
+                $all_data[$date->format('Y-m-d')][] = [
+                    "client_name" => $client_name,
+                    "supervisour" => $supervisour,
+                    "employee" => $value['employees']
+                ] ;
             }
         }
-      
-        return Datatables::of($jobRequest)
-        ->addColumn('Date', function($row)  {
-            return "<span> <div class='text-start'><p>$row->job_date <i class='fa-solid fa-arrow-right mx-2'></i> $row->end_date
-                </p><p>$row->start_time <i class='fa-solid fa-clock mx-2'></i> $row->end_time</p></div> </span>";       
-        })
-        ->addColumn('client_name', function($row)  {
-          return isset($row->supervisor->client) ? $row->supervisor->client->client_name : 'N/A';       
-         })
-         ->addColumn('supervisor', function($row)  {
-          return  isset($row->supervisor) ? $row->supervisor->supervisor : 'N/A';    
-         })
-        ->addColumn('status', function($row)  {
-            if($row->status == 0){
-                return '<span class="badge bg-label-primary me-1">Pending</span>';
-            }else if($row->status == 1){
-                return '<span class="badge bg-label-warning me-1">On Going</span>';
-            }else if($row->status == 2){
-                return '<span class="badge bg-label-success me-1">Completed</span>';
-            }
-        })
-        ->addColumn('action',function($row){
-            return  "<div class='col-md-6 mt-2 employee_list' data-id='$row->id' data-bs-toggle='modal' data-bs-target='#exLargeModal'>
-            <span class='badge bg-label-primary me-1'>
-                <div class='d-flex align-items-center'> 
-                    <i class='fa-solid fa-eye mx-2'></i>
-                </div>
-            </span>
-        </div>";
-        })
-        ->addIndexColumn()->rawColumns(['Date','client_name','employee','status','action'])->make(true);
+        // dd($all_data);
+        // foreach($all_data as $k => $value){
+        //     // dd($value);
+        //     foreach ($value as $item){
+        //         dd($item['client_name']);
+        //     }
+        // }
+        return view('content.weeklyScheduler.index',compact('supervisor','client','role_name','jobCategory','all_data'));
     }
 }
