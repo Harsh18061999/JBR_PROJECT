@@ -169,7 +169,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-lg-3 mb-3">
+                {{-- <div class="col-lg-3 mb-3">
                     <label for="job_title" class="form-label">JobCategory</label>
                     <select class="form-select" name="job_title" id="job_title" aria-label="Default select example">
                         <option selected value="">Open this select menu</option>
@@ -186,7 +186,7 @@
                         <option value="1">ON GOING</option>
                         <option value="2">COMPLETED</option>
                     </select>
-                </div>
+                </div> --}}
                 <div class="col-lg-3 mt-2">
                     <br>
                     <button type="button" id="job_search" class="btn btn-primary"><i
@@ -225,9 +225,9 @@
                                 <td>{{ $value['supervisour'] ?? 'N/A' }} </td>
                                 <td>
                                     @foreach($value['employee'] as $employee)
-                                    <span class="badge bg-label-primary me-1">
+                                    <span class="badge bg-label-primary me-1 reallocate_job" data-bs-toggle="modal" data-bs-target="#modalCenter" data-employeeid="{{$employee['id']}}" data-id="{{$value['id']}}" data-date="{{$k}}">
                                         
-                                        {{$employee['first_name']." ".$employee['last_name']}}<span class="text-danger ms-2 border border-danger rounded-circle"><i class="fa-solid fa-xmark" style="cursor: pointer;padding:2px;"></i></span>
+                                        {{$employee['first_name']." ".$employee['last_name']}}<span class="text-danger ms-2 border border-danger rounded-circle" data-id=""><i class="fa-solid fa-xmark" style="cursor: pointer;padding:2px;"></i></span>
                                         <br>
                                         <br>
                                         {{$employee['contact_number']}}
@@ -241,5 +241,39 @@
             </table>
         </div>
     </div>
+    <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Reallocate Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="job_category_from" action="{{route('leave_request')}}" method="POST" enctype="multipart/form-data" novalidate> 
+                        @csrf
+                        <div class="row">
+                            <input type="hidden" name="job_id" id="reallcate_job_id">
+                            <input type="hidden" name="re_allocate_employee_id" id="re_allocate_employee_id">
+                            <div class="col-md-12 mb-3">
+                                <label for="reallocate_date" class="form-label">Date</label>
+                                <input type="date"  class="form-control" readonly name="reallocate_date" id="reallocate_date">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="employee_available" class="form-label">Available Employee</label>
+                                <select class="form-select" name="employee_available" id="employee_available" aria-label="Default select example">
+                                    <option selected value="">Open this select menu</option>
+                                </select>
+                            </div>
+                        </div>
+                  
+                        <div class="text-end">
+                            <a  class="btn btn-outline-secondary hover_color" data-bs-dismiss="modal">Close</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
     <script src="{{ asset('assets/js/custom/weekly.js') }}"></script>
 @endsection

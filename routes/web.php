@@ -207,6 +207,9 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
         //Client Job Request details
         Route::get('/client_job_request',[ClientJobRequest::class,'index'])->name("client_job_request.index");
+
+        Route::get('/reallocate-job',[WeeklySchedulerController::class,'reallocateJob'])->name('reallocateJob');
+        Route::post("/leave_request",[WeeklySchedulerController::class,'leave_request'])->name("leave_request");
     });
 });
 

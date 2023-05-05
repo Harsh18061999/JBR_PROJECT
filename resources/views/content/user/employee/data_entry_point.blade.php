@@ -128,7 +128,7 @@
                             <div class=" mb-2">
                               <div class="">
                                 <div class="form-floating">
-                                  <input type="text" class="form-control" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
+                                  <input type="text" class="form-control" maxlength="8" name="postal_code" id="Postal_code" placeholder="Doe" aria-describedby="floatingInputHelp" data-error="errNm2" />
                                   <label for="Postal_code">Postal Code <span class="text-danger">*</span></label>
                                 </div>
                                 <span id="errNm2"></span>
@@ -170,6 +170,7 @@
                               </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-3" style="margin-top: -15px">
                             <label for="formFile" class="form-label text-start w-100" id="license_text">Personal Identification <span class="text-danger">*</span></label>
                             <input class="form-control" type="file" name="personal_identification" id="formFile">
@@ -193,7 +194,7 @@
         </div>
     </div>
 </div>
-<script src="{{asset("assets/js/custom/data_entry.js")}}"></script>
+<script src="{{asset("assets/js/custom/front_data_entry.js")}}"></script>
 <script>
   @php
     $eroor_message = '';

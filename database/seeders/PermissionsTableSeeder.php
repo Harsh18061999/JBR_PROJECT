@@ -997,7 +997,7 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2023-04-16 07:28:31',
                 'updated_at' => '2023-04-16 07:28:31',
                 'title' => 'employee_timesheet',
-                'description' => 'cancle',
+                'description' => 'cancle', 
             ),
         ));
         

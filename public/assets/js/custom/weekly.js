@@ -48,6 +48,27 @@ $(document).ready(function(){
         },
     });
 
+    $.validator.addMethod("valueNotEquals", function(value, element){
+        return value != '' && value != null;
+    }, "Please select field.");
+
+    $("#job_category_from").validate({
+        rules: {
+            employee_available: { valueNotEquals: true, },
+        },
+        messages : {
+        
+        },
+        errorElement: "div",
+        highlight: function(element) {
+            $(element).removeClass('is-valid').addClass('is-invalid');
+        },
+        unhighlight: function(element) {
+            $(element).removeClass('is-invalid').addClass('is-valid');
+        }
+    });
+
+
     $("#end_date").datepicker({
         changeMonth: true,
         changeYear: true,
@@ -83,6 +104,35 @@ $(document).ready(function(){
         }else{
             $(".select_date").css("display","none"); 
         } 
+    });
+
+    
+    $("body").on("click",".reallocate_job",function(){
+        $.ajax({
+            type: 'GET',
+            url: '/reallocate-job',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "job_id" : $(this).attr("data-id"),
+                "date" : $(this).attr("data-date"),
+                "employee_id" : $(this).attr("data-employeeid"),
+            },
+            success: function (response) {
+                if(response.success){
+                    $("#employee_available").html("");
+                    $("#reallcate_job_id").val(response.job_id);
+                    $("#re_allocate_employee_id").val(response.employee_id);
+                    $("#reallocate_date").val(response.job_date);
+                    $("#employee_available").append($('<option>', { value: '', text: "Open this select menu" }));
+                    $.each(response.employee, function(key, value) {
+                        $("#employee_available").append($('<option>', { value: value.id, text: value.first_name + ' ' + value.last_name }));
+                    });
+                }
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
     });
 
 });

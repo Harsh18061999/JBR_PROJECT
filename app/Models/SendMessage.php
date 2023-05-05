@@ -14,7 +14,8 @@ class SendMessage extends Model
         'employee_id',
         'job_request_id',
         'job_date',
-        'message_status'
+        'message_status',
+        'is_reallocate'
     ];
 
     public function jobRequest(){

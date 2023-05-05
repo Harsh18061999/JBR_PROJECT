@@ -41,6 +41,8 @@
                                         @csrf
                                         <input type="hidden" name="job_id" value="{{$message_data['job_request']['id']}}">
                                         <input type="hidden" name="employee_id" value="{{$message_data['employee']['id']}}">
+                                        <input type="hidden" name="job_reallocate" id="" value="{{$message_data['is_reallocate']}}">
+                                        <input type="hidden" name="job_date" value="{{$message_data['job_date']}}">
                                     </form>
                                     <button type="submit" id="acceptJob" class="btn btn-primary">ACCEPT</button>
                                     <form method="POST" action="{{route('cancellJob')}}" id="cancelJobForm" class="mx-2">
@@ -48,6 +50,7 @@
                                         @csrf
                                         <input type="hidden" name="job_id" value="{{$message_data['job_request']['id']}}">
                                         <input type="hidden" name="employee_id" value="{{$message_data['employee']['id']}}">
+                                        <input type="hidden" name="job_reallocate" id="" value="{{$message_data['is_reallocate']}}">
                                     </form>
                                     <button type="submit" id="cancelJob" class="btn btn-danger">CANCEL</button>
                                 </div>
