@@ -12,6 +12,7 @@ class Leave extends Model
     protected $fillable = [
         "job_id",
         "employee_id",
-        "leave_date"
+        "leave_date",
+        "user_id"
     ];
 }

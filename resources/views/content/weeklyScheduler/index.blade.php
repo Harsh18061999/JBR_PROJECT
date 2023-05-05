@@ -130,21 +130,21 @@
             <div class="row">
                 <div class="col-lg-3 mb-3">
                     <label for="job_date">RANGE</label>
-                    <select class="form-select" name="custome_range" id="custome_range" aria-label="Default select example">
-                        <option value="1" selected>Current Week</option>
-                        <option value="2">Previous Week</option>
-                        <option value="3">Custome Range</option>
+                    <select class="form-select" name="custome_range" id="custome_range" aria-label="Default select example" value="{{$search['custome_range']}}">
+                        <option value="1" {{$search['custome_range'] == 1 ? 'selected' : ''}}>Current Week</option>
+                        <option value="2"  {{$search['custome_range'] == 2 ? 'selected' : ''}}>Previous Week</option>
+                        <option value="3"  {{$search['custome_range'] == 3 ? 'selected' : ''}}>Custome Range</option>
                     </select>
                 </div>
 
-                <div class="col-lg-3 mb-3 select_date" style="display: none;">
+                <div class="col-lg-3 mb-3 select_date" style=" {{$search['custome_range'] == 3 ? '' : 'display: none;' }}">
                     <label for="job_date">JOB START DATE</label>
-                    <input class="form-control" name="job_date" id="job_date" placeholder="yyyy-mm-dd"
+                    <input class="form-control" name="job_date"  value="{{$search['job_date']}}" id="job_date" placeholder="yyyy-mm-dd"
                         aria-describedby="floatingInputHelp" />
                 </div>
-                <div class="col-lg-3 mb-3 select_date" style="display: none;">
+                <div class="col-lg-3 mb-3 select_date" style="{{$search['custome_range'] == 3 ? : 'display: none;' }}">
                     <label for="end_date">JOB END DATE</label>
-                    <input class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
+                    <input value="{{$search['end_date']}}" class="form-control" name="end_date" required id="end_date" placeholder="yyyy-mm-dd"
                         aria-describedby="floatingInputHelp" />
                 </div>
 
@@ -154,7 +154,7 @@
                         <select class="form-select" name="client_name" id="client_name" aria-label="Default select example">
                             <option selected value="">Open this select menu</option>
                             @foreach ($client as $item)
-                                <option value="{{ $item->id }}">{{ $item->client_name }}</option>
+                                <option value="{{ $item->id }}" {{$search['client_name'] ==  $item->id ? 'selected' : ''}}>{{ $item->client_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -165,7 +165,7 @@
                     <select class="form-select" name="supervisor" id="supervisor" aria-label="Default select example">
                         <option selected value="">Open this select menu</option>
                         @foreach ($supervisor as $item)
-                            <option value="{{ $item->id }}">{{ $item->supervisor }}</option>
+                            <option value="{{ $item->id }}" {{$search['supervisor'] ==  $item->id ? 'selected' : ''}}>{{ $item->supervisor }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -191,8 +191,8 @@
                     <br>
                     <button type="button" id="job_search" class="btn btn-primary"><i
                             class="fa-solid fa-magnifying-glass"></i> </button>
-                    <button type="button" id="job_search_reset" class="btn btn-primary"><i
-                            class="fa-solid fa-arrows-rotate"></i> </button>
+                    {{-- <button type="button" id="job_search_reset" class="btn btn-primary"><i
+                            class="fa-solid fa-arrows-rotate"></i> </button> --}}
                 </div>
             </div>
         </div>

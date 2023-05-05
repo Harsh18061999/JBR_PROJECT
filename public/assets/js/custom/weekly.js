@@ -1,7 +1,22 @@
 $(document).ready(function(){
 
     $("body").on("click","#job_search",function(){
-        $('#client-job-request-table').DataTable().ajax.reload();
+       var custome_range = $("#custome_range").val();
+       var job_date = $("#job_date").val();
+       var end_date = $("#end_date").val();
+       var client_name = $("#client_name").val();
+       var supervisor = $("#supervisor").val();
+       var url = window.location.href;    
+       var url = url.substring(0, url.indexOf(","));
+
+        if (custome_range == 2){
+            url += `?custome_range=2&client_name=${client_name}&supervisor=${supervisor}`
+        }else if(custome_range == 3){
+            url += `?custome_range=3&client_name=${client_name}&supervisor=${supervisor}&job_date=${job_date}&end_date=${end_date}`;
+        }else{
+            url += `?custome_range=1&client_name=${client_name}&supervisor=${supervisor}`
+        }
+        window.location.href = url;
     });
     $("body").on("click","#job_search_reset",function(){
         $("#job_date").val('');
@@ -11,7 +26,6 @@ $(document).ready(function(){
         $("#job_title").val('');
         $("#status").val('');
         $("#custome_range").val('');
-        $('#client-job-request-table').DataTable().ajax.reload();
     });
     $("#job_date").datepicker({
         changeMonth: true,
@@ -134,5 +148,29 @@ $(document).ready(function(){
             }
         });
     });
+
+    $("body").on("change","#client_name",function(){
+        $("#supervisor").html('');
+        $("#supervisor").append(`<option value="">Please select Supervisor</option>`);
+        $.ajax({
+            type: 'GET',
+            url: '/get_supervisor',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                client_id:$(this).val()
+            },
+            success: function (response) {
+                if(response.success){
+                    $.each(response.supervisor, function(key, value) {
+                        $("#supervisor").append($('<option>', { value: value.id, text: value.supervisor }));
+                    });
+                }
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+    });
+
 
 });

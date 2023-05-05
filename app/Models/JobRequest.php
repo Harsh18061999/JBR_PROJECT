@@ -43,4 +43,12 @@ class JobRequest extends Model
             'employee_id' // Local key on the environments table...
         );
     }
+
+    public function leave(){
+        return $this->hasMany(Leave::class,'job_id','id');
+    }
+
+    public function reallocate(){
+        return $this->hasMany(ReaAllocate::class,'job_id','id');
+    }
 }

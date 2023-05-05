@@ -14,4 +14,8 @@ class ReaAllocate extends Model
         "job_id",
         "re_allocate_date"
     ];
+
+    public function employee(){
+        return $this->belongsTo(Employee::class);
+    }
 }
