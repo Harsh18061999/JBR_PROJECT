@@ -18,4 +18,12 @@ class ReaAllocate extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
+
+    public function timeSheet(){
+        return $this->hasMany(EmployeeTimeSheet::class,'job_confirmations_id');
+    }
+
+    public function job(){
+        return $this->hasOne(JobRequest::class,'id','job_id');
+    }
 }

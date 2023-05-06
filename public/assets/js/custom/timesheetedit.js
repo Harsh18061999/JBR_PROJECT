@@ -1,5 +1,6 @@
 // edit_time_sheet
 $(document).ready(function(){
+    var url =  window.location.href;
     $("body").on("click",".edit_time_sheet",function(){
         var id = $(this).attr('data-id');
         $("#start_time"+id).prop('disabled',false);
@@ -21,6 +22,7 @@ $(document).ready(function(){
     $("body").on("click",".not_apprpved_time_sheet",function(){
         var job_id = $(this).attr('data-jobid');
         var employee_id = $(this).attr('data-employeeid');
+        var allocate = $(this).attr("data-reallocate");
         swal({
             title: "Are you sure?",
             text: "You want cancle the time sheet",
@@ -38,12 +40,15 @@ $(document).ready(function(){
                     data: {
                         id : job_id ,
                         employee_id :  employee_id,
+                        allocate : allocate
                     },
                     success: function (response) {
                         if(response.success){
+                          
                           $("#not_approve"+job_id).css('display',"none");
                           $("#approve"+job_id).css('display',"inline-block");
                           swal("Time sheet has been cancled");
+                          window.location.href = url;
                         }
                     },
                     error: function (e) {
@@ -74,6 +79,7 @@ $(document).ready(function(){
     
     $("body").on("click",".apprpved_time_sheet",function(){
         var job_id = $(this).attr('data-jobid');
+        var allocate = $(this).attr("data-reallocate");
         var employee_id = $(this).attr('data-employeeid');
         swal({
             title: "Are you sure?",
@@ -92,12 +98,14 @@ $(document).ready(function(){
                     data: {
                         id : job_id ,
                         employee_id :  employee_id,
+                        allocate : allocate
                     },
                     success: function (response) {
                         if(response.success){
                           $("#not_approve"+job_id).css('display',"inline-block");
                           $("#approve"+job_id).css('display',"none");
                           swal("Time sheet has been approved");
+                          window.location.href = url;
                         }
                     },
                     error: function (e) {

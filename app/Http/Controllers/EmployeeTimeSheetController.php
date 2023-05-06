@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Models\JobRequest;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Str;
+use App\Models\ReaAllocate;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 use File;
@@ -42,12 +43,14 @@ class EmployeeTimeSheetController extends Controller
         $jobReuest = JobRequest::with(['supervisor.client'])->where('id',$id)->first();
         // dd($jobReuest);
         $employeeDetails = JobConfirmation::with(['employee','timeSheet'])->where('job_id',$id)->get();
+        $reallocate = ReaAllocate::with(['employee','timeSheet'])->where('job_id',$id)->groupBy('employee_id')->get();
         // foreach($employeeDetails as $job){
         //     dd($job->timeSheet);
         // }
         return view('content.employeeTimesheet.timesheetindex',with([
             'jobReuest' => $jobReuest,
-            'employeeDetails' => $employeeDetails
+            'employeeDetails' => $employeeDetails,
+            'reallocateJob' => $reallocate
         ]));
     }
 
@@ -100,8 +103,18 @@ class EmployeeTimeSheetController extends Controller
         ->setRowId('id')->make(true);
     }
 
-    public function create($id)
+    public function create($id,Request $request)
     {
+        $reallocate = 0;
+        if($request->employee_id){
+            $job_details = ReaAllocate::find($id);
+            $job_details1 = ReaAllocate::where("employee_id",$request->employee_id)
+                ->where("job_id",$request->job_id)->get();
+            $all_date = $job_details1->pluck('re_allocate_date')->toArray();
+            $time_sheet_status = 1;
+            $reallocate = 1;
+            return view('content.employeeTimesheet.create', compact('job_details','all_date','time_sheet_status','reallocate'));
+        }
         $job_details = JobConfirmation::where('id', $id)->first();
         if ($job_details) {
             $job_date = '';
@@ -115,7 +128,7 @@ class EmployeeTimeSheetController extends Controller
             }
             // dd($all_date);
             $time_sheet_status = 1;
-            return view('content.employeeTimesheet.create', compact('job_details','all_date','time_sheet_status'));
+            return view('content.employeeTimesheet.create', compact('job_details','all_date','time_sheet_status','reallocate'));
         } else {
             return redirect()
                 ->route('employee_timesheet.index')
@@ -125,7 +138,6 @@ class EmployeeTimeSheetController extends Controller
 
     public function store(Request $request)
     {    
-        // dd($request->all());
         $filename = '';
         if($request->has('time_sheet_image')) {
             $uploadedFile = $request->file('time_sheet_image');
@@ -136,9 +148,17 @@ class EmployeeTimeSheetController extends Controller
             $filename
             );
         }
-        JobConfirmation::where('id',$request->job_confirmations_id)->update([
-            'time_sheet_image' => $filename
-        ]);
+
+        if($request->job_reallocate == 1){
+            ReaAllocate::where("employee_id",$request->employee_id)
+                ->where("job_id",$request->job_id)->update([
+                    'time_sheet_image' => $filename,
+                ]);
+        }else{
+            JobConfirmation::where('id',$request->job_confirmations_id)->update([
+                'time_sheet_image' => $filename
+            ]);
+        }
         foreach($request->job_date as $k => $date){
             EmployeeTimeSheet::create([
               'job_confirmations_id' => $request->job_confirmations_id,
@@ -165,7 +185,7 @@ class EmployeeTimeSheetController extends Controller
         // EmployeeTimeSheet::create($orderDetails);
         return redirect()
         ->route('employee_timesheet.index')
-        ->with('success', 'Something went wrong.');
+        ->with('success', 'Time sheet has been update.');
     }
 
     public function getTimeSheet(Request $request){
@@ -300,20 +320,35 @@ class EmployeeTimeSheetController extends Controller
     }
 
     public function approve(Request $request){
-        JobConfirmation::where('id',$request->id)
-            ->where('employee_id',$request->employee_id)
-            ->update([
+        if($request->allocate == 1){
+            ReaAllocate::where("employee_id",$request->employee_id)
+            ->where("job_id",$request->id)->update([
                 'time_sheet' => '1'
             ]);
+        }else{
+            JobConfirmation::where('id',$request->id)
+                ->where('employee_id',$request->employee_id)
+                ->update([
+                    'time_sheet' => '1'
+                ]);
+        }
         $response['success'] = true;
         return $response;
     }
 
     public function cancle(Request $request){
-        JobConfirmation::where('id',$request->id)
-        ->where('employee_id',$request->employee_id)
-        ->update([
-            'time_sheet' =>'0']);
+        if($request->allocate == 1){
+            ReaAllocate::where("employee_id",$request->employee_id)
+            ->where("job_id",$request->id)->update([
+                'time_sheet' => '0'
+            ]);
+        }else{
+            JobConfirmation::where('id',$request->id)
+            ->where('employee_id',$request->employee_id)
+            ->update([
+                'time_sheet' =>'0'
+            ]);
+        }
         $response['success'] = true;
         return $response;
     }

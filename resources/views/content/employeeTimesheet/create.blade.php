@@ -41,6 +41,9 @@
                         @csrf
                         <div class="row mx-4">
                             <input type="hidden" name="time_sheet" id="" value="{{$time_sheet_status}}">
+                            <input type="hidden" name="job_reallocate" value="{{$reallocate}}">
+                            <input type="hidden" name="employee_id" value="{{$job_details->employee_id}}">
+                            <input type="hidden" name="job_id" value="{{$job_details->job_id}}">
                           <input type="hidden" name="job_confirmations_id" id="" value="{{$job_details->id}}">
                             <div class="col-lg-3">
                                 <div class=" mb-4">
