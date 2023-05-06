@@ -42,8 +42,14 @@ class EmployeeTimeSheetController extends Controller
     public function timeSheetStatus($id){
         $jobReuest = JobRequest::with(['supervisor.client'])->where('id',$id)->first();
         // dd($jobReuest);
-        $employeeDetails = JobConfirmation::with(['employee','timeSheet'])->where('job_id',$id)->get();
-        $reallocate = ReaAllocate::with(['employee','timeSheet'])->where('job_id',$id)->groupBy('employee_id')->get();
+        $employeeDetails = JobConfirmation::with('employee')
+        ->with('timeSheet',function($query){
+            $query->where('job_id',$jobReuest->id);
+        })->where('job_id',$id)->get();
+        $reallocate = ReaAllocate::with('employee')
+        ->with('timeSheet',function($query){
+            $query->where('job_id',$jobReuest->id);
+        })->where('job_id',$id)->groupBy('employee_id')->get();
         // foreach($employeeDetails as $job){
         //     dd($job->timeSheet);
         // }
