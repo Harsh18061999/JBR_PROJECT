@@ -15,6 +15,7 @@ class EmployeeTimeSheet extends Model
         'break_time',
         'end_time',
         'job_date',
-        'status'
+        'status',
+        're_allocation_id'
     ];
 }

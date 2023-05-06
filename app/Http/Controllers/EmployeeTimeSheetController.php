@@ -154,20 +154,30 @@ class EmployeeTimeSheetController extends Controller
                 ->where("job_id",$request->job_id)->update([
                     'time_sheet_image' => $filename,
                 ]);
+                foreach($request->job_date as $k => $date){
+                    EmployeeTimeSheet::create([
+                      're_allocation_id' => $request->job_confirmations_id,
+                        'time_sheet' => $request->time_sheet,
+                        'job_date' => $date,
+                        'start_time' => $request->start_time[$k],
+                        'break_time' => $request->break_time[$k],
+                        'end_time' => $request->end_time[$k],
+                    ]);
+                }
         }else{
             JobConfirmation::where('id',$request->job_confirmations_id)->update([
                 'time_sheet_image' => $filename
             ]);
-        }
-        foreach($request->job_date as $k => $date){
-            EmployeeTimeSheet::create([
-              'job_confirmations_id' => $request->job_confirmations_id,
-                'time_sheet' => $request->time_sheet,
-                'job_date' => $date,
-                'start_time' => $request->start_time[$k],
-                'break_time' => $request->break_time[$k],
-                'end_time' => $request->end_time[$k],
-            ]);
+            foreach($request->job_date as $k => $date){
+                EmployeeTimeSheet::create([
+                  'job_confirmations_id' => $request->job_confirmations_id,
+                    'time_sheet' => $request->time_sheet,
+                    'job_date' => $date,
+                    'start_time' => $request->start_time[$k],
+                    'break_time' => $request->break_time[$k],
+                    'end_time' => $request->end_time[$k],
+                ]);
+            }
         }
         // $orderDetails = $request->only([
         //     'job_confirmations_id',

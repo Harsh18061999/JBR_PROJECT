@@ -20,7 +20,7 @@ class ReaAllocate extends Model
     }
 
     public function timeSheet(){
-        return $this->hasMany(EmployeeTimeSheet::class,'job_confirmations_id');
+        return $this->hasMany(EmployeeTimeSheet::class,'re_allocation_id');
     }
 
     public function job(){

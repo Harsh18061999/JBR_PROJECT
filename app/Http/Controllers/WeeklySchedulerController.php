@@ -209,7 +209,7 @@ class WeeklySchedulerController extends Controller
                     $country = Country::where('id', $message_data['employee']['countryCode'])->first();
                     $number = '+' . $country->country_code . $message_data['employee']['contact_number'];
 
-                    $send_message = sendMessage('+919737918132', $message);
+                    $send_message = sendMessage($number,$message);
                     if ($send_message) {
                         SendMessage::where('id', $message_data['id'])->update([
                             'message_status' => '1',
