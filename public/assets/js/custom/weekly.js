@@ -122,6 +122,7 @@ $(document).ready(function(){
 
     
     $("body").on("click",".reallocate_job",function(){
+        $("#reallocate_date").val($(this).attr("data-date"));
         $.ajax({
             type: 'GET',
             url: '/reallocate-job',
