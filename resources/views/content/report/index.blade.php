@@ -126,7 +126,7 @@
             <h5 class="m-0"><span class="text-muted fw-light"><i class="fa-sharp fa-solid fa-users mx-2"></i>
                     Weekly Scheduler</h5>
         </div>
-        <form action="{{route("report.export")}}" method="post">
+        <form action="{{route("report.export")}}" method="post" novalidate>
             @csrf
             <div class="card-body">
                 <div class="row">
