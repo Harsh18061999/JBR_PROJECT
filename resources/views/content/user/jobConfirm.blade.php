@@ -32,7 +32,7 @@
                             <h5>Strat Time : {{$message_data['job_request']['start_time']}}</h5>
                             <h5 class="mx-4">End Time : {{$message_data['job_request']['end_time']}}</h5>
                         </div>
-                        <h5>Job Position : {{$message_data['employee']['job_category']['job_title']}} labor</h5>
+                        <h5>Job Position : {{$message_data['employee']['job_category']['job_title']}}</h5>
                         <div class="row mb-4">
                             <div class="mx-auto col-lg-8 text-center my-2">
                                 <div class="d-flex justify-content-center">

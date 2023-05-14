@@ -175,26 +175,34 @@ $(document).ready(function(){
         $('#job-request-table').DataTable().ajax.reload();
     });
 
-    $("body").on("change","#end_hours,#start_hours,#start_minutes,#end_minutes,#end_day,#start_day",function(){
-        var start_hours = $("#start_hours").val();
-        var end_hours = $("#end_hours").val();
-        var start_minutes = $("#start_minutes").val();
-        var end_minutes = $("#end_minutes").val();
-        var start_day = $("#start_day").val();
-        var end_day = $("#end_day").val();
-        if(start_day == "PM" && end_day == "AM"){
-            $("#start_day").val('AM');
-            $("#end_day").val('PM');
-            swal("Oops...", "Please select valid days", "error"); 
+    $("body").on("change","#start_time,#end_time",function(){
+        var start_time = $("#start_time").val();
+        var end_Time = $("#end_time").val();
+        console.log(start_time);
+        console.log(end_Time);
+       
+        str1 =  start_time.split(':');
+        str2 =  end_Time.split(':');
+
+        // totalSeconds1 = parseInt(str1[0] * 3600 + str1[1] * 60 + str1[0]);
+        // totalSeconds2 = parseInt(str2[0] * 3600 + str2[1] * 60 + str2[0]);
+
+        if(parseInt(str2[0]) != parseInt(str1[0])){
+        if(parseInt(str2[0]) < parseInt(str1[0])){
+            $("#start_time").val('');
+            $("#end_time").val('');
+            swal("Oops...", "Please select valid hours", "error");
         }
-        if(start_day == end_day){
-            if(parseInt(start_hours) > parseInt(end_hours)  && end_hours != ''){
-                swal("Oops...", "Please select valid hours", "error");
-            }
-            if(parseInt(start_minutes) > parseInt(end_minutes)){
+    }
+
+        if(parseInt(str2[0]) == parseInt(str1[0])){
+            if(parseInt(str2[1]) < parseInt(str1[1])){
+                $("#start_time").val('');
+                $("#end_time").val('');
                 swal("Oops...", "Please select valid minutes", "error");
             }
         }
+        
     });
 
     // Numeric only control handler

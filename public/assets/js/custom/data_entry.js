@@ -235,4 +235,22 @@ $(document).ready(function(){
         });
     }
     
+    $("body").on("change","#SIN",function(){
+        $.ajax({
+            type: 'get',
+            url: '/check_sin',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data:{
+                sin:$(this).val()
+            },
+            success: function(response) {
+                if(response.success){
+                    swal("Oops...", "SIN Number Is All Redy Taken.", "error");
+                    $("#email").val('');
+                }
+            }
+        });
+    });
 });

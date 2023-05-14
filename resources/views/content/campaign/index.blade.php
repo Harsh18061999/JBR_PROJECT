@@ -145,7 +145,8 @@
                 </form>
                 <div class="border p-4">
                     <input type="hidden" name="" id="link_url" value="{{route('employee_register')}}">
-                    <p>Currently Available Link  :  <a class="mx-4" href="{{route('employee_register')}}">{{route('employee_register')}}</a> <button class="btn btn-outline-primary" id="copyLink"><i class="fa-solid fa-copy"></i></button></p>
+                    <p>Currently Available Link  :  <a class="mx-4" href="{{route('employee_register')}}">{{route('employee_register')}}</a></p>
+                    {{-- <button class="btn btn-outline-primary" id="copyLink"><i class="fa-solid fa-copy"></i></button> --}}
                     <p> Start Date : {{isset($link->start_date) ? $link->start_date : 'N/A'}}</p>
                     <p>End Date : {{isset($link->end_date) ? $link->end_date : 'N/A'}}</p>
                     @if($status == true)

@@ -183,6 +183,7 @@ return [
     App\Providers\RepositoryServiceProvider::class,
     Spatie\Permission\PermissionServiceProvider::class,
     Orangehill\Iseed\IseedServiceProvider::class,
+    Maatwebsite\Excel\ExcelServiceProvider::class,
   ],
   
   /*
@@ -198,6 +199,7 @@ return [
 
   'aliases' => Facade::defaultAliases()->merge([
     // ...
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
   ])->toArray(),
 
 ];

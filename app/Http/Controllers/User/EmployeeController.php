@@ -309,4 +309,22 @@ class EmployeeController extends Controller
     {
         return view('content.user.error');
     }
+
+    public function sinCheck(Request $request)
+    {
+        try {
+            $employee = EmployeeDataEntryPoint::where('sin', $request->sin)
+                ->first();
+            if ($employee) {
+                $response['success'] = true;
+            } else {
+                $response['success'] = false;
+            }
+            return response()->json($response);
+        } catch (Exception $e) {
+            return redirect()
+                ->back()
+                ->withError('Try again');
+        }
+    }
 }

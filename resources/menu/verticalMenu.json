@@ -80,11 +80,11 @@
       "menu_slug":["weekly_scheduler"]
     },
     {
-      "url" : "#",
+      "url" : "/report",
       "name" : "Payroll Details",
       "icon" : "menu-icon fa-solid fa-credit-card",
-      "slug": "#",
-      "menu_slug":[]
+      "slug": "report.index",
+      "menu_slug":["report"]
     },
 
     {

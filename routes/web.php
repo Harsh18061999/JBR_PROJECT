@@ -21,6 +21,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ProvienceController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ClientJobRequest;
+use App\Http\Controllers\ReportController;
 // use Artisan;
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +211,9 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
 
         Route::get('/reallocate-job',[WeeklySchedulerController::class,'reallocateJob'])->name('reallocateJob');
         Route::post("/leave_request",[WeeklySchedulerController::class,'leave_request'])->name("leave_request");
+
+        Route::get('report',[ReportController::class,'index'])->name('report.index');
+        Route::post('report-export',[ReportController::class,'export'])->name('report.export');
     });
 });
 
@@ -220,6 +224,7 @@ Route::post('/passwordCreate',[UserController::class,"passwordConfirm"])->name("
 Route::get('/employee_mail_check', [UserEmployeeController::class, 'mailCheck']);
 Route::get('/get_employee', [UserEmployeeController::class, 'getEmployee']);
 Route::get('/employee_contact_check', [UserEmployeeController::class, 'contactCheck']);
+Route::get('/check_sin', [UserEmployeeController::class, 'sinCheck']);
 Route::get('/employee_contact_check_data', [DataEntryPointController::class, 'contactCheck']);
 Route::get('/employee_register/{token?}', [UserEmployeeController::class, 'create'])->name("employee_register");
 Route::post('/employee_store', [UserEmployeeController::class, 'store'])->name('employee_store');
