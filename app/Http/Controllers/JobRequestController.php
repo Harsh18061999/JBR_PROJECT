@@ -13,6 +13,7 @@ use App\Models\JobConfirmation;
 use App\Models\EmployeeTimeSheet;
 use App\Models\JobRequest;
 use App\Models\Supervisor;
+use App\Models\JobReminder;
 use Http;
 use App\Models\Employee;
 
@@ -135,6 +136,7 @@ class JobRequestController extends Controller
         $jobConfirmation = JobConfirmation::where('job_id',$id)->pluck('id')->toArray();
         EmployeeTimeSheet::whereIn('job_confirmations_id',$jobConfirmation)->delete();
         JobConfirmation::whereIn('id',$jobConfirmation)->delete();
+        JobReminder::where('job_id',$id)->delete();
         $this->jobRequestRepository->deleteJobRequest($id);
 
         return true;

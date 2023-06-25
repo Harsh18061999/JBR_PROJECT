@@ -103,7 +103,12 @@ class ReportController extends Controller
                     $break_time = $timesheet->break_time;
                     
                     $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                    $ottime = 0.00;
                     $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                    if($total > 8){
+                        $ottime = $total - 8;
+                        $total = $total - $ottime;
+                    }
                     $all_data[] = [
                         "date" => $timesheet->job_date,
                         "employee" => $value->employee->first_name,
@@ -112,7 +117,7 @@ class ReportController extends Controller
                         "start_time" => $timesheet->start_time,
                         "break_time" => $timesheet->break_time,
                         "end_time" => $timesheet->end_time,
-                        "ot_time" => "N/A",
+                        "ot_time" => $ottime,
                         "hours" => $total < 0 ? 0 : $total,
                         "value" => $value,
                         "time_sheet" => true,
@@ -148,7 +153,12 @@ class ReportController extends Controller
                     $break_time = $timesheet->break_time;
                     
                     $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                    $ottime = 0.00;
                     $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                    if($total > 8){
+                        $ottime = $total - 8;
+                        $total = $total - $ottime;
+                    }
                     $all_data[] = [
                         "date" => $timesheet->job_date,
                         "employee" => $value->employee->first_name,
@@ -157,7 +167,7 @@ class ReportController extends Controller
                         "start_time" => $timesheet->start_time,
                         "break_time" => $timesheet->break_time,
                         "end_time" => $timesheet->end_time,
-                        "ot_time" => "N/A",
+                        "ot_time" => $ottime,
                         "hours" => $total < 0 ? 0 : $total,
                         "value" => $value,
                         "time_sheet" => true,
@@ -275,7 +285,12 @@ class ReportController extends Controller
                     $break_time = $timesheet->break_time;
                     
                     $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                    $ottime=0.00;
                     $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                    if($total > 8){
+                        $ottime = $total - 8;
+                        $total = $total - $ottime;
+                    }
                     $all_data[] = [
                         "date" => $timesheet->job_date,
                         "employee" => $value->employee->first_name,
@@ -284,7 +299,7 @@ class ReportController extends Controller
                         "start_time" => $timesheet->start_time,
                         "break_time" => $timesheet->break_time,
                         "end_time" => $timesheet->end_time,
-                        "ot_time" => "N/A",
+                        "ot_time" => $ottime,
                         "hours" => $total < 0 ? 0 : $total
                     ];
                 }
@@ -314,7 +329,12 @@ class ReportController extends Controller
                     $break_time = $timesheet->break_time;
                     
                     $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                    $ottime=0.00;
                     $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                    if($total > 8){
+                        $ottime = $total - 8;
+                        $total = $total - $ottime;
+                    }
                     $all_data[] = [
                         "date" => $timesheet->job_date,
                         "employee" => $value->employee->first_name,
@@ -323,7 +343,7 @@ class ReportController extends Controller
                         "start_time" => $timesheet->start_time,
                         "break_time" => $timesheet->break_time,
                         "end_time" => $timesheet->end_time,
-                        "ot_time" => "N/A",
+                        "ot_time" => $ottime,
                         "hours" => $total < 0 ? 0 : $total,
                     ];
                 }
