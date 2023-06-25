@@ -85,110 +85,113 @@ class ReportController extends Controller
             $week_start = date('Y-m-d-', strtotime('-' . $day . ' days'));
             $week_end = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
         }
-
+        
         $model = $model->whereDate('job_date', '>=', $week_start)->whereDate('job_date', '<=', $week_end);
         $job_id = $model->pluck('id')->toArray();
 
         $job = JobConfirmation::with(['employee','timeSheet','job.supervisor'])->whereIn('job_id',$job_id)->get();
         $r_job = ReaAllocate::with(['employee','timeSheet','job.supervisor'])->whereIn('job_id',$job_id)->get();
         $all_data = [];
-        foreach($job as $k => $value){
-            if(count($value->timeSheet) > 0){
-                foreach($value->timeSheet as $timesheet){
-                    $start_time = explode(':', $timesheet->start_time);
-                    $end_time = explode(':', $timesheet->end_time);
-                    
-                    $total_minutes = (int) ($end_time[1] - $start_time[1]);
-                    
-                    $break_time = $timesheet->break_time;
-                    
-                    $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
-                    $ottime = 0.00;
-                    $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
-                    if($total > 8){
-                        $ottime = $total - 8;
-                        $total = $total - $ottime;
+        if($client_name){
+
+            foreach($job as $k => $value){
+                if(count($value->timeSheet) > 0){
+                    foreach($value->timeSheet as $timesheet){
+                        $start_time = explode(':', $timesheet->start_time);
+                        $end_time = explode(':', $timesheet->end_time);
+                        
+                        $total_minutes = (int) ($end_time[1] - $start_time[1]);
+                        
+                        $break_time = $timesheet->break_time;
+                        
+                        $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                        $ottime = 0.00;
+                        $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                        if($total > 8){
+                            $ottime = $total - 8;
+                            $total = $total - $ottime;
+                        }
+                        $all_data[] = [
+                            "date" => $timesheet->job_date,
+                            "employee" => $value->employee->first_name,
+                            "client" => $client_name->client_name,
+                            "Supervisor" =>  $value->job->supervisor->supervisor,
+                            "start_time" => $timesheet->start_time,
+                            "break_time" => $timesheet->break_time,
+                            "end_time" => $timesheet->end_time,
+                            "ot_time" => $ottime,
+                            "hours" => $total < 0 ? 0 : $total,
+                            "value" => $value,
+                            "time_sheet" => true,
+                            "re_allocate" => false
+                        ];
                     }
+                }else{
                     $all_data[] = [
-                        "date" => $timesheet->job_date,
+                        "date" => $value->job->job_date,
                         "employee" => $value->employee->first_name,
                         "client" => $client_name->client_name,
                         "Supervisor" =>  $value->job->supervisor->supervisor,
-                        "start_time" => $timesheet->start_time,
-                        "break_time" => $timesheet->break_time,
-                        "end_time" => $timesheet->end_time,
-                        "ot_time" => $ottime,
-                        "hours" => $total < 0 ? 0 : $total,
+                        "start_time" => "N/A",
+                        "break_time" => "N/A",
+                        "end_time" => "N/A",
+                        "ot_time" => "N/A",
+                        "hours" => "N/A",
                         "value" => $value,
-                        "time_sheet" => true,
+                        "time_sheet" => false,
                         "re_allocate" => false
                     ];
                 }
-            }else{
-                $all_data[] = [
-                    "date" => $value->job->job_date,
-                    "employee" => $value->employee->first_name,
-                    "client" => $client_name->client_name,
-                    "Supervisor" =>  $value->job->supervisor->supervisor,
-                    "start_time" => "N/A",
-                    "break_time" => "N/A",
-                    "end_time" => "N/A",
-                    "ot_time" => "N/A",
-                    "hours" => "N/A",
-                    "value" => $value,
-                    "time_sheet" => false,
-                    "re_allocate" => false
-                ];
             }
-        }
-
-        foreach($r_job as $k => $value){
-            if(count($value->timeSheet) > 0){
-                foreach($value->timeSheet as $timesheet){
-                    $start_time = explode(':', $timesheet->start_time);
-                    $end_time = explode(':', $timesheet->end_time);
-                    
-                    $total_minutes = (int) ($end_time[1] - $start_time[1]);
-                    
-                    $break_time = $timesheet->break_time;
-                    
-                    $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
-                    $ottime = 0.00;
-                    $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
-                    if($total > 8){
-                        $ottime = $total - 8;
-                        $total = $total - $ottime;
+    
+            foreach($r_job as $k => $value){
+                if(count($value->timeSheet) > 0){
+                    foreach($value->timeSheet as $timesheet){
+                        $start_time = explode(':', $timesheet->start_time);
+                        $end_time = explode(':', $timesheet->end_time);
+                        
+                        $total_minutes = (int) ($end_time[1] - $start_time[1]);
+                        
+                        $break_time = $timesheet->break_time;
+                        
+                        $total_hours = (int) ($end_time[0] - $start_time[0]) * 60;
+                        $ottime = 0.00;
+                        $total = number_format((float) (($total_hours + $total_minutes) - ($break_time)) / 60, 2, '.', ''); 
+                        if($total > 8){
+                            $ottime = $total - 8;
+                            $total = $total - $ottime;
+                        }
+                        $all_data[] = [
+                            "date" => $timesheet->job_date,
+                            "employee" => $value->employee->first_name,
+                            "client" => $client_name->client_name,
+                            "Supervisor" =>  $value->job->supervisor->supervisor,
+                            "start_time" => $timesheet->start_time,
+                            "break_time" => $timesheet->break_time,
+                            "end_time" => $timesheet->end_time,
+                            "ot_time" => $ottime,
+                            "hours" => $total < 0 ? 0 : $total,
+                            "value" => $value,
+                            "time_sheet" => true,
+                            "re_allocate" => true
+                        ];
                     }
+                }else{
                     $all_data[] = [
-                        "date" => $timesheet->job_date,
+                        "date" => $value->re_allocate_date,
                         "employee" => $value->employee->first_name,
                         "client" => $client_name->client_name,
                         "Supervisor" =>  $value->job->supervisor->supervisor,
-                        "start_time" => $timesheet->start_time,
-                        "break_time" => $timesheet->break_time,
-                        "end_time" => $timesheet->end_time,
-                        "ot_time" => $ottime,
-                        "hours" => $total < 0 ? 0 : $total,
+                        "start_time" => "N/A",
+                        "break_time" => "N/A",
+                        "end_time" => "N/A",
+                        "ot_time" => "N/A",
+                        "hours" => "N/A",
                         "value" => $value,
-                        "time_sheet" => true,
+                        "time_sheet" => false,
                         "re_allocate" => true
                     ];
                 }
-            }else{
-                $all_data[] = [
-                    "date" => $value->re_allocate_date,
-                    "employee" => $value->employee->first_name,
-                    "client" => $client_name->client_name,
-                    "Supervisor" =>  $value->job->supervisor->supervisor,
-                    "start_time" => "N/A",
-                    "break_time" => "N/A",
-                    "end_time" => "N/A",
-                    "ot_time" => "N/A",
-                    "hours" => "N/A",
-                    "value" => $value,
-                    "time_sheet" => false,
-                    "re_allocate" => true
-                ];
             }
         }
 
